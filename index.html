@@ -27,13 +27,63 @@
     a { color: inherit; text-decoration: none; }
 
     nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-shell { position: relative; }
+    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
     .nav-logo img { height: 28px; display: block; }
     .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
     .nav-links a { font-size: 0.875rem; color: var(--muted); letter-spacing: 0.02em; transition: color 0.15s; }
     .nav-links a:hover { color: var(--head); }
     .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
     .nav-cta:hover { opacity: 0.85; }
+    .nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface2);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      padding: 0;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .nav-toggle:hover { border-color: var(--muted); }
+    .nav-toggle span { display: block; width: 18px; height: 2px; border-radius: 999px; background: var(--head); transition: transform 0.2s ease, opacity 0.2s ease; }
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(17, 17, 24, 0.98);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+    .nav-dropdown.is-open { display: block; }
+    .nav-dropdown-inner { max-width: var(--max); margin: 0 auto; padding: 0.75rem 2rem 1rem; }
+    .nav-dropdown-links { list-style: none; display: grid; gap: 0.25rem; }
+    .nav-dropdown-links a {
+      display: block;
+      padding: 0.95rem 0;
+      color: var(--head);
+      border-top: 1px solid rgba(30, 30, 42, 0.85);
+      font-size: 0.95rem;
+    }
+    .nav-dropdown-links li:first-child a { border-top: 0; }
+    .nav-dropdown-links .nav-cta {
+      background: transparent;
+      color: var(--blue2) !important;
+      padding-left: 0;
+      padding-right: 0;
+      border-radius: 0;
+      font-weight: 600;
+    }
 
     .hero { max-width: var(--max); margin: 0 auto; padding: 7rem 2rem 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
     .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 100px; padding: 0.35rem 1rem; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.75rem; }
@@ -97,7 +147,10 @@
       .features-inner { grid-template-columns: 1fr 1fr; }
       .apps-grid { grid-template-columns: 1fr; }
       .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .nav-links { display: none; }
+      .nav-toggle { display: inline-flex; }
       .nav-cta { display: none; }
+      .nav-dropdown-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
     }
     @media (max-width: 480px) {
       .features-inner { grid-template-columns: 1fr; }
@@ -107,14 +160,31 @@
 <body>
 
 <nav>
-  <div class="nav-inner">
-    <a href="#home" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
-    <ul class="nav-links">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#apps">Apps</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact" class="nav-cta">Contact Us</a></li>
-    </ul>
+  <div class="nav-shell">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#apps">Apps</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+      </ul>
+      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="nav-dropdown" id="mobile-menu">
+      <div class="nav-dropdown-inner">
+        <ul class="nav-dropdown-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#apps">Apps</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -248,6 +318,51 @@
     <span class="footer-copy">thekaymer.com</span>
   </div>
 </footer>
+
+<script>
+  (function () {
+    const toggle = document.querySelector('.nav-toggle');
+    const menu = document.getElementById('mobile-menu');
+    if (!toggle || !menu) return;
+
+    const closeMenu = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('is-open');
+      toggle.setAttribute('aria-label', 'Open menu');
+    };
+
+    const openMenu = () => {
+      toggle.setAttribute('aria-expanded', 'true');
+      menu.classList.add('is-open');
+      toggle.setAttribute('aria-label', 'Close menu');
+    };
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menu.classList.contains('is-open')) return;
+      if (menu.contains(event.target) || toggle.contains(event.target)) return;
+      closeMenu();
+    });
+  })();
+</script>
 
 </body>
 </html>
