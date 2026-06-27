@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Findry</title>
+  <link rel="icon" type="image/png" href="../icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
+      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
+      --orange: #F47920; --font: system-ui, -apple-system, sans-serif; --max: 800px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    a { color: var(--orange); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 28px; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+    .nav-links a:hover { color: var(--head); }
+    .nav-cta { background: var(--orange); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
+    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .mobile-menu a { font-size: 1rem; color: var(--body); text-decoration: none; }
+    .mobile-cta { background: var(--orange); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
+
+    .app-banner { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; }
+    .app-banner-inner { max-width: var(--max); margin: 0 auto; display: flex; align-items: center; gap: 0.75rem; }
+    .findry-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #F47920, #E05A00); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .app-banner span { font-size: 0.85rem; color: var(--muted); }
+    .app-banner strong { color: var(--head); }
+
+    .page-hero { text-align: center; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
+    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--head); margin-bottom: 0.75rem; }
+    .page-hero p { font-size: 0.9rem; color: var(--muted); }
+
+    .content { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .content h2 { font-size: 1.1rem; font-weight: 600; color: var(--head); margin: 2.5rem 0 0.75rem; }
+    .content p { margin-bottom: 1rem; font-size: 0.95rem; color: var(--body); line-height: 1.8; }
+    .content ul { margin: 0.5rem 0 1rem 1.5rem; }
+    .content ul li { font-size: 0.95rem; color: var(--body); margin-bottom: 0.5rem; line-height: 1.7; }
+    .last-updated { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
+    .warning-box { background: rgba(244,121,32,0.1); border: 1px solid rgba(244,121,32,0.3); border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
+    .warning-box p { color: var(--head); margin: 0; font-size: 0.9rem; line-height: 1.7; }
+
+    footer { border-top: 1px solid var(--border); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-inner img { height: 20px; opacity: 0.6; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+    .footer-links a:hover { color: var(--head); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none; }
+      .content { padding: 3rem 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../logo.png" alt="Kaymer LLC" /></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../apps.html">Apps</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div id="mobileMenu" class="mobile-menu">
+  <ul>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../apps.html">Apps</a></li>
+    <li><a href="../about.html">About</a></li>
+    <li><a href="../contact.html" class="mobile-cta">Contact Us</a></li>
+  </ul>
+</div>
+
+<div class="app-banner">
+  <div class="app-banner-inner">
+    <div class="findry-icon">📍</div>
+    <span><strong>Findry</strong> — Terms of Service</span>
+  </div>
+</div>
+
+<div class="page-hero">
+  <h1>Terms of Service</h1>
+  <p>Effective Date: June 14, 2026</p>
+</div>
+
+<div class="content">
+  <p>These Terms of Service ("Terms") govern your use of the Findry mobile application ("App"), developed by Kaymer LLC ("Developer," "we," "us," or "our"). By using Findry, you agree to these Terms.</p>
+
+  <h2>1. Use of the App</h2>
+  <p>Findry is a field memory app designed for construction workers, contractors, and tradespeople. You may use the App to save and retrieve field records including measurements, photos, notes, and reference points.</p>
+
+  <h2>2. Accounts</h2>
+  <p>You must create an account to use Findry. You are responsible for maintaining the confidentiality of your account credentials. You agree to provide accurate information when creating your account.</p>
+
+  <h2>3. Free and Pro Plans</h2>
+  <p>Findry offers a Free plan and a Pro plan.</p>
+  <p><strong style="color:var(--head)">Free Plan includes:</strong></p>
+  <ul>
+    <li>Up to 3 projects</li>
+    <li>Up to 10 records per month (resets on the 1st of each month)</li>
+    <li>Up to 3 photos per record</li>
+    <li>Up to 2 reference points per record</li>
+    <li>Local storage only</li>
+  </ul>
+  <p><strong style="color:var(--head)">Pro Plan includes:</strong></p>
+  <ul>
+    <li>Unlimited projects, records, photos, and reference points</li>
+    <li>Cloud backup and sync of projects and records via Firebase</li>
+    <li>Photos are stored locally on your device and are not included in cloud backup</li>
+    <li>All future Pro features</li>
+  </ul>
+  <p>Subscription fees are billed monthly or yearly depending on the plan selected. You may cancel at any time through your Apple ID subscription settings.</p>
+
+  <h2>4. Important Disclaimer — Underground Utilities</h2>
+  <div class="warning-box">
+    <p>Findry is a documentation tool only. It does not detect, map, or identify underground utilities or infrastructure. ALWAYS CALL 811 BEFORE YOU DIG. Findry records are based on user-entered data and may not reflect actual field conditions. Kaymer LLC is not responsible for any damage, injury, or loss resulting from reliance on information stored in the App.</p>
+  </div>
+
+  <h2>5. User Content</h2>
+  <p>You retain ownership of all content you create in Findry. By using the App, you grant us a limited license to store and display your content solely for the purpose of providing the service.</p>
+
+  <h2>6. Data Storage</h2>
+  <p>Free plan data is stored locally on your device only. Pro plan project and record data is backed up to secure cloud storage via Firebase. Photos are stored locally on your device regardless of plan. Kaymer LLC is not responsible for data loss resulting from device failure, deletion, or uninstallation of the App.</p>
+
+  <h2>7. Prohibited Use</h2>
+  <p>You agree not to:</p>
+  <ul>
+    <li>Use the App for any unlawful purpose</li>
+    <li>Attempt to reverse engineer or modify the App</li>
+    <li>Share your account credentials with others</li>
+  </ul>
+
+  <h2>8. Termination</h2>
+  <p>We reserve the right to suspend or terminate your account if you violate these Terms.</p>
+
+  <h2>9. Disclaimer of Warranties</h2>
+  <p>The App is provided "as is" without warranties of any kind. We do not guarantee that the App will be error-free or uninterrupted.</p>
+
+  <h2>10. Limitation of Liability</h2>
+  <p>To the maximum extent permitted by law, Kaymer LLC shall not be liable for any indirect, incidental, or consequential damages arising from your use of the App.</p>
+
+  <h2>11. Governing Law</h2>
+  <p>These Terms are governed by the laws of the Commonwealth of Massachusetts, United States.</p>
+
+  <h2>12. Contact</h2>
+  <p>If you have any questions about these Terms, please contact us:</p>
+  <ul>
+    <li>Email: <a href="mailto:support@findryapp.com">support@findryapp.com</a></li>
+    <li>Business: Kaymer LLC</li>
+  </ul>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <img src="../logo.png" alt="Kaymer LLC" />
+    <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    if (!e.target.closest('nav')) menu.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>

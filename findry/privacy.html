@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Findry</title>
+  <link rel="icon" type="image/png" href="../icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
+      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
+      --orange: #F47920; --font: system-ui, -apple-system, sans-serif; --max: 800px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    a { color: var(--orange); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 28px; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+    .nav-links a:hover { color: var(--head); }
+    .nav-cta { background: var(--orange); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
+    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .mobile-menu a { font-size: 1rem; color: var(--body); text-decoration: none; }
+    .mobile-cta { background: var(--orange); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
+
+    .app-banner { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; display: flex; align-items: center; gap: 0.75rem; max-width: 100%; }
+    .app-banner-inner { max-width: var(--max); margin: 0 auto; display: flex; align-items: center; gap: 0.75rem; width: 100%; }
+    .findry-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #F47920, #E05A00); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .app-banner span { font-size: 0.85rem; color: var(--muted); }
+    .app-banner strong { color: var(--head); }
+
+    .page-hero { text-align: center; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
+    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--head); margin-bottom: 0.75rem; }
+    .page-hero p { font-size: 0.9rem; color: var(--muted); }
+
+    .content { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .content h2 { font-size: 1.15rem; font-weight: 600; color: var(--head); margin: 2.5rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .content p { margin-bottom: 1rem; font-size: 0.95rem; color: var(--body); line-height: 1.8; }
+    .content ul { margin: 0.5rem 0 1rem 1.5rem; }
+    .content ul li { font-size: 0.95rem; color: var(--body); margin-bottom: 0.5rem; line-height: 1.7; }
+    .last-updated { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
+    .warning-box { background: rgba(244,121,32,0.1); border: 1px solid rgba(244,121,32,0.3); border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
+    .warning-box p { color: var(--head); margin: 0; font-size: 0.9rem; }
+
+    footer { border-top: 1px solid var(--border); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-inner img { height: 20px; opacity: 0.6; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+    .footer-links a:hover { color: var(--head); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none; }
+      .content { padding: 3rem 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-logo"><img src="../logo.png" alt="Kaymer LLC" /></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../apps.html">Apps</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div id="mobileMenu" class="mobile-menu">
+  <ul>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../apps.html">Apps</a></li>
+    <li><a href="../about.html">About</a></li>
+    <li><a href="../contact.html" class="mobile-cta">Contact Us</a></li>
+  </ul>
+</div>
+
+<div class="app-banner">
+  <div class="app-banner-inner">
+    <div class="findry-icon">📍</div>
+    <span><strong>Findry</strong> — Privacy Policy</span>
+  </div>
+</div>
+
+<div class="page-hero">
+  <h1>Privacy Policy</h1>
+  <p>Effective Date: June 11, 2026</p>
+</div>
+
+<div class="content">
+  <p>Findry ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use the Findry mobile application.</p>
+
+  <h2>Information We Collect</h2>
+  <p><strong style="color:var(--head)">Account Information:</strong> When you create an account, we collect your first name, last name, email address, and optionally your company name.</p>
+  <p><strong style="color:var(--head)">Field Records:</strong> We store the records you create — including measurements, notes, photos, categories, and reference points — so you can retrieve them later. We do not collect your location or access your device's GPS at any time.</p>
+
+  <h2>How We Use Your Information</h2>
+  <p>We use your information to:</p>
+  <ul>
+    <li>Provide and maintain the Findry app</li>
+    <li>Authenticate your account securely</li>
+    <li>Store your field records on your device and, for Pro users, in secure cloud storage via Firebase</li>
+    <li>Send password reset emails when requested</li>
+  </ul>
+  <p>We do not sell, rent, or share your personal information with third parties for marketing purposes. Findry does not display advertisements.</p>
+
+  <h2>Data Storage</h2>
+  <p><strong style="color:var(--head)">Free Plan users:</strong> Your data is stored locally on your device using AsyncStorage.</p>
+  <p><strong style="color:var(--head)">Pro Plan users:</strong> Your data is additionally backed up to Firebase (Google Cloud), a secure cloud storage service.</p>
+
+  <h2>Third-Party Services</h2>
+  <p>Findry uses Firebase (provided by Google) for authentication and cloud storage for Pro users. Firebase's privacy policy is available at <a href="https://firebase.google.com" target="_blank">firebase.google.com</a>.</p>
+
+  <h2>Data Retention</h2>
+  <p>You may delete your account and all associated data at any time directly within the App through the Account Settings screen. Account deletion is immediate and permanent.</p>
+
+  <h2>Children's Privacy</h2>
+  <p>Findry is not intended for users under the age of 13. We do not knowingly collect personal information from children under 13.</p>
+
+  <h2>Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of any significant changes by updating the effective date at the top of this page. Continued use of the App after changes constitutes your acceptance of the updated policy.</p>
+
+  <h2>Contact</h2>
+  <p>If you have any questions about this Privacy Policy, please contact us:</p>
+  <ul>
+    <li>Email: <a href="mailto:support@findryapp.com">support@findryapp.com</a></li>
+    <li>Business: Kaymer LLC</li>
+  </ul>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <img src="../logo.png" alt="Kaymer LLC" />
+    <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    if (!e.target.closest('nav')) menu.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>
