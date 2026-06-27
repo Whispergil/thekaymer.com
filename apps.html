@@ -1,217 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Apps — Kaymer LLC</title>
-  <meta name="description" content="Mobile apps built by Kaymer LLC for the trades and beyond." />
-  <link rel="icon" type="image/png" href="icon.png" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0A0A0F;
-      --surface: #111118;
-      --surface2: #16161F;
-      --border: #1E1E2A;
-      --muted: #4A4A5E;
-      --body: #9090A8;
-      --head: #F0F0F8;
-      --blue1: #3B82F6;
-      --blue2: #00C6FF;
-      --font: system-ui, -apple-system, sans-serif;
-      --max: 1100px;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; text-decoration: none; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Apps — Kaymer LLC</title>
+  <meta name="description" content="Mobile apps built by Kaymer LLC for the trades and beyond." />
+  <link rel="icon" type="image/png" href="icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0A0A0F;
+      --surface: #111118;
+      --surface2: #16161F;
+      --border: #1E1E2A;
+      --muted: #4A4A5E;
+      --body: #9090A8;
+      --head: #F0F0F8;
+      --blue1: #3B82F6;
+      --blue2: #00C6FF;
+      --font: system-ui, -apple-system, sans-serif;
+      --max: 1100px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; text-decoration: none; }
 
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo img { height: 28px; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.875rem; color: var(--muted); letter-spacing: 0.02em; transition: color 0.15s; }
-    .nav-links a:hover { color: var(--head); }
-    .nav-links a.active { color: var(--blue1); }
-    .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
-    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
-    .mobile-menu.open { display: block; }
-    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
-    .mobile-menu a { font-size: 1rem; color: var(--body); }
-    .mobile-cta { background: var(--blue1); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 28px; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); letter-spacing: 0.02em; transition: color 0.15s; }
+    .nav-links a:hover { color: var(--head); }
+    .nav-links a.active { color: var(--blue1); }
+    .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
+    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .mobile-menu a { font-size: 1rem; color: var(--body); }
+    .mobile-cta { background: var(--blue1); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
 
-    /* HERO */
-    .page-hero { text-align: center; padding: 5rem 2rem 4rem; }
-    .page-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; color: var(--head); letter-spacing: -0.02em; margin-bottom: 1rem; }
-    .page-hero p { font-size: 1.1rem; color: var(--body); max-width: 50ch; margin: 0 auto; }
+    /* HERO */
+    .page-hero { text-align: center; padding: 5rem 2rem 4rem; }
+    .page-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; color: var(--head); letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .page-hero p { font-size: 1.1rem; color: var(--body); max-width: 50ch; margin: 0 auto; }
 
-    /* APPS GRID */
-    .apps-section { max-width: var(--max); margin: 0 auto; padding: 2rem 2rem 6rem; }
-    .apps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    .app-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; }
-    .app-card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-    .app-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0; }
-    .app-icon.findry { background: linear-gradient(135deg, #F47920, #E05A00); }
-    .app-icon.punchgo { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
-    .app-card-title h3 { font-size: 1.3rem; font-weight: 700; color: var(--head); margin-bottom: 0.4rem; }
-    .badges { display: flex; gap: 0.5rem; }
-    .badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.2rem 0.6rem; border-radius: 100px; }
-    .badge-platform { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-    .badge-soon { background: rgba(59,130,246,0.15); color: var(--blue1); border: 1px solid rgba(59,130,246,0.3); }
-    .app-tagline { font-size: 1rem; color: var(--head); font-weight: 500; margin-bottom: 1rem; line-height: 1.4; }
-    .app-features { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 2rem; }
-    .app-features li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; color: var(--body); }
-    .app-features li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue1); flex-shrink: 0; }
-    .app-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 0.95rem; margin-top: auto; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); cursor: default; }
+    /* APPS GRID */
+    .apps-section { max-width: var(--max); margin: 0 auto; padding: 2rem 2rem 6rem; }
+    .apps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .app-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; }
+    .app-card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .app-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0; }
+    .app-icon.findry { background: linear-gradient(135deg, #F47920, #E05A00); }
+    .app-icon.punchgo { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
+    .app-card-title h3 { font-size: 1.3rem; font-weight: 700; color: var(--head); margin-bottom: 0.4rem; }
+    .badges { display: flex; gap: 0.5rem; }
+    .badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.2rem 0.6rem; border-radius: 100px; }
+    .badge-platform { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .badge-soon { background: rgba(59,130,246,0.15); color: var(--blue1); border: 1px solid rgba(59,130,246,0.3); }
+    .app-tagline { font-size: 1rem; color: var(--head); font-weight: 500; margin-bottom: 1rem; line-height: 1.4; }
+    .app-features { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 2rem; }
+    .app-features li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; color: var(--body); }
+    .app-features li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue1); flex-shrink: 0; }
+    .app-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 0.95rem; margin-top: auto; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); cursor: default; }
 
-    /* WHY SECTION */
-    .why { border-top: 1px solid var(--border); }
-    .why-inner { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
-    .why-item { text-align: center; }
-    .why-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
-    .why-item h4 { font-size: 0.9rem; font-weight: 600; color: var(--head); margin-bottom: 0.35rem; }
-    .why-item p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    /* WHY SECTION */
+    .why { border-top: 1px solid var(--border); }
+    .why-inner { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
+    .why-item { text-align: center; }
+    .why-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .why-item h4 { font-size: 0.9rem; font-weight: 600; color: var(--head); margin-bottom: 0.35rem; }
+    .why-item p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
 
-    /* FOOTER */
-    footer { border-top: 1px solid var(--border); }
-    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-inner img { height: 20px; opacity: 0.6; }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    /* FOOTER */
+    footer { border-top: 1px solid var(--border); }
+    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-inner img { height: 20px; opacity: 0.6; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
 
-    @media (max-width: 768px) {
-      .apps-grid { grid-template-columns: 1fr; }
-      .why-inner { grid-template-columns: 1fr 1fr; }
-      .hamburger { display: flex; }
-      .nav-links { display: none; }
-    }
-    @media (max-width: 480px) {
-      .why-inner { grid-template-columns: 1fr; }
-    }
-  </style>
+    @media (max-width: 768px) {
+      .apps-grid { grid-template-columns: 1fr; }
+      .why-inner { grid-template-columns: 1fr 1fr; }
+      .hamburger { display: flex; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 480px) {
+      .why-inner { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="apps.html" class="active">Apps</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
-    </ul>
-    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="apps.html" class="active">Apps</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <div id="mobileMenu" class="mobile-menu">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="apps.html">Apps</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html" class="mobile-cta">Contact Us</a></li>
-  </ul>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="apps.html">Apps</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="mobile-cta">Contact Us</a></li>
+  </ul>
 </div>
 
 <div class="page-hero">
-  <h1>Our Apps</h1>
-  <p>Tools built to help people work smarter, stay organized, and grow.</p>
+  <h1>Our Apps</h1>
+  <p>Tools built to help people work smarter, stay organized, and grow.</p>
 </div>
 
 <div class="apps-section">
-  <div class="apps-grid">
+  <div class="apps-grid">
 
-    <div class="app-card">
-      <div class="app-card-header">
-        <div class="app-icon findry">📍</div>
-        <div class="app-card-title">
-          <h3>Findry</h3>
-          <div class="badges">
-            <span class="badge badge-platform">iOS</span>
-            <span class="badge badge-platform">Android</span>
-            <span class="badge badge-soon">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-      <p class="app-tagline">Your everyday organizer.<br>Save it now. Find it later.</p>
-      <ul class="app-features">
-        <li>Save important info in seconds</li>
-        <li>Organize with smart categories</li>
-        <li>Find what you need, fast</li>
-      </ul>
-      <div class="app-btn">Coming Soon</div>
-    </div>
+    <div class="app-card">
+      <div class="app-card-header">
+        <div class="app-icon findry">📍</div>
+        <div class="app-card-title">
+          <h3>Findry</h3>
+          <div class="badges">
+            <span class="badge badge-platform">iOS</span>
+            <span class="badge badge-platform">Android</span>
+            <span class="badge badge-soon">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+      <p class="app-tagline">Your everyday organizer.<br>Save it now. Find it later.</p>
+      <ul class="app-features">
+        <li>Save important info in seconds</li>
+        <li>Organize with smart categories</li>
+        <li>Find what you need, fast</li>
+      </ul>
+      <div class="app-btn">Coming Soon</div>
+    </div>
 
-    <div class="app-card">
-      <div class="app-card-header">
-        <div class="app-icon punchgo">⏱</div>
-        <div class="app-card-title">
-          <h3>PunchGo</h3>
-          <div class="badges">
-            <span class="badge badge-platform">iOS</span>
-            <span class="badge badge-platform">Android</span>
-            <span class="badge badge-soon">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-      <p class="app-tagline">Work hours made simple.<br>Built for drivers. Backed by clarity.</p>
-      <ul class="app-features">
-        <li>Clock in and out with ease</li>
-        <li>Track hours, jobs, and earnings</li>
-        <li>Stay compliant and organized</li>
-      </ul>
-      <div class="app-btn">Coming Soon</div>
-    </div>
+    <div class="app-card">
+      <div class="app-card-header">
+        <div class="app-icon punchgo">⏱</div>
+        <div class="app-card-title">
+          <h3>PunchGo</h3>
+          <div class="badges">
+            <span class="badge badge-platform">iOS</span>
+            <span class="badge badge-platform">Android</span>
+            <span class="badge badge-soon">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+      <p class="app-tagline">Work hours made simple.<br>Built for drivers. Backed by clarity.</p>
+      <ul class="app-features">
+        <li>Clock in and out with ease</li>
+        <li>Track hours, jobs, and earnings</li>
+        <li>Stay compliant and organized</li>
+      </ul>
+      <div class="app-btn">Coming Soon</div>
+    </div>
 
-  </div>
+  </div>
 </div>
 
 <div class="why">
-  <div class="why-inner">
-    <div class="why-item">
-      <div class="why-icon">✦</div>
-      <h4>Why our apps?</h4>
-      <p>We build reliable tools with people at the center.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon">🔒</div>
-      <h4>Privacy First</h4>
-      <p>Your data stays yours. Always secure and private.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon">⚡</div>
-      <h4>Fast & Reliable</h4>
-      <p>Built for speed and dependability.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon">🎨</div>
-      <h4>Clean Design</h4>
-      <p>Simple, intuitive, and easy to use.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon">❤️</div>
-      <h4>Made to Last</h4>
-      <p>Quality products that evolve with you.</p>
-    </div>
-  </div>
+  <div class="why-inner">
+    <div class="why-item">
+      <div class="why-icon">✦</div>
+      <h4>Why our apps?</h4>
+      <p>We build reliable tools with people at the center.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🔒</div>
+      <h4>Privacy First</h4>
+      <p>Your data stays yours. Always secure and private.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">⚡</div>
+      <h4>Fast & Reliable</h4>
+      <p>Built for speed and dependability.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🎨</div>
+      <h4>Clean Design</h4>
+      <p>Simple, intuitive, and easy to use.</p>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">❤️</div>
+      <h4>Made to Last</h4>
+      <p>Quality products that evolve with you.</p>
+    </div>
+  </div>
 </div>
 
 <footer>
-  <div class="footer-inner">
-    <img src="logo.png" alt="Kaymer LLC" />
-    <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
-    <span class="footer-copy">thekaymer.com</span>
-  </div>
+  <div class="footer-inner">
+    <img src="logo.png" alt="Kaymer LLC" />
+    <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
+    <span class="footer-copy">thekaymer.com</span>
+  </div>
 </footer>
 
 <script>
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobileMenu');
-    if (!e.target.closest('nav')) menu.classList.remove('open');
-  });
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    if (!e.target.closest('nav')) menu.classList.remove('open');
+  });
 </script>
 
 </body>
