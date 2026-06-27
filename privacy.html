@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Kaymer LLC</title>
+  <link rel="icon" type="image/png" href="icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
+      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
+      --blue1: #3B82F6; --font: system-ui, -apple-system, sans-serif; --max: 800px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue1); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 28px; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+    .nav-links a:hover { color: var(--head); }
+    .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
+    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .mobile-menu a { font-size: 1rem; color: var(--body); text-decoration: none; }
+    .mobile-cta { background: var(--blue1); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
+
+    .page-hero { text-align: center; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
+    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--head); margin-bottom: 0.75rem; }
+    .page-hero p { font-size: 0.9rem; color: var(--muted); }
+
+    .content { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .content h2 { font-size: 1.25rem; font-weight: 600; color: var(--head); margin: 2.5rem 0 0.75rem; }
+    .content p { margin-bottom: 1rem; font-size: 0.95rem; color: var(--body); line-height: 1.8; }
+    .content ul { margin: 0.5rem 0 1rem 1.5rem; }
+    .content ul li { font-size: 0.95rem; color: var(--body); margin-bottom: 0.5rem; line-height: 1.7; }
+    .last-updated { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
+
+    footer { border-top: 1px solid var(--border); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-inner img { height: 20px; opacity: 0.6; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none; }
+      .content { padding: 3rem 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="apps.html">Apps</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div id="mobileMenu" class="mobile-menu">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="apps.html">Apps</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="mobile-cta">Contact Us</a></li>
+  </ul>
+</div>
+
+<div class="page-hero">
+  <h1>Privacy Policy</h1>
+  <p>Kaymer LLC — thekaymer.com</p>
+</div>
+
+<div class="content">
+  <span class="last-updated">Last updated: June 26, 2025</span>
+
+  <p>Kaymer LLC ("we," "us," or "our") operates the website thekaymer.com. This Privacy Policy explains how we handle information when you visit our website.</p>
+
+  <h2>1. Information We Collect</h2>
+  <p>We do not actively collect personal information from visitors to thekaymer.com unless you voluntarily provide it through our contact form.</p>
+  <p>When you submit our contact form, we collect:</p>
+  <ul>
+    <li>Your first and last name</li>
+    <li>Your email address</li>
+    <li>Your message and selected topic</li>
+  </ul>
+  <p>This information is sent directly to our email inbox and is used solely to respond to your inquiry.</p>
+
+  <h2>2. Automatically Collected Information</h2>
+  <p>Our website is hosted by Vercel, Inc. Vercel may automatically collect certain technical information when you visit our site, including:</p>
+  <ul>
+    <li>IP address</li>
+    <li>Browser type and version</li>
+    <li>Pages visited and time spent</li>
+    <li>Referring website</li>
+  </ul>
+  <p>This data is collected by Vercel for hosting and performance purposes. For more information, please review <a href="https://vercel.com/legal/privacy-policy" target="_blank">Vercel's Privacy Policy</a>.</p>
+
+  <h2>3. How We Use Your Information</h2>
+  <p>We use the information you provide through our contact form only to:</p>
+  <ul>
+    <li>Respond to your questions or inquiries</li>
+    <li>Provide support related to our apps</li>
+  </ul>
+  <p>We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+
+  <h2>4. Cookies</h2>
+  <p>We do not use cookies on thekaymer.com. Vercel may use cookies for essential hosting and performance functions. You can control cookies through your browser settings.</p>
+
+  <h2>5. Data Retention</h2>
+  <p>Contact form submissions are retained in our email inbox only as long as necessary to respond to your inquiry. We do not store form submissions in any database.</p>
+
+  <h2>6. Children's Privacy</h2>
+  <p>Our website is not directed at children under the age of 13. We do not knowingly collect personal information from children. If you believe we have inadvertently collected information from a child, please contact us immediately.</p>
+
+  <h2>7. Links to Other Websites</h2>
+  <p>Our website may contain links to third-party websites. We are not responsible for the privacy practices of those sites and encourage you to review their privacy policies.</p>
+
+  <h2>8. Your Rights</h2>
+  <p>You have the right to request access to, correction of, or deletion of any personal information you have provided to us. To make such a request, please contact us at the email below.</p>
+
+  <h2>9. Changes to This Policy</h2>
+  <p>We may update this Privacy Policy from time to time. We will notify you of any changes by updating the date at the top of this page. Continued use of our website after any changes constitutes your acceptance of the updated policy.</p>
+
+  <h2>10. Contact Us</h2>
+  <p>If you have any questions about this Privacy Policy, please contact us:</p>
+  <ul>
+    <li>Email: <a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
+    <li>Company: Kaymer LLC</li>
+    <li>State: Massachusetts, United States</li>
+  </ul>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <img src="logo.png" alt="Kaymer LLC" />
+    <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
+    <span class="footer-copy">thekaymer.com</span>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    if (!e.target.closest('nav')) menu.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>
