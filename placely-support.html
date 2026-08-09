@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support — Placely</title>
+  <link rel="icon" type="image/png" href="icon.png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
+      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
+      --blue1: #3B82F6; --font: system-ui, -apple-system, sans-serif; --max: 800px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue1); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo img { height: 28px; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+    .nav-links a:hover { color: var(--head); }
+    .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
+    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
+    .mobile-menu a { font-size: 1rem; color: var(--body); text-decoration: none; }
+    .mobile-cta { background: var(--blue1); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
+    .page-hero { text-align: center; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
+    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--head); margin-bottom: 0.75rem; }
+    .page-hero p { font-size: 0.9rem; color: var(--muted); }
+    .content { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem 6rem; }
+    .content h2 { font-size: 1.25rem; font-weight: 600; color: var(--head); margin: 2.5rem 0 0.75rem; }
+    .content p { margin-bottom: 1rem; font-size: 0.95rem; color: var(--body); line-height: 1.8; }
+    .content ul { margin: 0.5rem 0 1rem 1.5rem; }
+    .content ul li { font-size: 0.95rem; color: var(--body); margin-bottom: 0.5rem; line-height: 1.7; }
+    .intro { font-size: 1.05rem; color: var(--head); margin-bottom: 1.5rem; }
+    .support-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0 2.5rem; text-align: center; }
+    .support-card p { margin-bottom: 1rem; }
+    .support-email-btn { display: inline-block; background: var(--blue1); color: #fff !important; padding: 0.65rem 1.5rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; text-decoration: none; }
+    footer { border-top: 1px solid var(--border); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-inner img { height: 20px; opacity: 0.6; }
+    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
+    .footer-links a:hover { color: var(--head); }
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none; }
+      .content { padding: 3rem 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="apps.html">Apps</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
+    </ul>
+    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div id="mobileMenu" class="mobile-menu">
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="apps.html">Apps</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="mobile-cta">Contact Us</a></li>
+  </ul>
+</div>
+<div class="page-hero">
+  <h1>Placely Support</h1>
+  <p>Placely — a mobile application operated by Kaymer LLC</p>
+</div>
+<div class="content">
+  <p class="intro">Need help with Placely? We're here to help.</p>
+
+  <div class="support-card">
+    <p>The fastest way to reach us is by email. We read every message and typically respond within a few business days.</p>
+    <a class="support-email-btn" href="mailto:support@thekaymer.com">Email support@thekaymer.com</a>
+  </div>
+
+  <h2>Account &amp; Sign-In</h2>
+  <p>You can sign in to Placely with Email &amp; Password, Sign in with Apple, or Google Sign-In. If you're having trouble signing in, forgot your password, or want to link or unlink a sign-in method, check the sign-in options available in the app first. If you're still stuck, email us at <a href="mailto:support@thekaymer.com">support@thekaymer.com</a> and let us know which sign-in method you're using.</p>
+
+  <h2>Saving Places</h2>
+  <p>Placely lets you save a place with a name, category, notes, address details, and location. You can mark places as favorites and revisit them anytime from the app. If a saved place isn't showing up correctly or you're having trouble adding or editing one, try closing and reopening the app first — if the issue continues, reach out to support.</p>
+
+  <h2>Location &amp; Photos</h2>
+  <p>Placely may ask for permission to access your device's location and camera or photo library when you add a place — these are only used when you take that action, and location is never tracked in the background. If Placely isn't able to detect your location or access your camera/photos, check that the relevant permission is enabled for Placely in your device's system settings.</p>
+
+  <h2>Account Deletion</h2>
+  <p>You can permanently delete your Placely account and its data at any time, directly from within the app:</p>
+  <ul>
+    <li>Open Placely and go to <strong>Profile</strong></li>
+    <li>Tap <strong>Settings</strong></li>
+    <li>Tap <strong>Delete Account</strong> and follow the confirmation steps</li>
+  </ul>
+  <p>Account deletion is permanent and cannot be undone. See our <a href="placely-privacy.html">Privacy Policy</a> for details on what is removed.</p>
+
+  <h2>General Support</h2>
+  <p>For anything else — feedback, bug reports, or general questions about Placely — email us at <a href="mailto:support@thekaymer.com">support@thekaymer.com</a>.</p>
+  <p>You may also want to review our <a href="placely-privacy.html">Privacy Policy</a> and <a href="placely-terms.html">Terms of Use</a> for Placely.</p>
+</div>
+<footer>
+  <div class="footer-inner">
+    <img src="logo.png" alt="Kaymer LLC" />
+    <span class="footer-copy">&copy; 2026 Kaymer LLC. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="placely-privacy.html">Privacy Policy</a>
+      <a href="placely-terms.html">Terms of Use</a>
+      <a href="placely-support.html">Support</a>
+    </div>
+  </div>
+</footer>
+<script>
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    if (!e.target.closest('nav')) menu.classList.remove('open');
+  });
+</script>
+</body>
+</html>
