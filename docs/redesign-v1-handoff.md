@@ -80,10 +80,12 @@ other (`md5 cb975bba2216ce10a60e6c0ffe9941a2`), and Placely's iOS icon points at
 `assets/expo.icon`, which contains only the Expo icon-composer default. None of
 them is a product mark, so none was used.
 
-The temporary treatment is a dashed-border tile with a serif monogram
-(`.app-icon--placeholder`). It is deliberately typographic so it cannot be
-mistaken for a finished logo, and it carries an accessible label reading
-"app icon not yet available".
+The temporary treatment is a cream monogram tile with a serif letterform and a
+soft inner ring (`.app-icon--placeholder`). It is deliberately typographic and
+flatter than a real app icon, so it reads as a considered placeholder rather
+than a finished mark, and it carries an accessible label reading "app icon not
+yet available". Each one also sits beside a status badge that says the app is
+not released.
 
 **Rejected sources:** the AI-generated icons and app screens in the reference
 mockups; the stock photography in `whisper/assets/images/` (`rental*.jpg`,
@@ -174,3 +176,34 @@ hidden until the script reveals it.
 Support is email-only by design. The old `mailto:` POST form was removed: most
 browsers no longer honour such submissions, so it silently discarded messages.
 Per-app links now carry pre-filled subjects.
+
+---
+
+## 8. Visual polish pass
+
+A second pass refined the approved ivory/gold direction without changing it.
+The substantive layout decisions, for the record:
+
+- **The home hero and the Findry feature merged.** They were separate sections;
+  at desktop the hero filled only the left half of the screen while the feature
+  card below it carried 1299px of dead space beside two oversized screenshots.
+  Findry now shares the hero as a compact showcase panel, which fills the empty
+  half and gives the one shipped app the strongest position on the page.
+- **Screenshots became a scrollable rail.** Three stacked phone screenshots ran
+  to 2127px on the Findry page alone. The rail is keyboard reachable, labelled,
+  and snaps; it stays scrollable at every width because even a wide aside column
+  is narrower than three phone shots side by side.
+- **Unreleased apps use a single-column hero.** The two-column layout left an
+  empty half beside apps with no screenshots, and paired two notices that said
+  much the same thing. One notice now covers both facts.
+- **The apps grid is 2×2 at desktop** rather than three across with an orphaned
+  fourth card, and every card ends with its actions on a shared rule so cards of
+  different length align along the same edge.
+
+Accessibility changes made during the pass: the "Available" badge lost its gold
+wash, which measured 4.26:1 behind bronze text and now measures 5.15:1; footer
+and card links were held at 44px targets; and the single entrance animation is
+wrapped in `prefers-reduced-motion: no-preference`.
+
+Page weight fell again as a result — the home page is 4633px tall at 390px wide,
+down from 5875px, and the Findry page 3636px, down from 5142px.
