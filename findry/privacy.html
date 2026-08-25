@@ -1,167 +1,365 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy — Findry</title>
-  <link rel="icon" type="image/png" href="../icon.png" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
-      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
-      --orange: #F47920; --font: system-ui, -apple-system, sans-serif; --max: 800px;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-    a { color: var(--orange); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo img { height: 28px; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
-    .nav-links a:hover { color: var(--head); }
-    .nav-cta { background: var(--orange); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
-    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
-    .mobile-menu.open { display: block; }
-    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
-    .mobile-menu a { font-size: 1rem; color: var(--body); text-decoration: none; }
-    .mobile-cta { background: var(--orange); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
-
-    .app-banner { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; display: flex; align-items: center; gap: 0.75rem; max-width: 100%; }
-    .app-banner-inner { max-width: var(--max); margin: 0 auto; display: flex; align-items: center; gap: 0.75rem; width: 100%; }
-    .findry-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #F47920, #E05A00); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-    .app-banner span { font-size: 0.85rem; color: var(--muted); }
-    .app-banner strong { color: var(--head); }
-
-    .page-hero { text-align: center; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
-    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--head); margin-bottom: 0.75rem; }
-    .page-hero p { font-size: 0.9rem; color: var(--muted); }
-
-    .content { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem 6rem; }
-    .content h2 { font-size: 1.15rem; font-weight: 600; color: var(--head); margin: 2.5rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-    .content p { margin-bottom: 1rem; font-size: 0.95rem; color: var(--body); line-height: 1.8; }
-    .content ul { margin: 0.5rem 0 1rem 1.5rem; }
-    .content ul li { font-size: 0.95rem; color: var(--body); margin-bottom: 0.5rem; line-height: 1.7; }
-    .last-updated { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
-    .warning-box { background: rgba(244,121,32,0.1); border: 1px solid rgba(244,121,32,0.3); border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
-    .warning-box p { color: var(--head); margin: 0; font-size: 0.9rem; }
-
-    footer { border-top: 1px solid var(--border); }
-    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-inner img { height: 20px; opacity: 0.6; }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); }
-    .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
-    .footer-links a:hover { color: var(--head); }
-
-    @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .nav-links { display: none; }
-      .content { padding: 3rem 1.5rem 5rem; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Findry Privacy Policy — Kaymer LLC</title>
+<meta name="description" content="The Findry privacy policy: what the app collects, how it is used and stored, and how to delete your account. Effective August 02, 2026.">
+<link rel="canonical" href="https://whispergil.github.io/thekaymer.com/findry/privacy.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kaymer LLC">
+<meta property="og:title" content="Findry Privacy Policy — Kaymer LLC">
+<meta property="og:description" content="The Findry privacy policy: what the app collects, how it is used and stored, and how to delete your account. Effective August 02, 2026.">
+<meta property="og:url" content="https://whispergil.github.io/thekaymer.com/findry/privacy.html">
+<meta property="og:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kaymer LLC — practical apps, thoughtfully built.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Findry Privacy Policy — Kaymer LLC">
+<meta name="twitter:description" content="The Findry privacy policy: what the app collects, how it is used and stored, and how to delete your account. Effective August 02, 2026.">
+<meta name="twitter:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta name="theme-color" content="#FCFAF6">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
-
-<nav>
-  <div class="nav-inner">
-    <a href="../index.html" class="nav-logo"><img src="../logo.png" alt="Kaymer LLC" /></a>
-    <ul class="nav-links">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="shell header-bar">
+    <a class="wordmark" href="../index.html"><span>KAYMER</span></a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
       <li><a href="../index.html">Home</a></li>
       <li><a href="../apps.html">Apps</a></li>
       <li><a href="../about.html">About</a></li>
-      <li><a href="../contact.html" class="nav-cta">Contact Us</a></li>
-    </ul>
-    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <li><a href="../contact.html">Support</a></li>
+      <li><a href="../legal.html" aria-current="page">Legal</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </div>
-</nav>
+  <nav class="nav-mobile" id="site-menu" aria-label="Primary, mobile">
+    <ul class="shell">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../apps.html">Apps</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Support</a></li>
+      <li><a href="../legal.html" aria-current="page">Legal</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main" class="legal-main">
+  <div class="shell">
+    <a class="backlink" href="../legal.html">All legal documents</a>
 
-<div id="mobileMenu" class="mobile-menu">
-  <ul>
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="../apps.html">Apps</a></li>
-    <li><a href="../about.html">About</a></li>
-    <li><a href="../contact.html" class="mobile-cta">Contact Us</a></li>
-  </ul>
-</div>
+    <div class="legal-head">
+      <p class="eyebrow">Findry legal</p>
+      <h1>Findry Privacy Policy</h1>
+      <p class="updated">Effective Date: August 02, 2026</p>
+    </div>
 
-<div class="app-banner">
-  <div class="app-banner-inner">
-    <img src="../findry-logo.png" alt="Findry" style="width:32px;height:32px;border-radius:8px;object-fit:cover;" />
-    <span><strong>Findry</strong> — Privacy Policy</span>
+  <details class="legal-toc">
+    <summary>On this page</summary>
+    <ol>
+      <li><a href="#s-1-information-we-collect">1. INFORMATION WE COLLECT</a></li>
+      <li><a href="#s-2-how-we-use-your-information">2. HOW WE USE YOUR INFORMATION</a></li>
+      <li><a href="#s-3-findry-pro-subscriptions">3. FINDRY PRO &amp; SUBSCRIPTIONS</a></li>
+      <li><a href="#s-4-data-storage-cloud-backup">4. DATA STORAGE &amp; CLOUD BACKUP</a></li>
+      <li><a href="#s-5-device-permissions">5. DEVICE PERMISSIONS</a></li>
+      <li><a href="#s-6-third-party-services">6. THIRD-PARTY SERVICES</a></li>
+      <li><a href="#s-7-data-retention">7. DATA RETENTION</a></li>
+      <li><a href="#s-8-account-deletion">8. ACCOUNT DELETION</a></li>
+      <li><a href="#s-9-data-security">9. DATA SECURITY</a></li>
+      <li><a href="#s-10-your-privacy-choices">10. YOUR PRIVACY CHOICES</a></li>
+      <li><a href="#s-11-children-s-privacy">11. CHILDREN’S PRIVACY</a></li>
+      <li><a href="#s-12-changes-to-this-privacy-policy">12. CHANGES TO THIS PRIVACY POLICY</a></li>
+      <li><a href="#s-13-contact-us">13. CONTACT US</a></li>
+    </ol>
+  </details>
+
+    <div class="legal-body">
+      <p>Welcome to Findry, a mobile application developed and operated by Kaymer LLC (“Findry,” “we,” “our,” or “us”).</p>
+      <p>Your privacy is important to us. This Privacy Policy explains what information we collect, how we use it, how we protect it, and the choices available to you when using the Findry mobile application and related services.</p>
+      <p>By creating a Findry account or using the App, you agree to the practices described in this Privacy Policy.</p>
+      <h2 id="s-1-information-we-collect">1. INFORMATION WE COLLECT</h2>
+      <h3>Account Information</h3>
+      <p>When you create a Findry account, we collect the information necessary to create and secure your account, including:</p>
+      <ul>
+        <li>First name</li>
+        <li>Last name</li>
+        <li>Email address</li>
+        <li>Company name (optional)</li>
+      </ul>
+      <p>Your email address is also used for:</p>
+      <ul>
+        <li>Account authentication</li>
+        <li>Email verification</li>
+        <li>Password reset requests</li>
+        <li>Important account-related communications</li>
+      </ul>
+      <h3>Project Information</h3>
+      <p>When you create projects within Findry, we may store information such as:</p>
+      <ul>
+        <li>Project name</li>
+        <li>Address</li>
+        <li>City</li>
+        <li>State</li>
+        <li>ZIP code</li>
+        <li>Project manager name</li>
+        <li>Phone number</li>
+        <li>Project notes</li>
+      </ul>
+      <p>This information allows you to organize and retrieve your construction projects across your devices (for eligible Findry Pro features).</p>
+      <h3>Record Information</h3>
+      <p>Findry is designed to help users document field work and important installation details.</p>
+      <p>Depending on how you use the App, you may create records containing information such as:</p>
+      <ul>
+        <li>Record titles</li>
+        <li>Categories</li>
+        <li>Measurements</li>
+        <li>Notes</li>
+        <li>Materials</li>
+        <li>Warning information</li>
+        <li>Emergency record information</li>
+        <li>“Find Later” status</li>
+        <li>Reference points</li>
+        <li>Construction documentation details</li>
+      </ul>
+      <p>This information is created entirely by you and remains under your control.</p>
+      <h3>Photos</h3>
+      <p>You may attach photos to your records.</p>
+      <p>These photos are:</p>
+      <ul>
+        <li>Stored locally on your device as managed image files.</li>
+        <li>Referenced by the record information stored by the App.</li>
+        <li>Used only to help you document and locate construction work.</li>
+      </ul>
+      <p>Findry does not intentionally read or store GPS location metadata (EXIF location information) from your photos.</p>
+      <p>Findry does not upload your record photos to cloud backup at this time.</p>
+      <h3>Subscription Information</h3>
+      <p>If you subscribe to Findry Pro, we use RevenueCat to manage subscription status.</p>
+      <p>Depending on your platform, RevenueCat may receive information necessary to verify your subscription, including:</p>
+      <ul>
+        <li>A unique account identifier</li>
+        <li>Subscription status</li>
+        <li>Purchase history related to your Findry subscription</li>
+        <li>Product identifiers</li>
+        <li>Transaction status</li>
+      </ul>
+      <p>Findry does not receive or store your payment card information.</p>
+      <p>Payments are processed securely by Apple App Store or Google Play, depending on your device.</p>
+      <h3>Information We Do NOT Collect</h3>
+      <p>Findry is intentionally designed to minimize the amount of personal information collected.</p>
+      <p>At this time, Findry does not:</p>
+      <ul>
+        <li>Collect your GPS location</li>
+        <li>Continuously track your device</li>
+        <li>Access your contacts</li>
+        <li>Access your microphone</li>
+        <li>Display advertising</li>
+        <li>Sell personal information</li>
+        <li>Use advertising identifiers</li>
+        <li>Use analytics or behavioral tracking services</li>
+      </ul>
+      <h2 id="s-2-how-we-use-your-information">2. HOW WE USE YOUR INFORMATION</h2>
+      <p>We use the information we collect only to provide, improve, and maintain the Findry experience.</p>
+      <p>Specifically, we use your information to:</p>
+      <ul>
+        <li>Create and manage your Findry account.</li>
+        <li>Authenticate your identity securely.</li>
+        <li>Provide access to your projects and field records.</li>
+        <li>Save and organize your construction documentation.</li>
+        <li>Synchronize eligible data for Findry Pro cloud backup features.</li>
+        <li>Verify and manage your Findry Pro subscription.</li>
+        <li>Send email verification messages.</li>
+        <li>Send password reset emails when requested.</li>
+        <li>Respond to customer support requests.</li>
+        <li>Improve the reliability, stability, and security of the App.</li>
+      </ul>
+      <p>We do not use your personal information for advertising or marketing profiling.</p>
+      <p>We do not sell or rent your personal information to third parties.</p>
+      <h2 id="s-3-findry-pro-subscriptions">3. FINDRY PRO &amp; SUBSCRIPTIONS</h2>
+      <p>Findry offers optional paid subscriptions through Findry Pro.</p>
+      <p>Subscriptions provide access to additional features, including cloud backup and other Pro functionality available at the time of purchase.</p>
+      <p>Subscriptions are processed through the Apple App Store or Google Play Store, depending on your device.</p>
+      <h3>Billing</h3>
+      <p>Payment is charged to your Apple ID or Google Play account when your purchase is confirmed.</p>
+      <p>Subscriptions automatically renew unless canceled before the end of the current billing period.</p>
+      <p>Your account will be charged for renewal within 24 hours before the end of the current subscription period.</p>
+      <h3>Managing Your Subscription</h3>
+      <p>You can manage, change, or cancel your subscription at any time through your Apple ID or Google Play subscription settings.</p>
+      <p>If you reinstall the app or switch devices using the same store account, you may restore your eligible subscription through the Restore Purchases option available within the App.</p>
+      <h2 id="s-4-data-storage-cloud-backup">4. DATA STORAGE &amp; CLOUD BACKUP</h2>
+      <p>Findry uses both local device storage and secure cloud services depending on your subscription level.</p>
+      <h3>Free Plan</h3>
+      <p>For Free users:</p>
+      <ul>
+        <li>Projects and records are stored locally on your device.</li>
+        <li>Photos remain stored locally on your device.</li>
+        <li>Cloud backup is not available.</li>
+      </ul>
+      <p>If your device is lost, damaged, or reset, locally stored information may not be recoverable.</p>
+      <h3>Findry Pro</h3>
+      <p>Findry Pro includes secure cloud backup for supported project and record information.</p>
+      <p>Cloud backup may include:</p>
+      <h4>Project Information</h4>
+      <ul>
+        <li>Project names</li>
+        <li>Addresses</li>
+        <li>City</li>
+        <li>State</li>
+        <li>ZIP code</li>
+        <li>Project manager</li>
+        <li>Phone number</li>
+        <li>Project notes</li>
+      </ul>
+      <h4>Record Information</h4>
+      <ul>
+        <li>Titles</li>
+        <li>Categories</li>
+        <li>Measurements</li>
+        <li>Notes</li>
+        <li>Materials</li>
+        <li>Warning information</li>
+        <li>Emergency information</li>
+        <li>Reference points</li>
+        <li>“Find Later” status</li>
+        <li>Other record details created within the App</li>
+      </ul>
+      <h4>Photos</h4>
+      <p>Record photos are not currently included in cloud backup.</p>
+      <p>Photos remain stored locally on the device where they were captured or imported.</p>
+      <p>If you restore your cloud backup on another device, your project and record information can be restored, but photos must still exist locally on the original device to remain available.</p>
+      <h2 id="s-5-device-permissions">5. DEVICE PERMISSIONS</h2>
+      <p>Findry requests only the permissions necessary to provide its intended functionality.</p>
+      <h3>Camera</h3>
+      <p>If you choose to take photos within Findry, the App requests access to your device’s camera.</p>
+      <p>Camera access is used solely to capture photos for your field records.</p>
+      <h3>Photo Library</h3>
+      <p>If you choose to attach existing photos, Findry requests permission to access your photo library.</p>
+      <p>This permission is used only to allow you to select photos that you choose to attach to your records.</p>
+      <p>Findry does not save photos back to your photo library.</p>
+      <h3>Permissions We Do Not Request</h3>
+      <p>Findry does not request access to:</p>
+      <ul>
+        <li>Your microphone</li>
+        <li>Your contacts</li>
+        <li>Your GPS location</li>
+        <li>Continuous location tracking</li>
+      </ul>
+      <h2 id="s-6-third-party-services">6. THIRD-PARTY SERVICES</h2>
+      <p>To operate securely and reliably, Findry uses trusted third-party service providers.</p>
+      <h3>Firebase (Google)</h3>
+      <p>Firebase provides services including:</p>
+      <ul>
+        <li>User authentication</li>
+        <li>Secure cloud data storage for supported Findry Pro features</li>
+      </ul>
+      <p>Firebase’s Privacy Policy is available at:</p>
+      <p><a href="https://firebase.google.com/support/privacy">https://firebase.google.com/support/privacy</a></p>
+      <h3>RevenueCat</h3>
+      <p>RevenueCat manages subscription verification and entitlement status for Findry Pro.</p>
+      <p>RevenueCat’s Privacy Policy is available at:</p>
+      <p><a href="https://www.revenuecat.com/privacy">https://www.revenuecat.com/privacy</a></p>
+      <h3>Apple App Store &amp; Google Play</h3>
+      <p>Subscription payments are securely processed by Apple or Google.</p>
+      <p>Findry does not collect, receive, or store your payment card information.</p>
+      <h2 id="s-7-data-retention">7. DATA RETENTION</h2>
+      <p>We retain your information only for as long as necessary to provide the Findry services or as required by applicable law.</p>
+      <h3>Account Information</h3>
+      <p>Your account information is retained while your account remains active.</p>
+      <h3>Project &amp; Record Information</h3>
+      <p>Your projects and records remain available until you choose to delete them or delete your account.</p>
+      <p>For Findry Pro users, eligible cloud-backed data remains securely stored until it is removed by you or your account is deleted.</p>
+      <h3>Photos</h3>
+      <p>Photos attached to your records remain stored locally on your device unless you delete them or remove the App from your device.</p>
+      <p>As described above, photos are not currently included in Findry’s cloud backup service.</p>
+      <h2 id="s-8-account-deletion">8. ACCOUNT DELETION</h2>
+      <p>You may permanently delete your Findry account at any time from the Account Settings screen within the App.</p>
+      <p>When you delete your account:</p>
+      <ul>
+        <li>Your Firebase authentication account is permanently deleted.</li>
+        <li>Your Findry cloud data associated with your account is permanently deleted.</li>
+        <li>Your locally stored project and record information is removed from the App.</li>
+        <li>Managed photo files stored by Findry on your device are removed as part of the account deletion process.</li>
+      </ul>
+      <p>Account deletion is permanent and cannot be undone.</p>
+      <h2 id="s-9-data-security">9. DATA SECURITY</h2>
+      <p>We take reasonable administrative, technical, and organizational measures to help protect your information.</p>
+      <p>These measures include secure authentication, encrypted communication where applicable, and access controls designed to help safeguard your information.</p>
+      <p>While we work to protect your information, no method of electronic storage or internet transmission can be guaranteed to be completely secure. For this reason, we cannot guarantee absolute security.</p>
+      <h2 id="s-10-your-privacy-choices">10. YOUR PRIVACY CHOICES</h2>
+      <p>You remain in control of your information while using Findry.</p>
+      <p>You may:</p>
+      <ul>
+        <li>Update your account information.</li>
+        <li>Change your password.</li>
+        <li>Update your email address.</li>
+        <li>Delete projects and records.</li>
+        <li>Delete your account permanently.</li>
+        <li>Manage or cancel your Findry Pro subscription through your Apple ID or Google Play account.</li>
+        <li>Contact us with questions regarding your privacy or personal information.</li>
+      </ul>
+      <h2 id="s-11-children-s-privacy">11. CHILDREN’S PRIVACY</h2>
+      <p>Findry is not intended for children under the age of 13.</p>
+      <p>We do not knowingly collect personal information from children under the age of 13. If we become aware that personal information has been collected from a child under 13, we will take reasonable steps to delete that information.</p>
+      <h2 id="s-12-changes-to-this-privacy-policy">12. CHANGES TO THIS PRIVACY POLICY</h2>
+      <p>We may update this Privacy Policy from time to time to reflect changes in our services, legal requirements, or business practices.</p>
+      <p>When we make material changes, we will update the Effective Date shown at the top of this Privacy Policy.</p>
+      <p>Your continued use of Findry after any updated Privacy Policy becomes effective constitutes your acceptance of the revised Policy.</p>
+      <h2 id="s-13-contact-us">13. CONTACT US</h2>
+      <p>If you have questions, concerns, or requests regarding this Privacy Policy or our privacy practices, please contact us:</p>
+      <p>Kaymer LLC</p>
+      <p>Email: <a href="mailto:support@findryapp.com">support@findryapp.com</a></p>
+      <p>We will make reasonable efforts to respond to privacy-related inquiries in a timely manner.</p>
+    </div>
+
+    <div class="legal-footer-links"><a href="terms.html">Findry Terms of Service</a><a href="../apps/findry.html">About Findry</a><a href="../contact.html">Findry support</a></div>
   </div>
-</div>
-
-<div class="page-hero">
-  <h1>Privacy Policy</h1>
-  <p>Effective Date: June 11, 2026</p>
-</div>
-
-<div class="content">
-  <p>Findry ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use the Findry mobile application.</p>
-
-  <h2>Information We Collect</h2>
-  <p><strong style="color:var(--head)">Account Information:</strong> When you create an account, we collect your first name, last name, email address, and optionally your company name.</p>
-  <p><strong style="color:var(--head)">Field Records:</strong> We store the records you create — including measurements, notes, photos, categories, and reference points — so you can retrieve them later. We do not collect your location or access your device's GPS at any time.</p>
-
-  <h2>How We Use Your Information</h2>
-  <p>We use your information to:</p>
-  <ul>
-    <li>Provide and maintain the Findry app</li>
-    <li>Authenticate your account securely</li>
-    <li>Store your field records on your device and, for Pro users, in secure cloud storage via Firebase</li>
-    <li>Send password reset emails when requested</li>
-  </ul>
-  <p>We do not sell, rent, or share your personal information with third parties for marketing purposes. Findry does not display advertisements.</p>
-
-  <h2>Data Storage</h2>
-  <p><strong style="color:var(--head)">Free Plan users:</strong> Your data is stored locally on your device using AsyncStorage.</p>
-  <p><strong style="color:var(--head)">Pro Plan users:</strong> Your data is additionally backed up to Firebase (Google Cloud), a secure cloud storage service.</p>
-
-  <h2>Third-Party Services</h2>
-  <p>Findry uses Firebase (provided by Google) for authentication and cloud storage for Pro users. Firebase's privacy policy is available at <a href="https://firebase.google.com" target="_blank">firebase.google.com</a>.</p>
-
-  <h2>Data Retention</h2>
-  <p>You may delete your account and all associated data at any time directly within the App through the Account Settings screen. Account deletion is immediate and permanent.</p>
-
-  <h2>Children's Privacy</h2>
-  <p>Findry is not intended for users under the age of 13. We do not knowingly collect personal information from children under 13.</p>
-
-  <h2>Changes to This Policy</h2>
-  <p>We may update this Privacy Policy from time to time. We will notify you of any significant changes by updating the effective date at the top of this page. Continued use of the App after changes constitutes your acceptance of the updated policy.</p>
-
-  <h2>Contact</h2>
-  <p>If you have any questions about this Privacy Policy, please contact us:</p>
-  <ul>
-    <li>Email: <a href="mailto:support@findryapp.com">support@findryapp.com</a></li>
-    <li>Business: Kaymer LLC</li>
-  </ul>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <img src="../logo.png" alt="Kaymer LLC" />
-    <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
-    <div class="footer-links">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms of Service</a>
+</main>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="../index.html"><span>KAYMER</span></a>
+        <p>An independent mobile app studio building focused tools for everyday work and life.</p>
+      </div>
+      <div>
+        <h2>Apps</h2>
+        <ul>
+        <li><a href="../apps/findry.html">Findry</a></li>
+        <li><a href="../apps/nos-beleza.html">Nôs Beleza</a></li>
+        <li><a href="../apps/placely.html">Placely</a></li>
+        <li><a href="../apps/yardmatch.html">YardMatch</a></li>
+          <li><a href="../apps.html">All apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Support</h2>
+        <ul>
+          <li><a href="../contact.html">Get support</a></li>
+          <li><a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="../legal.html">All legal documents</a></li>
+          <li><a href="../privacy.html">Privacy Policy</a></li>
+          <li><a href="../terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; 2026 Kaymer LLC. All rights reserved.</span>
+      <span>Massachusetts, USA</span>
     </div>
   </div>
 </footer>
-
-<script>
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobileMenu');
-    if (!e.target.closest('nav')) menu.classList.remove('open');
-  });
-</script>
-
+<script src="../assets/js/site.js" defer></script>
 </body>
 </html>
