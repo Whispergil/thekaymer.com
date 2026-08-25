@@ -54,18 +54,20 @@
 </header>
 <main id="main">
 
-  <section class="hero shell">
-    <p class="eyebrow">Support</p>
-    <h1>How can we help?</h1>
-    <div class="rule"></div>
-    <p class="lead">Email reaches the studio directly. Tell us which app you are using and what
-      happened, and we will take it from there.</p>
-    <div class="btn-row">
-      <a class="btn btn--primary" href="mailto:support@thekaymer.com">Email support@thekaymer.com</a>
+  <section class="hero hero--intro shell" aria-labelledby="support-title">
+    <div class="rise">
+      <p class="eyebrow">Support</p>
+      <h1 id="support-title">How can we help?</h1>
+      <div class="rule"></div>
+      <p class="lead">Email reaches the studio directly. Tell us which app you are using and
+        what happened, and we will take it from there.</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="mailto:support@thekaymer.com">Email support@thekaymer.com</a>
+      </div>
     </div>
   </section>
 
-  <section class="section" style="padding-top:0" aria-labelledby="by-app">
+  <section class="section section--flush-top" aria-labelledby="by-app">
     <div class="shell">
       <div class="section-head">
         <h2 id="by-app">Choose an app</h2>
@@ -73,46 +75,46 @@
           message lands in the right place.</p>
       </div>
       <div class="support-grid">
-      <article class="support-card">
-        <div class="badge-row"><picture class="app-icon"><source srcset="assets/img/findry-icon.webp" type="image/webp"><img src="assets/img/findry-icon.png" width="62" height="62" alt="Findry app icon"></picture></div>
-        <h3>Findry</h3>
-        <div class="badge-row"><span class="badge badge--available">Available</span></div>
-        <p>Field documentation for contractors and trades. Save jobsite records, photos, measurements, and reference points to the right project.</p>
-        <div class="btn-row">
-          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=Findry%20Support">Email about Findry</a>
-          
-        </div>
-      </article>
-      <article class="support-card">
-        <div class="badge-row"><div class="app-icon app-icon--placeholder" role="img" aria-label="Nôs Beleza — app icon not yet available">N</div></div>
-        <h3>Nôs Beleza</h3>
-        <div class="badge-row"><span class="badge badge--pending">In development</span></div>
-        <p>A local services marketplace for Cape Verde, starting with beauty and personal care.</p>
-        <div class="btn-row">
-          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=N%C3%B4s%20Beleza%20Support">Email about Nôs Beleza</a>
-          
-        </div>
-      </article>
-      <article class="support-card">
-        <div class="badge-row"><div class="app-icon app-icon--placeholder" role="img" aria-label="Placely — app icon not yet available">P</div></div>
-        <h3>Placely</h3>
-        <div class="badge-row"><span class="badge badge--pending">Coming soon</span></div>
-        <p>A personal place memory app. Save the places that matter with photos and notes, and find them again later.</p>
-        <div class="btn-row">
-          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=Placely%20Support">Email about Placely</a>
-          <a class="btn btn--quiet" href="placely-support.html">Placely help topics</a>
-        </div>
-      </article>
-      <article class="support-card">
-        <div class="badge-row"><div class="app-icon app-icon--placeholder" role="img" aria-label="YardMatch — app icon not yet available">Y</div></div>
-        <h3>YardMatch</h3>
-        <div class="badge-row"><span class="badge badge--pending">In development</span></div>
-        <p>A marketplace connecting construction contractors, drivers, dump sites, and equipment rentals.</p>
-        <div class="btn-row">
-          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=YardMatch%20Support">Email about YardMatch</a>
-          
-        </div>
-      </article>
+        <article class="support-card">
+          <picture class="app-icon"><source srcset="assets/img/findry-icon.webp" type="image/webp"><img src="assets/img/findry-icon.png" width="62" height="62" alt="Findry app icon"></picture>
+          <div class="support-card-body">
+            <h3>Findry</h3>
+            <div class="badge-row"><span class="badge badge--available">Available</span></div>
+            <div class="btn-row">
+              <a class="btn btn--quiet" href="mailto:support@thekaymer.com?subject=Findry%20Support">Email about Findry</a>
+            </div>
+          </div>
+        </article>
+        <article class="support-card">
+          <div class="app-icon app-icon--placeholder" role="img" aria-label="Nôs Beleza — app icon not yet available">N</div>
+          <div class="support-card-body">
+            <h3>Nôs Beleza</h3>
+            <div class="badge-row"><span class="badge badge--dev">In development</span></div>
+            <div class="btn-row">
+              <a class="btn btn--quiet" href="mailto:support@thekaymer.com?subject=N%C3%B4s%20Beleza%20Support">Email about Nôs Beleza</a>
+            </div>
+          </div>
+        </article>
+        <article class="support-card">
+          <div class="app-icon app-icon--placeholder" role="img" aria-label="Placely — app icon not yet available">P</div>
+          <div class="support-card-body">
+            <h3>Placely</h3>
+            <div class="badge-row"><span class="badge badge--soon">Coming soon</span></div>
+            <div class="btn-row">
+              <a class="btn btn--quiet" href="mailto:support@thekaymer.com?subject=Placely%20Support">Email about Placely</a>
+            </div>
+          </div>
+        </article>
+        <article class="support-card">
+          <div class="app-icon app-icon--placeholder" role="img" aria-label="YardMatch — app icon not yet available">Y</div>
+          <div class="support-card-body">
+            <h3>YardMatch</h3>
+            <div class="badge-row"><span class="badge badge--dev">In development</span></div>
+            <div class="btn-row">
+              <a class="btn btn--quiet" href="mailto:support@thekaymer.com?subject=YardMatch%20Support">Email about YardMatch</a>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -121,12 +123,12 @@
     <div class="shell">
       <div class="section-head">
         <h2 id="topics">Answers already written down</h2>
-        <p class="lead">These go straight to the relevant section of a published document —
-          no ticket required.</p>
+        <p class="lead">These go straight to the relevant section of a published document — no
+          ticket required.</p>
       </div>
 
-      <h3 style="font-family:var(--font-sans);font-size:1.02rem;margin-bottom:0.85rem">Findry</h3>
-      <div class="link-rows" style="margin-bottom:2rem">
+      <h3 class="ui-head" style="margin-bottom:var(--s-3)">Findry</h3>
+      <div class="link-rows" style="margin-bottom:var(--s-6)">
         <a href="findry/privacy.html#s-1-information-we-collect">
           <span class="row-label">What Findry collects<span class="row-note">Account, project, record, and photo information, in the privacy policy.</span></span>
           <span class="chevron" aria-hidden="true">&rarr;</span>
@@ -145,7 +147,7 @@
         </a>
       </div>
 
-      <h3 style="font-family:var(--font-sans);font-size:1.02rem;margin-bottom:0.85rem">Placely</h3>
+      <h3 class="ui-head" style="margin-bottom:var(--s-3)">Placely</h3>
       <div class="link-rows">
         <a href="placely-support.html">
           <span class="row-label">Placely help topics<span class="row-note">Sign-in, saving places, location and photos, account deletion.</span></span>
@@ -157,7 +159,7 @@
         </a>
       </div>
 
-      <p class="note" style="margin-top:2rem">Nôs Beleza and YardMatch are still in
+      <p class="note" style="margin-top:var(--s-6)">Nôs Beleza and YardMatch are still in
         development and do not have published help documents yet. Email the studio and we will
         answer directly.</p>
     </div>
@@ -172,16 +174,16 @@
           the people who build the apps.</p>
       </div>
       <div class="email-card">
-        <div>
-          <h3>General support</h3>
-          <p class="lead" style="margin-top:0.5rem">Include the app name and a description of
-            the issue. We typically reply within one business day.</p>
+        <div class="email-card-body">
+          <h3 class="ui-head">General support</h3>
+          <p>Include the app name and a description of the issue. We typically reply within one
+            business day.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--primary" href="mailto:support@thekaymer.com">support@thekaymer.com</a>
         </div>
       </div>
-      <p class="note" style="margin-top:1.5rem">Findry's own legal documents list
+      <p class="note" style="margin-top:var(--s-5)">Findry's own legal documents list
         <a href="mailto:support@findryapp.com">support@findryapp.com</a> for questions about
         those documents. Both addresses reach Kaymer LLC.</p>
     </div>
