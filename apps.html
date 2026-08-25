@@ -1,259 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Apps — Kaymer LLC</title>
-  <meta name="description" content="Mobile apps built by Kaymer LLC for the trades and beyond." />
-  <link rel="icon" type="image/png" href="icon.png" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0A0A0F;
-      --surface: #111118;
-      --surface2: #16161F;
-      --border: #1E1E2A;
-      --muted: #4A4A5E;
-      --body: #9090A8;
-      --head: #F0F0F8;
-      --blue1: #3B82F6;
-      --blue2: #00C6FF;
-      --font: system-ui, -apple-system, sans-serif;
-      --max: 1100px;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; text-decoration: none; }
-
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo img { height: 28px; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.875rem; color: var(--muted); letter-spacing: 0.02em; transition: color 0.15s; }
-    .nav-links a:hover { color: var(--head); }
-    .nav-links a.active { color: var(--blue1); }
-    .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
-    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
-    .mobile-menu.open { display: block; }
-    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
-    .mobile-menu a { font-size: 1rem; color: var(--body); }
-    .mobile-cta { background: var(--blue1); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
-
-    /* HERO */
-    .page-hero { text-align: center; padding: 5rem 2rem 4rem; }
-    .page-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; color: var(--head); letter-spacing: -0.02em; margin-bottom: 1rem; }
-    .page-hero p { font-size: 1.1rem; color: var(--body); max-width: 50ch; margin: 0 auto; }
-
-    /* APPS GRID */
-    .apps-section { max-width: var(--max); margin: 0 auto; padding: 2rem 2rem 6rem; }
-    .apps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
-    .app-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; }
-    .app-card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-    .app-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0; }
-    .app-icon.findry { background: linear-gradient(135deg, #F47920, #E05A00); }
-    .app-icon.punchgo { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
-    .app-icon.placely { background: #0A0A0A; border: 2px solid #FFD54F; color: #FFD54F; }
-    .app-card-title h3 { font-size: 1.3rem; font-weight: 700; color: var(--head); margin-bottom: 0.4rem; }
-    .badges { display: flex; gap: 0.5rem; }
-    .badge { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.2rem 0.6rem; border-radius: 100px; }
-    .badge-platform { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-    .badge-soon { background: rgba(59,130,246,0.15); color: var(--blue1); border: 1px solid rgba(59,130,246,0.3); }
-    .app-tagline { font-size: 1rem; color: var(--head); font-weight: 500; margin-bottom: 1rem; line-height: 1.4; }
-    .app-features { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 2rem; }
-    .app-features li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; color: var(--body); }
-    .app-features li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--blue1); flex-shrink: 0; }
-    .app-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem 1.5rem; border-radius: 10px; font-weight: 600; font-size: 0.95rem; margin-top: auto; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); cursor: default; }
-    .app-legal-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.5rem 0.75rem; margin-top: 0.85rem; }
-    .app-legal-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; }
-    .app-legal-links a:hover { color: var(--head); }
-
-    /* WHY SECTION */
-    .why { border-top: 1px solid var(--border); }
-    .why-inner { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
-    .why-item { text-align: center; }
-    .why-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
-    .why-item h4 { font-size: 0.9rem; font-weight: 600; color: var(--head); margin-bottom: 0.35rem; }
-    .why-item p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
-
-    /* FOOTER */
-    footer { border-top: 1px solid var(--border); }
-    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-inner img { height: 20px; opacity: 0.6; }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); }
-    .footer-links { display: flex; align-items: center; gap: 0.75rem; color: var(--muted); }
-    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; }
-    .footer-links a:hover { color: var(--head); }
-
-    @media (max-width: 768px) {
-      .apps-grid { grid-template-columns: 1fr; }
-      .why-inner { grid-template-columns: 1fr 1fr; }
-      .hamburger { display: flex; }
-      .nav-links { display: none; }
-    }
-    @media (max-width: 480px) {
-      .why-inner { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apps — Kaymer LLC</title>
+<meta name="description" content="The Kaymer LLC app portfolio: Findry on the App Store, plus Nôs Beleza, Placely, and YardMatch in development.">
+<link rel="canonical" href="https://whispergil.github.io/thekaymer.com/apps.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kaymer LLC">
+<meta property="og:title" content="Apps — Kaymer LLC">
+<meta property="og:description" content="The Kaymer LLC app portfolio: Findry on the App Store, plus Nôs Beleza, Placely, and YardMatch in development.">
+<meta property="og:url" content="https://whispergil.github.io/thekaymer.com/apps.html">
+<meta property="og:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kaymer LLC — practical apps, thoughtfully built.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Apps — Kaymer LLC">
+<meta name="twitter:description" content="The Kaymer LLC app portfolio: Findry on the App Store, plus Nôs Beleza, Placely, and YardMatch in development.">
+<meta name="twitter:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta name="theme-color" content="#FCFAF6">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
-
-<nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
-    <ul class="nav-links">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="shell header-bar">
+    <a class="wordmark" href="index.html"><span>KAYMER</span></a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
       <li><a href="index.html">Home</a></li>
-      <li><a href="apps.html" class="active">Apps</a></li>
+      <li><a href="apps.html" aria-current="page">Apps</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
-    </ul>
-    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <li><a href="contact.html">Support</a></li>
+      <li><a href="legal.html">Legal</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </div>
-</nav>
+  <nav class="nav-mobile" id="site-menu" aria-label="Primary, mobile">
+    <ul class="shell">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="apps.html" aria-current="page">Apps</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Support</a></li>
+      <li><a href="legal.html">Legal</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main">
 
-<div id="mobileMenu" class="mobile-menu">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="apps.html">Apps</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html" class="mobile-cta">Contact Us</a></li>
-  </ul>
-</div>
+  <section class="hero shell">
+    <p class="eyebrow">Our apps</p>
+    <h1>Tools built for real life.</h1>
+    <div class="rule"></div>
+    <p class="lead">One app is on the App Store today. Three more are in development. This page
+      shows exactly where each one stands.</p>
+  </section>
 
-<div class="page-hero">
-  <h1>Our Apps</h1>
-  <p>Tools built to help people work smarter, stay organized, and grow.</p>
-</div>
+  <section class="section" style="padding-top:0" aria-labelledby="portfolio">
+    <div class="shell">
+      <h2 id="portfolio" class="visually-hidden">App portfolio</h2>
 
-<div class="apps-section">
-  <div class="apps-grid">
+      <div class="filter-bar" role="group" aria-label="Filter apps by status" hidden>
+        <button type="button" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" data-filter="available" aria-pressed="false">Available</button>
+        <button type="button" data-filter="coming-soon" aria-pressed="false">Coming soon</button>
+        <button type="button" data-filter="in-development" aria-pressed="false">In development</button>
+      </div>
+      <p id="filter-status" class="visually-hidden" role="status" aria-live="polite"></p>
 
-    <div class="app-card">
-      <div class="app-card-header">
-        <img src="findry-logo.png" alt="Findry" style="width:56px;height:56px;border-radius:14px;object-fit:cover;" />
-        <div class="app-card-title">
-          <h3>Findry</h3>
-          <div class="badges">
-            <span class="badge badge-platform">iOS</span>
-            <span class="badge badge-platform">Android</span>
-            <span class="badge badge-soon">Coming Soon</span>
-          </div>
+      <div class="card-grid" id="app-list">
+      <article class="app-card" data-status="available">
+        <picture class="app-icon"><source srcset="assets/img/findry-icon.webp" type="image/webp"><img src="assets/img/findry-icon.png" width="62" height="62" alt="Findry app icon"></picture>
+        <h3>Findry</h3>
+        <div class="badge-row"><span class="badge badge--available">Available</span></div>
+        <p class="card-meta">iPhone — requires iOS 16.4 or later</p>
+        <p>Field documentation for contractors and trades. Save jobsite records, photos, measurements, and reference points to the right project.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="apps/findry.html">View Findry</a>
+          <a class="btn btn--appstore" href="https://apps.apple.com/us/app/findry/id6773192473"><svg width="17" height="20" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span>Download on the App Store</span></a>
+          <a class="btn btn--quiet" href="findry/privacy.html">Privacy</a>
+          <a class="btn btn--quiet" href="findry/terms.html">Terms</a>
+        </div>
+      </article>
+      <article class="app-card" data-status="in-development">
+        <div class="app-icon app-icon--placeholder" role="img" aria-label="Nôs Beleza — app icon not yet available">N</div>
+        <h3>Nôs Beleza</h3>
+        <div class="badge-row"><span class="badge badge--pending">In development</span></div>
+        
+        <p>A local services marketplace for Cape Verde, starting with beauty and personal care.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="apps/nos-beleza.html">View Nôs Beleza</a>
+        </div>
+      </article>
+      <article class="app-card" data-status="coming-soon">
+        <div class="app-icon app-icon--placeholder" role="img" aria-label="Placely — app icon not yet available">P</div>
+        <h3>Placely</h3>
+        <div class="badge-row"><span class="badge badge--pending">Coming soon</span></div>
+        
+        <p>A personal place memory app. Save the places that matter with photos and notes, and find them again later.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="apps/placely.html">View Placely</a>
+          <a class="btn btn--quiet" href="placely-privacy.html">Privacy</a>
+          <a class="btn btn--quiet" href="placely-terms.html">Terms</a>
+        </div>
+      </article>
+      <article class="app-card" data-status="in-development">
+        <div class="app-icon app-icon--placeholder" role="img" aria-label="YardMatch — app icon not yet available">Y</div>
+        <h3>YardMatch</h3>
+        <div class="badge-row"><span class="badge badge--pending">In development</span></div>
+        
+        <p>A marketplace connecting construction contractors, drivers, dump sites, and equipment rentals.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="apps/yardmatch.html">View YardMatch</a>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="status-key">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="status-key">What the statuses mean</h2>
+      </div>
+      <div class="value-grid">
+        <div class="value-item">
+          <div class="rule"></div>
+          <h3>Available</h3>
+          <p>Released and downloadable today. Findry is available on the Apple App Store for
+            iPhone. It is not on Google Play yet.</p>
+        </div>
+        <div class="value-item">
+          <div class="rule"></div>
+          <h3>Coming soon</h3>
+          <p>Feature work is largely done and the app is being prepared for release. No release
+            date is announced.</p>
+        </div>
+        <div class="value-item">
+          <div class="rule"></div>
+          <h3>In development</h3>
+          <p>Actively being built. Screens, icons, and store listings are not final, and no
+            platform commitment has been made.</p>
         </div>
       </div>
-      <p class="app-tagline">Your everyday organizer.<br>Save it now. Find it later.</p>
-      <ul class="app-features">
-        <li>Save important info in seconds</li>
-        <li>Organize with smart categories</li>
-        <li>Find what you need, fast</li>
-      </ul>
-      <div class="app-btn">Coming Soon</div>
-      <div class="app-legal-links">
-        <a href="findry/privacy.html">Privacy Policy</a>
-        <a href="findry/terms.html">Terms of Service</a>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html"><span>KAYMER</span></a>
+        <p>An independent mobile app studio building focused tools for everyday work and life.</p>
+      </div>
+      <div>
+        <h2>Apps</h2>
+        <ul>
+        <li><a href="apps/findry.html">Findry</a></li>
+        <li><a href="apps/nos-beleza.html">Nôs Beleza</a></li>
+        <li><a href="apps/placely.html">Placely</a></li>
+        <li><a href="apps/yardmatch.html">YardMatch</a></li>
+          <li><a href="apps.html">All apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Support</h2>
+        <ul>
+          <li><a href="contact.html">Get support</a></li>
+          <li><a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="legal.html">All legal documents</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
       </div>
     </div>
-
-    <div class="app-card">
-      <div class="app-card-header">
-        <div class="app-icon punchgo">⏱</div>
-        <div class="app-card-title">
-          <h3>PunchGo</h3>
-          <div class="badges">
-            <span class="badge badge-platform">iOS</span>
-            <span class="badge badge-platform">Android</span>
-            <span class="badge badge-soon">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-      <p class="app-tagline">Work hours made simple.<br>Built for drivers. Backed by clarity.</p>
-      <ul class="app-features">
-        <li>Clock in and out with ease</li>
-        <li>Track hours, jobs, and earnings</li>
-        <li>Stay compliant and organized</li>
-      </ul>
-      <div class="app-btn">Coming Soon</div>
+    <div class="footer-base">
+      <span>&copy; 2026 Kaymer LLC. All rights reserved.</span>
+      <span>Massachusetts, USA</span>
     </div>
-
-    <div class="app-card">
-      <div class="app-card-header">
-        <div class="app-icon placely">📍</div>
-        <div class="app-card-title">
-          <h3>Placely</h3>
-          <div class="badges">
-            <span class="badge badge-platform">iOS</span>
-            <span class="badge badge-platform">Android</span>
-            <span class="badge badge-soon">Coming Soon</span>
-          </div>
-        </div>
-      </div>
-      <p class="app-tagline">Save places today.<br>Find them later.</p>
-      <ul class="app-features">
-        <li>Save important places with photos and notes</li>
-        <li>Organize by country, state, and city</li>
-        <li>Quickly revisit saved locations</li>
-      </ul>
-      <div class="app-btn">Coming Soon</div>
-      <div class="app-legal-links">
-        <a href="placely-privacy.html">Privacy Policy</a>
-        <a href="placely-terms.html">Terms of Use</a>
-        <a href="placely-support.html">Support</a>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<div class="why">
-  <div class="why-inner">
-    <div class="why-item">
-      <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg></div>
-      <h4>Why our apps?</h4>
-      <p>We build reliable tools with people at the center.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 5 3.5 8.5 7 9 3.5-.5 7-4 7-9V6z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10 10V9a2 2 0 1 1 4 0v1"/></svg></div>
-      <h4>Privacy First</h4>
-      <p>Your data stays yours. Always secure and private.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 5 13h6l-1 9 9-13h-6z"/></svg></div>
-      <h4>Fast & Reliable</h4>
-      <p>Built for speed and dependability.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1a3 3 0 0 0 0-6h-1a2 2 0 0 1 0-4h2a4 4 0 0 0 0-8z"/><circle cx="7.5" cy="10" r="0.8"/><circle cx="9.8" cy="7.4" r="0.8"/><circle cx="13" cy="7" r="0.8"/></svg></div>
-      <h4>Clean Design</h4>
-      <p>Simple, intuitive, and easy to use.</p>
-    </div>
-    <div class="why-item">
-      <div class="why-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 5.6a4.8 4.8 0 0 0-6.8 0L12 7.5l-2-1.9a4.8 4.8 0 0 0-6.8 6.8L12 21l8.8-8.6a4.8 4.8 0 0 0 0-6.8z"/></svg></div>
-      <h4>Made to Last</h4>
-      <p>Quality products that evolve with you.</p>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <img src="logo.png" alt="Kaymer LLC" />
-    <div class="footer-links">
-      <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms of Service</a>
-    </div>
-    <span class="footer-copy">thekaymer.com</span>
   </div>
 </footer>
-
-<script>
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobileMenu');
-    if (!e.target.closest('nav')) menu.classList.remove('open');
-  });
-</script>
-
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>

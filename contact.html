@@ -1,180 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact — Kaymer LLC</title>
-  <meta name="description" content="Get in touch with Kaymer LLC." />
-  <link rel="icon" type="image/png" href="icon.png" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
-      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
-      --blue1: #3B82F6; --blue2: #00C6FF;
-      --font: system-ui, -apple-system, sans-serif; --max: 1100px;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; text-decoration: none; }
-
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: var(--max); margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo img { height: 28px; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; }
-    .nav-links a:hover { color: var(--head); }
-    .nav-links a.active { color: var(--blue1); }
-    .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
-    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
-    .mobile-menu.open { display: block; }
-    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
-    .mobile-menu a { font-size: 1rem; color: var(--body); }
-    .mobile-cta { background: var(--blue1); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
-
-    .page-hero { text-align: center; padding: 5rem 2rem 4rem; border-bottom: 1px solid var(--border); }
-    .page-hero h1 { font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 700; color: var(--head); letter-spacing: -0.02em; margin-bottom: 1rem; }
-    .page-hero p { font-size: 1.1rem; color: var(--body); max-width: 50ch; margin: 0 auto; }
-
-    .contact-section { max-width: 700px; margin: 0 auto; padding: 5rem 2rem 6rem; }
-
-    .contact-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; margin-bottom: 2rem; }
-    .contact-card h3 { font-size: 1rem; font-weight: 600; color: var(--head); margin-bottom: 0.5rem; }
-    .contact-card p { font-size: 0.9rem; color: var(--body); margin-bottom: 1.25rem; }
-    .contact-email-link { display: inline-flex; align-items: center; gap: 0.75rem; color: var(--blue1); font-size: 1rem; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.15s; }
-    .contact-email-link:hover { border-color: var(--blue1); }
-
-    .form-section { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem; }
-    .form-section h3 { font-size: 1.1rem; font-weight: 600; color: var(--head); margin-bottom: 0.5rem; }
-    .form-section p { font-size: 0.9rem; color: var(--body); margin-bottom: 2rem; }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-group label { display: block; font-size: 0.85rem; color: var(--body); margin-bottom: 0.5rem; }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-      padding: 0.75rem 1rem; color: var(--head); font-size: 0.95rem; font-family: var(--font);
-      outline: none; transition: border-color 0.15s;
-    }
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--blue1); }
-    .form-group textarea { resize: vertical; min-height: 120px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .submit-btn { width: 100%; background: var(--blue1); color: #fff; padding: 0.85rem; border-radius: 10px; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: opacity 0.15s; margin-top: 0.5rem; }
-    .submit-btn:hover { opacity: 0.85; }
-
-    footer { border-top: 1px solid var(--border); }
-    .footer-inner { max-width: var(--max); margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-inner img { height: 20px; opacity: 0.6; }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); }
-    .footer-links { display: flex; align-items: center; gap: 0.75rem; color: var(--muted); }
-    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; }
-    .footer-links a:hover { color: var(--head); }
-
-    @media (max-width: 768px) {
-      .form-row { grid-template-columns: 1fr; }
-      .hamburger { display: flex; }
-      .nav-links { display: none; }
-      .contact-section { padding: 3rem 1.5rem 5rem; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — Kaymer LLC</title>
+<meta name="description" content="Get support for Kaymer LLC apps. Email support@thekaymer.com, or jump straight to the published help and legal documents for Findry and Placely.">
+<link rel="canonical" href="https://whispergil.github.io/thekaymer.com/contact.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kaymer LLC">
+<meta property="og:title" content="Support — Kaymer LLC">
+<meta property="og:description" content="Get support for Kaymer LLC apps. Email support@thekaymer.com, or jump straight to the published help and legal documents for Findry and Placely.">
+<meta property="og:url" content="https://whispergil.github.io/thekaymer.com/contact.html">
+<meta property="og:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kaymer LLC — practical apps, thoughtfully built.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Support — Kaymer LLC">
+<meta name="twitter:description" content="Get support for Kaymer LLC apps. Email support@thekaymer.com, or jump straight to the published help and legal documents for Findry and Placely.">
+<meta name="twitter:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta name="theme-color" content="#FCFAF6">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
-
-<nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
-    <ul class="nav-links">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="shell header-bar">
+    <a class="wordmark" href="index.html"><span>KAYMER</span></a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="apps.html">Apps</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="contact.html" class="active nav-cta">Contact Us</a></li>
-    </ul>
-    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <li><a href="contact.html" aria-current="page">Support</a></li>
+      <li><a href="legal.html">Legal</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </div>
-</nav>
+  <nav class="nav-mobile" id="site-menu" aria-label="Primary, mobile">
+    <ul class="shell">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="apps.html">Apps</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" aria-current="page">Support</a></li>
+      <li><a href="legal.html">Legal</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main">
 
-<div id="mobileMenu" class="mobile-menu">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="apps.html">Apps</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html" class="mobile-cta">Contact Us</a></li>
-  </ul>
-</div>
-
-<div class="page-hero">
-  <h1>Get in Touch</h1>
-  <p>Questions about our apps, press inquiries, or anything else — we would love to hear from you.</p>
-</div>
-
-<div class="contact-section">
-  <div class="contact-card">
-    <h3>Email us directly</h3>
-    <p>We typically respond within 1 business day.</p>
-    <a class="contact-email-link" href="mailto:support@thekaymer.com">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-      support@thekaymer.com
-    </a>
-  </div>
-
-  <div class="form-section">
-    <h3>Send us a message</h3>
-    <p>Fill out the form and we will get back to you as soon as possible.</p>
-    <form action="mailto:support@thekaymer.com" method="post" enctype="text/plain">
-      <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" name="firstname" placeholder="John" />
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" name="lastname" placeholder="Doe" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" placeholder="john@example.com" />
-      </div>
-      <div class="form-group">
-        <label>Subject</label>
-        <select name="subject">
-          <option value="">Select a topic</option>
-          <option value="app-support">App Support</option>
-          <option value="findry">Findry</option>
-          <option value="punchgo">PunchGo</option>
-          <option value="press">Press Inquiry</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Message</label>
-        <textarea name="message" placeholder="How can we help you?"></textarea>
-      </div>
-      <button type="submit" class="submit-btn">Send Message</button>
-    </form>
-  </div>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <img src="logo.png" alt="Kaymer LLC" />
-    <div class="footer-links">
-      <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms of Service</a>
+  <section class="hero shell">
+    <p class="eyebrow">Support</p>
+    <h1>How can we help?</h1>
+    <div class="rule"></div>
+    <p class="lead">Email reaches the studio directly. Tell us which app you are using and what
+      happened, and we will take it from there.</p>
+    <div class="btn-row">
+      <a class="btn btn--primary" href="mailto:support@thekaymer.com">Email support@thekaymer.com</a>
     </div>
-    <span class="footer-copy">thekaymer.com</span>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="by-app">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="by-app">Choose an app</h2>
+        <p class="lead">Each link opens your mail app with the subject filled in, so your
+          message lands in the right place.</p>
+      </div>
+      <div class="support-grid">
+      <article class="support-card">
+        <div class="badge-row"><picture class="app-icon"><source srcset="assets/img/findry-icon.webp" type="image/webp"><img src="assets/img/findry-icon.png" width="62" height="62" alt="Findry app icon"></picture></div>
+        <h3>Findry</h3>
+        <div class="badge-row"><span class="badge badge--available">Available</span></div>
+        <p>Field documentation for contractors and trades. Save jobsite records, photos, measurements, and reference points to the right project.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=Findry%20Support">Email about Findry</a>
+          
+        </div>
+      </article>
+      <article class="support-card">
+        <div class="badge-row"><div class="app-icon app-icon--placeholder" role="img" aria-label="Nôs Beleza — app icon not yet available">N</div></div>
+        <h3>Nôs Beleza</h3>
+        <div class="badge-row"><span class="badge badge--pending">In development</span></div>
+        <p>A local services marketplace for Cape Verde, starting with beauty and personal care.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=N%C3%B4s%20Beleza%20Support">Email about Nôs Beleza</a>
+          
+        </div>
+      </article>
+      <article class="support-card">
+        <div class="badge-row"><div class="app-icon app-icon--placeholder" role="img" aria-label="Placely — app icon not yet available">P</div></div>
+        <h3>Placely</h3>
+        <div class="badge-row"><span class="badge badge--pending">Coming soon</span></div>
+        <p>A personal place memory app. Save the places that matter with photos and notes, and find them again later.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=Placely%20Support">Email about Placely</a>
+          <a class="btn btn--quiet" href="placely-support.html">Placely help topics</a>
+        </div>
+      </article>
+      <article class="support-card">
+        <div class="badge-row"><div class="app-icon app-icon--placeholder" role="img" aria-label="YardMatch — app icon not yet available">Y</div></div>
+        <h3>YardMatch</h3>
+        <div class="badge-row"><span class="badge badge--pending">In development</span></div>
+        <p>A marketplace connecting construction contractors, drivers, dump sites, and equipment rentals.</p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="mailto:support@thekaymer.com?subject=YardMatch%20Support">Email about YardMatch</a>
+          
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="topics">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="topics">Answers already written down</h2>
+        <p class="lead">These go straight to the relevant section of a published document —
+          no ticket required.</p>
+      </div>
+
+      <h3 style="font-family:var(--font-sans);font-size:1.02rem;margin-bottom:0.85rem">Findry</h3>
+      <div class="link-rows" style="margin-bottom:2rem">
+        <a href="findry/privacy.html#s-1-information-we-collect">
+          <span class="row-label">What Findry collects<span class="row-note">Account, project, record, and photo information, in the privacy policy.</span></span>
+          <span class="chevron" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="findry/terms.html#s-4-free-plan-and-findry-pro">
+          <span class="row-label">Free plan and Findry Pro<span class="row-note">What each plan includes, in the terms of service.</span></span>
+          <span class="chevron" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="findry/terms.html#s-5-subscriptions-and-billing">
+          <span class="row-label">Subscriptions and billing<span class="row-note">Renewals, cancelling, and restoring a purchase.</span></span>
+          <span class="chevron" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="findry/privacy.html#s-8-account-deletion">
+          <span class="row-label">Deleting your Findry account<span class="row-note">What happens to your data when you delete an account.</span></span>
+          <span class="chevron" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      <h3 style="font-family:var(--font-sans);font-size:1.02rem;margin-bottom:0.85rem">Placely</h3>
+      <div class="link-rows">
+        <a href="placely-support.html">
+          <span class="row-label">Placely help topics<span class="row-note">Sign-in, saving places, location and photos, account deletion.</span></span>
+          <span class="chevron" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="placely-privacy.html">
+          <span class="row-label">What Placely collects<span class="row-note">Account data, saved places, location, and photos.</span></span>
+          <span class="chevron" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      <p class="note" style="margin-top:2rem">Nôs Beleza and YardMatch are still in
+        development and do not have published help documents yet. Email the studio and we will
+        answer directly.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="direct">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="direct">Contact the studio</h2>
+        <p class="lead">There is no contact form here on purpose: a form that silently drops
+          messages is worse than no form. Email is the whole support system, and it is read by
+          the people who build the apps.</p>
+      </div>
+      <div class="email-card">
+        <div>
+          <h3>General support</h3>
+          <p class="lead" style="margin-top:0.5rem">Include the app name and a description of
+            the issue. We typically reply within one business day.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--primary" href="mailto:support@thekaymer.com">support@thekaymer.com</a>
+        </div>
+      </div>
+      <p class="note" style="margin-top:1.5rem">Findry's own legal documents list
+        <a href="mailto:support@findryapp.com">support@findryapp.com</a> for questions about
+        those documents. Both addresses reach Kaymer LLC.</p>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html"><span>KAYMER</span></a>
+        <p>An independent mobile app studio building focused tools for everyday work and life.</p>
+      </div>
+      <div>
+        <h2>Apps</h2>
+        <ul>
+        <li><a href="apps/findry.html">Findry</a></li>
+        <li><a href="apps/nos-beleza.html">Nôs Beleza</a></li>
+        <li><a href="apps/placely.html">Placely</a></li>
+        <li><a href="apps/yardmatch.html">YardMatch</a></li>
+          <li><a href="apps.html">All apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Support</h2>
+        <ul>
+          <li><a href="contact.html">Get support</a></li>
+          <li><a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="legal.html">All legal documents</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; 2026 Kaymer LLC. All rights reserved.</span>
+      <span>Massachusetts, USA</span>
+    </div>
   </div>
 </footer>
-
-<script>
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobileMenu');
-    if (!e.target.closest('nav')) menu.classList.remove('open');
-  });
-</script>
-
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>
