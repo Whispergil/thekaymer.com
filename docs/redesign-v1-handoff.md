@@ -1,208 +1,176 @@
-# Kaymer V1 Redesign — Verified Research Handoff
+# Kaymer V1 Redesign — Implementation Record
 
-**Status:** Research/discovery complete. **No site code has been written yet.**
-**Branch:** `redesign/v1-ivory-gold` (branched from `main` @ `7c881b7`)
-**Purpose:** Hand off verified facts to a Claude Code Cloud session so the redesign
-implementation does not have to re-derive them — and, more importantly, so it does
-not guess at anything that was verified here.
+**Branch:** `redesign/v1-ivory-gold` (from `main` @ `7c881b7`)
+**Status:** Implementation complete and verified. Not merged, not published.
 
-Everything below was confirmed against a primary source (GitHub API, the iTunes
-Lookup API, or the live findryapp.com pages). Anything that could **not** be
-verified is listed explicitly under "Blockers and missing assets" and must not be
-invented.
+This document records what was verified, what was built, and what is still
+missing. Everything stated here was checked against a primary source — the
+GitHub API, the iTunes Lookup API, or the live findryapp.com pages. Anything that
+could not be verified was left out of the site rather than guessed at.
 
 ---
 
-## 1. Repository baseline
+## 1. Deployment constraints this build respects
 
 | Item | Value |
 |---|---|
-| Repo | `https://github.com/Whispergil/thekaymer.com.git` (public) |
-| Base commit | `7c881b7` on `main`, working tree clean, fully pushed |
 | Live URL | `https://whispergil.github.io/thekaymer.com/` |
-| Pages source | branch `main`, path `/`, `build_type: legacy` (Jekyll), `cname: null` |
-| Build system | none — dependency-free static HTML/CSS/JS |
+| Pages source | branch `main`, path `/`, `build_type: legacy` (Jekyll) |
+| Custom domain | none (`cname: null`) — Squarespace and DNS are unrelated to this repo |
 
-**Subpath constraint:** the site is served from `/thekaymer.com/`, not from a domain
-root. All links and asset paths must stay **relative**. Do not introduce
-root-relative `/assets/...` paths.
-
-**Jekyll constraint:** there is no `.nojekyll` file. Legacy Pages runs Jekyll, which
-silently drops files and directories beginning with `_`. Add `.nojekyll` as part of
-the redesign.
+- **All links and asset paths are relative.** The site is served from the
+  `/thekaymer.com/` subpath, so a root-relative `/assets/...` path would break it.
+  Verified: zero root-relative internal links.
+- **`.nojekyll` added.** Legacy Pages runs Jekyll, which silently drops paths
+  beginning with `_`. The file makes deployment predictable regardless of future
+  file naming.
+- No GitHub Actions workflow was added; Pages keeps building the branch it
+  already builds. Pages settings were not touched.
 
 ---
 
-## 2. App repository identification (this was not obvious)
+## 2. App repository identification
 
-The four V1 apps map to repositories whose names do not match the product names:
+The four V1 apps live in repositories whose names do not match the products:
 
-| App | Repository | Notes |
+| App | Repository | Evidence |
 |---|---|---|
-| Findry | `Whispergil/findry` | React Native, private |
+| Findry | `Whispergil/findry` | — |
 | **Nôs Beleza** | **`Whispergil/cape-verde-services-app`** | `app.json` → `"name": "Nôs Beleza"`, bundle `com.nosbeleza.app` |
 | Placely | `Whispergil/placely-app` | `app.base.json` → `"name": "Placely"` |
 | **YardMatch** | **`Whispergil/whisper`** | `app.json` → `"name": "YardMatch"`, bundle `com.whisper92.yardmatch` |
 
-Repos explicitly **out of V1 scope**: `Loadora`, `Puncho` (PunchGo), `nosride`,
-`NowIKnow`. Loadora and PunchGo must appear nowhere in visible V1 content or in
-support app-selection lists.
-
-All app repositories are **read-only sources**. Nothing was written to them.
+Out of scope and absent from the site: `Loadora`, `Puncho` (PunchGo), `nosride`,
+`NowIKnow`. All app repositories were read only — nothing was written, branched,
+built, or deployed in any of them.
 
 ---
 
 ## 3. Findry — verified store facts
 
-Source: iTunes Lookup API, `https://itunes.apple.com/lookup?id=6773192473&country=us`
+Source: `https://itunes.apple.com/lookup?id=6773192473&country=us`
 
 | Field | Verified value |
 |---|---|
-| Name | Findry |
 | Seller | Kaymer LLC |
 | Category | Productivity |
 | Price | Free |
-| Version | 1.0 |
 | Released | 2026-08-15 |
 | Minimum iOS | 16.4 |
-| Age rating | 4+ |
-| Ratings | 0 ratings, 0 average — **do not render a rating widget** |
-| App Store URL | `https://apps.apple.com/us/app/findry/id6773192473` |
+| Ratings | 0 ratings — **no rating widget is rendered anywhere** |
+| Store URL | `https://apps.apple.com/us/app/findry/id6773192473` |
 
-Status: **AVAILABLE**, Apple App Store only. No Google Play badge — Android is not
-live.
-
-**Real screenshots exist** on the App Store listing (5 total, 1284×2778 sources).
-Thumbnail URLs returned by the lookup API can be re-requested at higher resolution
-by swapping the `320x480bb.jpg` suffix. These are Kaymer's own product screenshots
-and are the only verified real screenshots available for any V1 app:
-
-- `01_find_it_in_seconds`
-- `02_never_lose_hidden_utilities`
-- `03_keep_every_project_organized`
-- `04_save_what_matters_most`
-- `06_everything_about_the_job`
-
-The full verified App Store description is retrievable from the same lookup URL and
-should be the source for Findry's app-page copy (condensed, not invented).
+Findry is shown as **Available**, Apple App Store only. There is no Google Play
+badge anywhere on the site, verified by scan.
 
 ---
 
-## 4. App icons — what is real and what is not
+## 4. Assets — real vs temporary
 
-Verified by downloading each repo's icon and comparing bytes.
+| App | Icon | Screenshots |
+|---|---|---|
+| **Findry** | ✅ real, from `findry/assets/icon.png` | ✅ 3 real, from the App Store listing |
+| Nôs Beleza | ❌ temporary monogram | ❌ none |
+| Placely | ❌ temporary monogram | ❌ none |
+| YardMatch | ❌ temporary monogram | ❌ none |
 
-| App | Icon status |
-|---|---|
-| **Findry** | ✅ **REAL.** `findry/assets/icon.png` — orange "F" map-pin on black. Also already present in this repo as `findry-logo.png`. Use it. |
-| Nôs Beleza | ❌ **Default Expo template icon.** |
-| YardMatch | ❌ **Default Expo template icon** — byte-identical to the Nôs Beleza file (`md5 cb975bba2216ce10a60e6c0ffe9941a2`). |
-| Placely | ❌ **Default Expo icon** (blue Expo chevron). `app.base.json` points iOS at `assets/expo.icon`, which contains only `expo-symbol.svg` + `grid.png` — the Expo icon-composer default. |
+**Why the other three have no icon:** each repo ships the unmodified Expo
+template icon. The Nôs Beleza and YardMatch files are byte-identical to each
+other (`md5 cb975bba2216ce10a60e6c0ffe9941a2`), and Placely's iOS icon points at
+`assets/expo.icon`, which contains only the Expo icon-composer default. None of
+them is a product mark, so none was used.
 
-**Only Findry has a real app icon.** Nôs Beleza, Placely, and YardMatch must use a
-restrained, obviously-temporary treatment (e.g. a gold-on-cream monogram tile).
-Do not ship the Expo default as if it were a product icon, and do not reproduce the
-AI-generated icons from the mockups (the yellow Placely pin and the Loadora hex in
-the reference images are not real assets).
+The temporary treatment is a dashed-border tile with a serif monogram
+(`.app-icon--placeholder`). It is deliberately typographic so it cannot be
+mistaken for a finished logo, and it carries an accessible label reading
+"app icon not yet available".
 
----
+**Rejected sources:** the AI-generated icons and app screens in the reference
+mockups; the stock photography in `whisper/assets/images/` (`rental*.jpg`,
+`construction/dump*.jpg`); the zero-byte placeholder JPEGs in the Nôs Beleza repo.
 
-## 5. Screenshots
+### Asset provenance and optimisation
 
-| App | Screenshots |
-|---|---|
-| Findry | ✅ 5 real ones on the App Store listing (above) |
-| Nôs Beleza | ❌ none — repo holds only zero-byte placeholder JPGs (`hair1.jpg`, `barber1.jpg`, `lashes1.jpg`, `spa1.jpg` are all 0 bytes) |
-| Placely | ❌ none — only Expo template art and `tutorial-web.png` |
-| YardMatch | ❌ none — `rental*.jpg` and `construction/dump*.jpg` are generic stock photography, explicitly excluded by the brief |
+| File | Source | Treatment |
+|---|---|---|
+| `assets/img/findry-icon.png` / `.webp` | `Whispergil/findry` → `assets/icon.png` | resized 1024→256, stripped |
+| `assets/img/findry-screenshot-1..3.jpg` / `.webp` | Findry App Store listing | resized to 540px wide, JPEG q82 + WebP q82 |
+| `assets/img/og-kaymer.jpg` | generated for this build | 1200×630 ivory/gold social card |
+| `assets/img/favicon.svg`, `apple-touch-icon.png` | generated for this build | temporary bronze "K" mark |
 
-Findry is the only app that can show real product screens. The other three get a
-screenshot-free card/detail layout.
+Removed: `logo.png`, `icon.png`, `hero-phones.png`, `findry-logo.png` (3.6 MB of
+unoptimised, blue-branded, or superseded art), and `write_site.py` (a three-line
+leftover with a hardcoded absolute path, referenced by nothing).
 
----
-
-## 6. Verified app descriptions (derived from repo sources, not invented)
-
-- **Findry** — field documentation / jobsite memory app for contractors, utility
-  crews, and trades. Tagline: "Save it now. Find it later." Full copy available
-  from the App Store description.
-- **Nôs Beleza** — Cape Verde local services marketplace, beauty-first with
-  generic category support (source: `cape-verde-services-app/README.md`). Booking
-  flow, business profiles, island preference. **In development.**
-- **Placely** — personal place memory app; save places with photos and notes,
-  organize by country/state/city, revisit saved locations (source: repo description
-  + the existing Placely legal/support pages already in this repo). **Coming soon.**
-- **YardMatch** — marketplace connecting construction contractors, drivers, dump
-  sites/facilities, equipment rental listings, and jobs (source:
-  `whisper/CLAUDE.md` and `lib/schema/types.ts`). **In development.**
+Total deployed payload: **3.72 MB → 0.83 MB**.
 
 ---
 
-## 7. Legal content — findings and rules
+## 5. Legal content
 
-### Findry (must be replaced with live wording)
+### Findry — replaced with the live wording
 
-The repository copies at `findry/privacy.html` and `findry/terms.html` are
-**outdated**. The current live sources were fetched and verified:
+The repository copies were outdated. Both live documents were fetched and
+re-marked into the new presentation:
 
-| Document | Live URL | Verified heading | Verified effective date |
+| Document | Source | Verified heading | Effective date |
 |---|---|---|---|
-| Privacy | `https://www.findryapp.com/privacy` | `FINDRY PRIVACY POLICY` | **August 02, 2026** ✅ |
-| Terms | `https://www.findryapp.com/` | `FINDRY TERMS OF SERVICE` | **August 02, 2026** ✅ |
+| `findry/privacy.html` | `https://www.findryapp.com/privacy` | `FINDRY PRIVACY POLICY` | August 02, 2026 |
+| `findry/terms.html` | `https://www.findryapp.com/` | `FINDRY TERMS OF SERVICE` | August 02, 2026 |
 
-Both pages returned HTTP 200 and both headings and the effective date match what
-the brief specified. The pages are Squarespace-rendered, so the implementer must
-strip presentation markup and re-mark the content semantically — copying the
-**complete wording verbatim**, with no rewriting, summarizing, shortening, added
-or removed clauses, no date change, and no replacement of `support@findryapp.com`.
+### Placely and Kaymer — transplanted unchanged
 
-Text extraction was started but **not finished** — the Cloud session should
-re-fetch both URLs and extract from the `<main>` region.
+`privacy.html`, `terms.html`, `placely-privacy.html`, `placely-terms.html`, and
+`placely-support.html` had their content blocks lifted out of the previous pages
+and dropped into the new shell. Wording, inline links, and ordering are
+unchanged; only the presentation around them is new.
 
-### Routes that must not move
+### Fidelity verification
+
+All seven documents were compared against their approved source after stripping
+presentation markup and normalising whitespace. **Every one matched character for
+character**, including the Findry documents' `support@findryapp.com` contact
+address, which was deliberately not replaced with the studio address.
+
+### Preserved routes
 
 `findry/privacy.html`, `findry/terms.html`, `placely-privacy.html`,
-`placely-terms.html`, `placely-support.html`, `privacy.html`, `terms.html`.
+`placely-terms.html`, `placely-support.html`, `privacy.html`, `terms.html` — all
+still resolve at their original paths. `index.html`, `apps.html`, `about.html`,
+and `contact.html` were also kept at their existing paths.
 
-### Nôs Beleza and YardMatch
+### ⚠ Open item for the owner
 
-**No legal documents exist in either repository** (verified by code search and by
-listing `docs/`). Do not generate policies, do not create legal links that lead
-nowhere. Their app pages must be usable without legal buttons.
-
-### Kaymer privacy policy — open item for the owner
-
-`privacy.html` states the site is hosted by Vercel and describes Vercel's data
-collection. The site is on GitHub Pages. Per the brief this sentence was **left
-unchanged** and is flagged for owner approval rather than silently edited.
+`privacy.html` still states that the website is hosted by **Vercel** and
+describes Vercel's data collection. The site runs on GitHub Pages. Per
+instruction this sentence was **not** modified — changing a published legal
+disclosure is the owner's call. It needs a decision before publishing.
 
 ---
 
-## 8. Blockers and missing assets
+## 6. Missing — must not be invented
 
-1. Real app icons for Nôs Beleza, Placely, YardMatch.
-2. Product screenshots for Nôs Beleza, Placely, YardMatch.
-3. Privacy policy and terms for Nôs Beleza and YardMatch.
-4. Owner decision on the Vercel hosting sentence in `privacy.html`.
-
-None of these may be filled in by invention. Each one that remains open should be
-reported, not guessed.
+1. Real app icons for Nôs Beleza, Placely, and YardMatch.
+2. Product screenshots for those same three apps.
+3. Privacy policy and terms for **Nôs Beleza** and **YardMatch**. Neither repo
+   contains any legal document. Their app pages therefore carry no legal links at
+   all, and say so in plain language rather than linking somewhere broken.
+4. Owner decision on the Vercel sentence above.
+5. Release dates for the three unreleased apps — none is claimed anywhere.
 
 ---
 
-## 9. Work remaining
+## 7. Architecture
 
-Nothing in section 9 has been started.
+Still a dependency-free static site: no framework, no package manager, no
+lockfile, no build step, no runtime dependency, no backend, no database.
 
-- Shared `assets/css/site.css` and `assets/js/site.js`; de-duplicate the 11 copies
-  of inline CSS and the two divergent mobile-menu implementations.
-- Ivory/cream/gold brand system; retire the dark `#0A0A0F` theme and blue accents.
-- Rebuild: home, apps portfolio (4 apps, filterable), 4 app-detail pages, about,
-  support (`contact.html` route preserved, mailto POST form removed), legal index.
-- Re-mark all preserved legal pages in the new presentation, wording untouched.
-- Replace `findry/privacy.html` and `findry/terms.html` with verbatim live wording.
-- Optimize assets (current PNGs total ~3.7 MB, all wildly oversized).
-- Accessibility pass, metadata, Open Graph, `robots.txt`, `sitemap.xml`, favicons,
-  `.nojekyll`.
-- Remove `write_site.py` (confirmed unused leftover) and document the removal.
-- Responsive verification at 320/375/390/430/768/1024/1440.
+What changed is that the 11 copies of inline CSS and the two divergent mobile
+menus collapsed into `assets/css/site.css` and `assets/js/site.js`. Both JS
+features — the mobile menu and the apps filter — are progressive enhancements;
+every page renders completely with JavaScript disabled, and the filter bar is
+hidden until the script reveals it.
+
+Support is email-only by design. The old `mailto:` POST form was removed: most
+browsers no longer honour such submissions, so it silently discarded messages.
+Per-app links now carry pre-filled subjects.
