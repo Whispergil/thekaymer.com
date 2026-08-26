@@ -148,16 +148,22 @@ described Vercel's data collection, while the site actually runs on GitHub
 Pages. That sentence was left untouched through the redesign because changing a
 published legal disclosure is the owner's call, not the implementer's.
 
-The owner approved the correction, and it was applied in two narrowly scoped
-commits. Section 2 now discloses GitHub Pages, and section 4 (Cookies) reads:
+The owner approved the correction, and it was applied across three narrowly
+scoped commits. Section 2 now discloses GitHub Pages, and section 4 (Cookies)
+reads:
 
 > Kaymer does not currently use cookies or analytics on this website. The
 > website is hosted through GitHub Pages, and GitHub processes information
 > according to its GitHub Privacy Statement.
 
-"GitHub Privacy Statement" links to GitHub's general privacy statement. The
-"Last updated" date moved to August 25, 2026 in both `privacy.html` and the
-entry for it on `legal.html`.
+"GitHub Privacy Statement" links to GitHub's general privacy statement.
+
+A third correction followed on August 26, 2026. The policy still described a
+website contact form that the redesign had removed, so sections 1 and 5 were
+reworded to describe what actually happens: nothing is collected through a form,
+and if someone emails the studio we receive whatever they chose to put in the
+message. The "Last updated" date is August 26, 2026 in both `privacy.html` and
+the entry for it on `legal.html`.
 
 The cookie and analytics claim was verified before it was written, not assumed:
 across all 16 pages the site sets no cookies, uses no localStorage,
@@ -231,18 +237,48 @@ down from 5875px, and the Findry page 3636px, down from 5142px.
 
 ---
 
-## 10. Warning for whoever edits these pages next
+## 10. The generator, and why it is now safe
 
-The pages in this repository were originally emitted by a one-shot generator
-that transplanted the legal content out of commit `87f8437`. That generator was
-never committed — the repository is plain static HTML with no build step, which
-is the intended architecture.
+`tools/build_pages.py` emits the static HTML this repository serves. It is a
+maintenance tool, not a build step — the deployed site has no framework, no
+dependency and no build pipeline, and the committed HTML is what ships.
 
-It matters here for one reason: `privacy.html` has since been corrected by hand
-and **no longer matches** the wording in `87f8437`. Regenerating it from that
-commit would silently reinstate the Vercel hosting disclosure and roll the date
-back to June 26, 2025.
+**The bug it used to have.** The script read the five Kaymer/Placely legal
+documents from a pinned commit (`BASE_REV = '87f8437'`) via `git show`, and
+`build_legal_index()` repeated each document's date as a hardcoded string. That
+was correct only while `87f8437` held the approved wording. Once `privacy.html`
+was corrected by hand it stopped being correct, and a regeneration would have
+silently reinstated the Vercel hosting paragraph, the Vercel cookies sentence,
+the obsolete contact-form wording, and the June 26, 2025 date — in both
+`privacy.html` and the row pointing at it on `legal.html`.
 
-Edit these files directly. If anything is ever regenerated, `privacy.html` and
-the Kaymer privacy row in `legal.html` must be re-applied from the current
-committed versions, not from `87f8437`.
+**The fix.** The committed HTML is now the source of truth:
+
+- `read_approved_legal()` reads each document's own `<div class="legal-body">`
+  and `<p class="updated">`, and every legal and support page — Kaymer, Placely
+  and Findry alike — is re-emitted from that.
+- `legal_date_note()` reads each date back from the document it describes, so
+  the legal index cannot drift out of step with the policy it links to.
+- `BASE_REV`, the `git show` calls, and the scratch-file dependency that fed the
+  Findry documents are gone. The script no longer reads anything outside the
+  working tree.
+
+Regeneration is therefore a no-op unless layout or shared copy actually changed,
+and it cannot resurrect superseded legal text or roll a date backwards. This was
+verified before the change was accepted: the corrected generator was run against
+an isolated copy of the working tree and `diff -r` reported the output identical
+byte for byte, three runs in a row.
+
+    python3 tools/build_pages.py                   # regenerate in place
+    python3 tools/build_pages.py --root /tmp/copy  # dry run against a copy
+
+Always diff the result before committing it.
+
+**One quirk it reproduces deliberately.** The contents list on
+`placely-privacy.html` renders "5. Data Storage &amp; Security" and "6. Data
+Retention &amp; Deletion" — a double-escaped ampersand from the original build.
+The anchors work and the section headings themselves are correct; only the two
+contents-list labels are affected. It is left exactly as committed so that
+regeneration stays provably faithful, and is recorded here as a small cosmetic
+fix for a future pass rather than something to change silently during a legal
+correction.
