@@ -141,12 +141,31 @@ address, which was deliberately not replaced with the studio address.
 still resolve at their original paths. `index.html`, `apps.html`, `about.html`,
 and `contact.html` were also kept at their existing paths.
 
-### ⚠ Open item for the owner
+### Hosting disclosure — resolved by the owner
 
-`privacy.html` still states that the website is hosted by **Vercel** and
-describes Vercel's data collection. The site runs on GitHub Pages. Per
-instruction this sentence was **not** modified — changing a published legal
-disclosure is the owner's call. It needs a decision before publishing.
+`privacy.html` used to state that the website was hosted by **Vercel** and
+described Vercel's data collection, while the site actually runs on GitHub
+Pages. That sentence was left untouched through the redesign because changing a
+published legal disclosure is the owner's call, not the implementer's.
+
+The owner approved the correction, and it was applied in two narrowly scoped
+commits. Section 2 now discloses GitHub Pages, and section 4 (Cookies) reads:
+
+> Kaymer does not currently use cookies or analytics on this website. The
+> website is hosted through GitHub Pages, and GitHub processes information
+> according to its GitHub Privacy Statement.
+
+"GitHub Privacy Statement" links to GitHub's general privacy statement. The
+"Last updated" date moved to August 25, 2026 in both `privacy.html` and the
+entry for it on `legal.html`.
+
+The cookie and analytics claim was verified before it was written, not assumed:
+across all 16 pages the site sets no cookies, uses no localStorage,
+sessionStorage or IndexedDB, registers no service worker, loads no third-party
+subresource, and makes zero cross-origin requests. The only script it loads is
+its own `assets/js/site.js`.
+
+No Vercel reference remains in any public file.
 
 ---
 
@@ -157,8 +176,10 @@ disclosure is the owner's call. It needs a decision before publishing.
 3. Privacy policy and terms for **Nôs Beleza** and **YardMatch**. Neither repo
    contains any legal document. Their app pages therefore carry no legal links at
    all, and say so in plain language rather than linking somewhere broken.
-4. Owner decision on the Vercel sentence above.
-5. Release dates for the three unreleased apps — none is claimed anywhere.
+4. Release dates for the three unreleased apps — none is claimed anywhere.
+
+(The hosting-disclosure decision that used to sit in this list has been made and
+applied; see the section above.)
 
 ---
 
@@ -207,3 +228,21 @@ wrapped in `prefers-reduced-motion: no-preference`.
 
 Page weight fell again as a result — the home page is 4633px tall at 390px wide,
 down from 5875px, and the Findry page 3636px, down from 5142px.
+
+---
+
+## 10. Warning for whoever edits these pages next
+
+The pages in this repository were originally emitted by a one-shot generator
+that transplanted the legal content out of commit `87f8437`. That generator was
+never committed — the repository is plain static HTML with no build step, which
+is the intended architecture.
+
+It matters here for one reason: `privacy.html` has since been corrected by hand
+and **no longer matches** the wording in `87f8437`. Regenerating it from that
+commit would silently reinstate the Vercel hosting disclosure and roll the date
+back to June 26, 2025.
+
+Edit these files directly. If anything is ever regenerated, `privacy.html` and
+the Kaymer privacy row in `legal.html` must be re-applied from the current
+committed versions, not from `87f8437`.
