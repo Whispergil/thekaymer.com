@@ -1,161 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms of Use — Placely</title>
-  <link rel="icon" type="image/png" href="icon.png" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
-      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
-      --blue1: #3B82F6; --font: system-ui, -apple-system, sans-serif; --max: 800px;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-    a { color: var(--blue1); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo img { height: 28px; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
-    .nav-links a:hover { color: var(--head); }
-    .nav-cta { background: var(--blue1); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
-    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
-    .mobile-menu.open { display: block; }
-    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
-    .mobile-menu a { font-size: 1rem; color: var(--body); text-decoration: none; }
-    .mobile-cta { background: var(--blue1); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
-    .page-hero { text-align: center; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
-    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--head); margin-bottom: 0.75rem; }
-    .page-hero p { font-size: 0.9rem; color: var(--muted); }
-    .content { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem 6rem; }
-    .content h2 { font-size: 1.25rem; font-weight: 600; color: var(--head); margin: 2.5rem 0 0.75rem; }
-    .content p { margin-bottom: 1rem; font-size: 0.95rem; color: var(--body); line-height: 1.8; }
-    .content ul { margin: 0.5rem 0 1rem 1.5rem; }
-    .content ul li { font-size: 0.95rem; color: var(--body); margin-bottom: 0.5rem; line-height: 1.7; }
-    .last-updated { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
-    footer { border-top: 1px solid var(--border); }
-    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-inner img { height: 20px; opacity: 0.6; }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); }
-    .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
-    .footer-links a:hover { color: var(--head); }
-    @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .nav-links { display: none; }
-      .content { padding: 3rem 1.5rem 5rem; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Placely Terms of Use — Kaymer LLC</title>
+<meta name="description" content="The Placely terms of use, covering accounts, user content, acceptable use, and account deletion.">
+<link rel="canonical" href="https://whispergil.github.io/thekaymer.com/placely-terms.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kaymer LLC">
+<meta property="og:title" content="Placely Terms of Use — Kaymer LLC">
+<meta property="og:description" content="The Placely terms of use, covering accounts, user content, acceptable use, and account deletion.">
+<meta property="og:url" content="https://whispergil.github.io/thekaymer.com/placely-terms.html">
+<meta property="og:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kaymer LLC — practical apps, thoughtfully built.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Placely Terms of Use — Kaymer LLC">
+<meta name="twitter:description" content="The Placely terms of use, covering accounts, user content, acceptable use, and account deletion.">
+<meta name="twitter:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta name="theme-color" content="#FCFAF6">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
-<nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo"><img src="logo.png" alt="Kaymer LLC" /></a>
-    <ul class="nav-links">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="shell header-bar">
+    <a class="wordmark" href="index.html"><span>KAYMER</span></a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="apps.html">Apps</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="contact.html" class="nav-cta">Contact Us</a></li>
-    </ul>
-    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <li><a href="contact.html">Support</a></li>
+      <li><a href="legal.html" aria-current="page">Legal</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </div>
-</nav>
-<div id="mobileMenu" class="mobile-menu">
-  <ul>
-    <li><a href="index.html">Home</a></li>
-    <li><a href="apps.html">Apps</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html" class="mobile-cta">Contact Us</a></li>
-  </ul>
-</div>
-<div class="page-hero">
-  <h1>Terms of Use</h1>
-  <p>Placely — a mobile application operated by Kaymer LLC</p>
-</div>
-<div class="content">
-  <span class="last-updated">Last updated: August 9, 2026</span>
+  <nav class="nav-mobile" id="site-menu" aria-label="Primary, mobile">
+    <ul class="shell">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="apps.html">Apps</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Support</a></li>
+      <li><a href="legal.html" aria-current="page">Legal</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main" class="legal-main">
+  <div class="shell">
+    <a class="backlink" href="legal.html">All legal documents</a>
 
-  <p>Please read these Terms of Use carefully before using Placely, a mobile application operated by Kaymer LLC ("Kaymer," "we," "us," or "our"). By downloading, accessing, or using Placely, you agree to be bound by these Terms.</p>
+    <div class="legal-head rise">
+      <p class="eyebrow">Placely legal</p>
+      <h1>Placely Terms of Use</h1>
+      <p class="updated">Placely — a mobile application operated by Kaymer LLC &middot; Last updated: August 9, 2026</p>
+    </div>
 
-  <h2>1. Acceptance of Terms</h2>
-  <p>By creating an account or otherwise using Placely, you accept and agree to be bound by these Terms of Use and our <a href="placely-privacy.html">Privacy Policy</a>. If you do not agree, please do not use Placely.</p>
+  <details class="legal-toc">
+    <summary>On this page</summary>
+    <ol>
+      <li><a href="#s-1-acceptance-of-terms">1. Acceptance of Terms</a></li>
+      <li><a href="#s-2-about-placely">2. About Placely</a></li>
+      <li><a href="#s-3-accounts-amp-account-responsibility">3. Accounts &amp;amp; Account Responsibility</a></li>
+      <li><a href="#s-4-user-content">4. User Content</a></li>
+      <li><a href="#s-5-acceptable-use">5. Acceptable Use</a></li>
+      <li><a href="#s-6-location-amp-map-information">6. Location &amp;amp; Map Information</a></li>
+      <li><a href="#s-7-third-party-services">7. Third-Party Services</a></li>
+      <li><a href="#s-8-service-availability">8. Service Availability</a></li>
+      <li><a href="#s-9-intellectual-property">9. Intellectual Property</a></li>
+      <li><a href="#s-10-termination-amp-account-deletion">10. Termination &amp;amp; Account Deletion</a></li>
+      <li><a href="#s-11-disclaimer-of-warranties">11. Disclaimer of Warranties</a></li>
+      <li><a href="#s-12-limitation-of-liability">12. Limitation of Liability</a></li>
+      <li><a href="#s-13-changes-to-terms">13. Changes to Terms</a></li>
+      <li><a href="#s-14-governing-law">14. Governing Law</a></li>
+      <li><a href="#s-15-contact-us">15. Contact Us</a></li>
+    </ol>
+  </details>
 
-  <h2>2. About Placely</h2>
-  <p>Placely is a mobile application designed to help you privately save and remember places you care about — such as saving a location, adding notes, and attaching a photo — for your own personal reference.</p>
+    <div class="legal-body">
+      <p>Please read these Terms of Use carefully before using Placely, a mobile application operated by Kaymer LLC ("Kaymer," "we," "us," or "our"). By downloading, accessing, or using Placely, you agree to be bound by these Terms.</p>
+      <h2 id="s-1-acceptance-of-terms">1. Acceptance of Terms</h2>
+      <p>By creating an account or otherwise using Placely, you accept and agree to be bound by these Terms of Use and our <a href="placely-privacy.html">Privacy Policy</a>. If you do not agree, please do not use Placely.</p>
+      <h2 id="s-2-about-placely">2. About Placely</h2>
+      <p>Placely is a mobile application designed to help you privately save and remember places you care about — such as saving a location, adding notes, and attaching a photo — for your own personal reference.</p>
+      <h2 id="s-3-accounts-amp-account-responsibility">3. Accounts &amp; Account Responsibility</h2>
+      <p>To use Placely, you must create an account using Email &amp; Password, Sign in with Apple, or Google Sign-In. You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. Notify us promptly if you suspect unauthorized use of your account.</p>
+      <h2 id="s-4-user-content">4. User Content</h2>
+      <p>Placely lets you create content such as saved places, notes, and photos ("User Content"). You retain ownership of your User Content. You are solely responsible for it, and you must have the necessary rights to any content — including photos — that you add to Placely. Do not upload content you do not have the right to use.</p>
+      <h2 id="s-5-acceptable-use">5. Acceptable Use</h2>
+      <p>You agree to use Placely only for lawful purposes. You must not:</p>
+      <ul>
+      <li>Use Placely in any way that violates applicable laws or regulations</li>
+      <li>Upload content that is illegal, infringing, or that you do not have the right to share</li>
+      <li>Attempt to gain unauthorized access to any part of Placely, its accounts, or its underlying systems</li>
+      <li>Interfere with or disrupt the operation of Placely</li>
+      </ul>
+      <h2 id="s-6-location-amp-map-information">6. Location &amp; Map Information</h2>
+      <p>Placely may use your device's location and third-party mapping services to help you save and display places. Location, address, and map information shown in Placely may not always be exact or up to date. You remain responsible for verifying location information and for using your own judgment before relying on it for important real-world decisions, such as navigation or travel.</p>
+      <h2 id="s-7-third-party-services">7. Third-Party Services</h2>
+      <p>Placely relies on third-party services to operate, including Google Firebase (authentication, database, and storage), Google Maps, Google Sign-In, and Sign in with Apple. Your use of these features is also subject to the applicable third party's own terms and policies. We are not responsible for the availability or performance of these third-party services.</p>
+      <h2 id="s-8-service-availability">8. Service Availability</h2>
+      <p>We aim to keep Placely available and reliable, but we do not guarantee that it will be uninterrupted, timely, secure, or error-free. Placely may be modified, suspended, or discontinued, in whole or in part, at any time.</p>
+      <h2 id="s-9-intellectual-property">9. Intellectual Property</h2>
+      <p>Placely's design, branding, and underlying software are the property of Kaymer LLC and are protected by applicable intellectual property laws. Except for your own User Content and except where applicable law permits otherwise, you may not copy, modify, distribute, or reverse engineer any part of Placely without our express written permission.</p>
+      <h2 id="s-10-termination-amp-account-deletion">10. Termination &amp; Account Deletion</h2>
+      <p>You may stop using Placely and delete your account at any time from within the app's Settings. We may also suspend or terminate your access to Placely if you violate these Terms. Upon account deletion, your Placely-hosted data is removed as described in our <a href="placely-privacy.html">Privacy Policy</a>.</p>
+      <h2 id="s-11-disclaimer-of-warranties">11. Disclaimer of Warranties</h2>
+      <p>Placely is provided on an "as is" and "as available" basis without warranties of any kind, whether express or implied, including warranties of merchantability, fitness for a particular purpose, or non-infringement. Kaymer LLC does not warrant that Placely will be uninterrupted or error-free.</p>
+      <h2 id="s-12-limitation-of-liability">12. Limitation of Liability</h2>
+      <p>To the fullest extent permitted by law, Kaymer LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of, or inability to use, Placely, including any reliance on location or map information within the app.</p>
+      <h2 id="s-13-changes-to-terms">13. Changes to Terms</h2>
+      <p>We may update these Terms from time to time. If we make material changes, we will update the "Last updated" date above. Continued use of Placely after any changes constitutes your acceptance of the new Terms.</p>
+      <h2 id="s-14-governing-law">14. Governing Law</h2>
+      <p>These Terms are governed by the laws of the Commonwealth of Massachusetts, United States, without regard to its conflict-of-laws principles.</p>
+      <h2 id="s-15-contact-us">15. Contact Us</h2>
+      <ul>
+      <li>Email: <a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
+      <li>Company: Kaymer LLC</li>
+      <li>State: Massachusetts, United States</li>
+      </ul>
+    </div>
 
-  <h2>3. Accounts &amp; Account Responsibility</h2>
-  <p>To use Placely, you must create an account using Email &amp; Password, Sign in with Apple, or Google Sign-In. You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. Notify us promptly if you suspect unauthorized use of your account.</p>
-
-  <h2>4. User Content</h2>
-  <p>Placely lets you create content such as saved places, notes, and photos ("User Content"). You retain ownership of your User Content. You are solely responsible for it, and you must have the necessary rights to any content — including photos — that you add to Placely. Do not upload content you do not have the right to use.</p>
-
-  <h2>5. Acceptable Use</h2>
-  <p>You agree to use Placely only for lawful purposes. You must not:</p>
-  <ul>
-    <li>Use Placely in any way that violates applicable laws or regulations</li>
-    <li>Upload content that is illegal, infringing, or that you do not have the right to share</li>
-    <li>Attempt to gain unauthorized access to any part of Placely, its accounts, or its underlying systems</li>
-    <li>Interfere with or disrupt the operation of Placely</li>
-  </ul>
-
-  <h2>6. Location &amp; Map Information</h2>
-  <p>Placely may use your device's location and third-party mapping services to help you save and display places. Location, address, and map information shown in Placely may not always be exact or up to date. You remain responsible for verifying location information and for using your own judgment before relying on it for important real-world decisions, such as navigation or travel.</p>
-
-  <h2>7. Third-Party Services</h2>
-  <p>Placely relies on third-party services to operate, including Google Firebase (authentication, database, and storage), Google Maps, Google Sign-In, and Sign in with Apple. Your use of these features is also subject to the applicable third party's own terms and policies. We are not responsible for the availability or performance of these third-party services.</p>
-
-  <h2>8. Service Availability</h2>
-  <p>We aim to keep Placely available and reliable, but we do not guarantee that it will be uninterrupted, timely, secure, or error-free. Placely may be modified, suspended, or discontinued, in whole or in part, at any time.</p>
-
-  <h2>9. Intellectual Property</h2>
-  <p>Placely's design, branding, and underlying software are the property of Kaymer LLC and are protected by applicable intellectual property laws. Except for your own User Content and except where applicable law permits otherwise, you may not copy, modify, distribute, or reverse engineer any part of Placely without our express written permission.</p>
-
-  <h2>10. Termination &amp; Account Deletion</h2>
-  <p>You may stop using Placely and delete your account at any time from within the app's Settings. We may also suspend or terminate your access to Placely if you violate these Terms. Upon account deletion, your Placely-hosted data is removed as described in our <a href="placely-privacy.html">Privacy Policy</a>.</p>
-
-  <h2>11. Disclaimer of Warranties</h2>
-  <p>Placely is provided on an "as is" and "as available" basis without warranties of any kind, whether express or implied, including warranties of merchantability, fitness for a particular purpose, or non-infringement. Kaymer LLC does not warrant that Placely will be uninterrupted or error-free.</p>
-
-  <h2>12. Limitation of Liability</h2>
-  <p>To the fullest extent permitted by law, Kaymer LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of, or inability to use, Placely, including any reliance on location or map information within the app.</p>
-
-  <h2>13. Changes to Terms</h2>
-  <p>We may update these Terms from time to time. If we make material changes, we will update the "Last updated" date above. Continued use of Placely after any changes constitutes your acceptance of the new Terms.</p>
-
-  <h2>14. Governing Law</h2>
-  <p>These Terms are governed by the laws of the Commonwealth of Massachusetts, United States, without regard to its conflict-of-laws principles.</p>
-
-  <h2>15. Contact Us</h2>
-  <ul>
-    <li>Email: <a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
-    <li>Company: Kaymer LLC</li>
-    <li>State: Massachusetts, United States</li>
-  </ul>
-</div>
-<footer>
-  <div class="footer-inner">
-    <img src="logo.png" alt="Kaymer LLC" />
-    <span class="footer-copy">&copy; 2026 Kaymer LLC. All rights reserved.</span>
-    <div class="footer-links">
-      <a href="placely-privacy.html">Privacy Policy</a>
-      <a href="placely-terms.html">Terms of Use</a>
-      <a href="placely-support.html">Support</a>
+    <div class="legal-footer-links"><a href="placely-privacy.html">Placely Privacy Policy</a><a href="placely-support.html">Placely Support</a><a href="apps/placely.html">About Placely</a></div>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="index.html"><span>KAYMER</span></a>
+        <p>An independent mobile app studio building focused tools for everyday work and life.</p>
+      </div>
+      <div>
+        <h2>Apps</h2>
+        <ul>
+        <li><a href="apps/findry.html">Findry</a></li>
+        <li><a href="apps/nos-beleza.html">Nôs Beleza</a></li>
+        <li><a href="apps/placely.html">Placely</a></li>
+        <li><a href="apps/yardmatch.html">YardMatch</a></li>
+          <li><a href="apps.html">All apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Support</h2>
+        <ul>
+          <li><a href="contact.html">Get support</a></li>
+          <li><a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="legal.html">All legal documents</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; 2026 Kaymer LLC. All rights reserved.</span>
+      <span>Massachusetts, USA</span>
     </div>
   </div>
 </footer>
-<script>
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobileMenu');
-    if (!e.target.closest('nav')) menu.classList.remove('open');
-  });
-</script>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>

@@ -1,193 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms of Service — Findry</title>
-  <link rel="icon" type="image/png" href="../icon.png" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0A0A0F; --surface: #111118; --surface2: #16161F; --border: #1E1E2A;
-      --muted: #4A4A5E; --body: #9090A8; --head: #F0F0F8;
-      --orange: #F47920; --font: system-ui, -apple-system, sans-serif; --max: 800px;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--body); font-family: var(--font); font-size: 1rem; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-    a { color: var(--orange); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo img { height: 28px; display: block; }
-    .nav-links { display: flex; align-items: center; gap: 2.5rem; list-style: none; }
-    .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
-    .nav-links a:hover { color: var(--head); }
-    .nav-cta { background: var(--orange); color: #fff !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .hamburger span { width: 24px; height: 2px; background: var(--head); border-radius: 2px; display: block; }
-    .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: rgba(10,10,15,0.97); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem; z-index: 99; }
-    .mobile-menu.open { display: block; }
-    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; }
-    .mobile-menu a { font-size: 1rem; color: var(--body); text-decoration: none; }
-    .mobile-cta { background: var(--orange); color: #fff !important; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; text-align: center; display: block; margin-top: 0.5rem; }
-
-    .app-banner { background: var(--surface2); border-bottom: 1px solid var(--border); padding: 0.75rem 2rem; }
-    .app-banner-inner { max-width: var(--max); margin: 0 auto; display: flex; align-items: center; gap: 0.75rem; }
-    .findry-icon { width: 32px; height: 32px; background: linear-gradient(135deg, #F47920, #E05A00); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-    .app-banner span { font-size: 0.85rem; color: var(--muted); }
-    .app-banner strong { color: var(--head); }
-
-    .page-hero { text-align: center; padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
-    .page-hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--head); margin-bottom: 0.75rem; }
-    .page-hero p { font-size: 0.9rem; color: var(--muted); }
-
-    .content { max-width: var(--max); margin: 0 auto; padding: 4rem 2rem 6rem; }
-    .content h2 { font-size: 1.1rem; font-weight: 600; color: var(--head); margin: 2.5rem 0 0.75rem; }
-    .content p { margin-bottom: 1rem; font-size: 0.95rem; color: var(--body); line-height: 1.8; }
-    .content ul { margin: 0.5rem 0 1rem 1.5rem; }
-    .content ul li { font-size: 0.95rem; color: var(--body); margin-bottom: 0.5rem; line-height: 1.7; }
-    .last-updated { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; }
-    .warning-box { background: rgba(244,121,32,0.1); border: 1px solid rgba(244,121,32,0.3); border-radius: 10px; padding: 1.25rem 1.5rem; margin: 1rem 0; }
-    .warning-box p { color: var(--head); margin: 0; font-size: 0.9rem; line-height: 1.7; }
-
-    footer { border-top: 1px solid var(--border); }
-    .footer-inner { max-width: 1100px; margin: 0 auto; padding: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .footer-inner img { height: 20px; opacity: 0.6; }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); }
-    .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { font-size: 0.75rem; color: var(--muted); transition: color 0.15s; text-decoration: none; }
-    .footer-links a:hover { color: var(--head); }
-
-    @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .nav-links { display: none; }
-      .content { padding: 3rem 1.5rem 5rem; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Findry Terms of Service — Kaymer LLC</title>
+<meta name="description" content="The Findry terms of service, covering accounts, the free plan and Findry Pro, subscriptions, and safety. Effective August 02, 2026.">
+<link rel="canonical" href="https://whispergil.github.io/thekaymer.com/findry/terms.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kaymer LLC">
+<meta property="og:title" content="Findry Terms of Service — Kaymer LLC">
+<meta property="og:description" content="The Findry terms of service, covering accounts, the free plan and Findry Pro, subscriptions, and safety. Effective August 02, 2026.">
+<meta property="og:url" content="https://whispergil.github.io/thekaymer.com/findry/terms.html">
+<meta property="og:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kaymer LLC — practical apps, thoughtfully built.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Findry Terms of Service — Kaymer LLC">
+<meta name="twitter:description" content="The Findry terms of service, covering accounts, the free plan and Findry Pro, subscriptions, and safety. Effective August 02, 2026.">
+<meta name="twitter:image" content="https://whispergil.github.io/thekaymer.com/assets/img/og-kaymer.jpg">
+<meta name="theme-color" content="#FCFAF6">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/css/site.css">
 </head>
 <body>
-
-<nav>
-  <div class="nav-inner">
-    <a href="../index.html" class="nav-logo"><img src="../logo.png" alt="Kaymer LLC" /></a>
-    <ul class="nav-links">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="shell header-bar">
+    <a class="wordmark" href="../index.html"><span>KAYMER</span></a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <ul>
       <li><a href="../index.html">Home</a></li>
       <li><a href="../apps.html">Apps</a></li>
       <li><a href="../about.html">About</a></li>
-      <li><a href="../contact.html" class="nav-cta">Contact Us</a></li>
-    </ul>
-    <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+      <li><a href="../contact.html">Support</a></li>
+      <li><a href="../legal.html" aria-current="page">Legal</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
   </div>
-</nav>
+  <nav class="nav-mobile" id="site-menu" aria-label="Primary, mobile">
+    <ul class="shell">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../apps.html">Apps</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Support</a></li>
+      <li><a href="../legal.html" aria-current="page">Legal</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main" class="legal-main">
+  <div class="shell">
+    <a class="backlink" href="../legal.html">All legal documents</a>
 
-<div id="mobileMenu" class="mobile-menu">
-  <ul>
-    <li><a href="../index.html">Home</a></li>
-    <li><a href="../apps.html">Apps</a></li>
-    <li><a href="../about.html">About</a></li>
-    <li><a href="../contact.html" class="mobile-cta">Contact Us</a></li>
-  </ul>
-</div>
+    <div class="legal-head rise">
+      <p class="eyebrow">Findry legal</p>
+      <h1>Findry Terms of Service</h1>
+      <p class="updated">Effective Date: August 02, 2026</p>
+    </div>
 
-<div class="app-banner">
-  <div class="app-banner-inner">
-    <img src="../findry-logo.png" alt="Findry" style="width:32px;height:32px;border-radius:8px;object-fit:cover;" />
-    <span><strong>Findry</strong> — Terms of Service</span>
+  <details class="legal-toc">
+    <summary>On this page</summary>
+    <ol>
+      <li><a href="#s-1-eligibility">1. ELIGIBILITY</a></li>
+      <li><a href="#s-2-description-of-the-service">2. DESCRIPTION OF THE SERVICE</a></li>
+      <li><a href="#s-3-accounts">3. ACCOUNTS</a></li>
+      <li><a href="#s-4-free-plan-and-findry-pro">4. FREE PLAN AND FINDRY PRO</a></li>
+      <li><a href="#s-5-subscriptions-and-billing">5. SUBSCRIPTIONS AND BILLING</a></li>
+      <li><a href="#s-6-important-safety-disclaimer">6. IMPORTANT SAFETY DISCLAIMER</a></li>
+      <li><a href="#s-7-user-content">7. USER CONTENT</a></li>
+      <li><a href="#s-8-data-storage">8. DATA STORAGE</a></li>
+      <li><a href="#s-9-intellectual-property">9. INTELLECTUAL PROPERTY</a></li>
+      <li><a href="#s-10-prohibited-use">10. PROHIBITED USE</a></li>
+      <li><a href="#s-11-account-suspension-or-termination">11. ACCOUNT SUSPENSION OR TERMINATION</a></li>
+      <li><a href="#s-12-disclaimer-of-warranties">12. DISCLAIMER OF WARRANTIES</a></li>
+      <li><a href="#s-13-limitation-of-liability">13. LIMITATION OF LIABILITY</a></li>
+      <li><a href="#s-14-governing-law">14. GOVERNING LAW</a></li>
+      <li><a href="#s-15-changes-to-these-terms">15. CHANGES TO THESE TERMS</a></li>
+      <li><a href="#s-16-severability">16. SEVERABILITY</a></li>
+      <li><a href="#s-17-contact-us">17. CONTACT US</a></li>
+    </ol>
+  </details>
+
+    <div class="legal-body">
+      <p>Welcome to Findry, a mobile application developed and operated by Kaymer LLC (“Findry,” “we,” “our,” or “us”).</p>
+      <p>These Terms of Service (“Terms”) govern your access to and use of the Findry mobile application, related services, and any associated features provided by Kaymer LLC.</p>
+      <p>By creating a Findry account, downloading the App, purchasing a subscription, or using Findry, you agree to be bound by these Terms. If you do not agree with these Terms, you should not use the App.</p>
+      <h2 id="s-1-eligibility">1. ELIGIBILITY</h2>
+      <p>You must be at least 13 years of age to use Findry.</p>
+      <p>By using the App, you represent that you have the legal authority to enter into these Terms and that the information you provide is accurate and complete.</p>
+      <p>If you are using Findry on behalf of a company or organization, you represent that you have authority to bind that organization to these Terms.</p>
+      <h2 id="s-2-description-of-the-service">2. DESCRIPTION OF THE SERVICE</h2>
+      <p>Findry is a field documentation and jobsite memory application designed to help construction professionals, contractors, tradespeople, maintenance personnel, and other field workers organize important project information.</p>
+      <p>Depending on the features you use, Findry allows you to:</p>
+      <ul>
+        <li>Create and organize projects.</li>
+        <li>Save field records.</li>
+        <li>Attach photos to records.</li>
+        <li>Store measurements and reference points.</li>
+        <li>Record notes, materials, and warning information.</li>
+        <li>Track important installation details.</li>
+        <li>Retrieve previously saved field information.</li>
+      </ul>
+      <p>Findry is intended solely as a documentation tool.</p>
+      <h2 id="s-3-accounts">3. ACCOUNTS</h2>
+      <p>A Findry account is required to use the App.</p>
+      <p>You agree to:</p>
+      <ul>
+        <li>Provide accurate and current account information.</li>
+        <li>Maintain the security of your login credentials.</li>
+        <li>Keep your password confidential.</li>
+        <li>Notify us promptly if you believe your account has been accessed without authorization.</li>
+      </ul>
+      <p>You are responsible for all activity that occurs under your account.</p>
+      <h2 id="s-4-free-plan-and-findry-pro">4. FREE PLAN AND FINDRY PRO</h2>
+      <p>Findry offers both a Free Plan and an optional paid Findry Pro subscription.</p>
+      <h3>Free Plan</h3>
+      <p>The Free Plan currently includes:</p>
+      <ul>
+        <li>Up to 3 projects</li>
+        <li>Up to 10 total records</li>
+        <li>Up to 3 photos per record</li>
+        <li>Up to 2 reference points per record</li>
+        <li>Local storage on your device</li>
+      </ul>
+      <p>If you reach the Free Plan limit, you can delete existing records to free up space for new ones or upgrade to Findry Pro for unlimited records.</p>
+      <p>Free Plan limits may change as Findry evolves.</p>
+      <h3>Findry Pro</h3>
+      <p>Findry Pro currently includes:</p>
+      <ul>
+        <li>Unlimited projects</li>
+        <li>Unlimited records</li>
+        <li>Up to 100 photos per record</li>
+        <li>Unlimited reference points</li>
+        <li>Secure cloud backup of supported project and record data</li>
+        <li>Access to current and future Findry Pro features included with your subscription</li>
+      </ul>
+      <p>Photos attached to records remain stored locally on your device and are not currently included in cloud backup.</p>
+      <h2 id="s-5-subscriptions-and-billing">5. SUBSCRIPTIONS AND BILLING</h2>
+      <p>Findry Pro subscriptions are offered on a monthly and annual basis through the Apple App Store and Google Play Store.</p>
+      <p>When you purchase a subscription:</p>
+      <ul>
+        <li>Payment is charged to your Apple ID or Google Play account when the purchase is confirmed.</li>
+        <li>Your subscription automatically renews unless it is canceled at least 24 hours before the end of the current billing period.</li>
+        <li>Your account will be charged for renewal within 24 hours before the current subscription period ends.</li>
+        <li>Subscription pricing is displayed within the App before purchase.</li>
+        <li>You may manage or cancel your subscription at any time through your Apple ID or Google Play subscription settings.</li>
+        <li>If you reinstall the App or change devices while using the same store account, you may restore your eligible subscription using the Restore Purchases feature available within the App.</li>
+        <li>Findry does not process or store your payment card information. Payments are securely handled by Apple or Google, depending on your platform.</li>
+      </ul>
+      <h2 id="s-6-important-safety-disclaimer">6. IMPORTANT SAFETY DISCLAIMER</h2>
+      <p class="strong-notice">ALWAYS CALL 811 (tel:811) BEFORE YOU DIG.</p>
+      <p>Findry is not a utility locating service.</p>
+      <p>Findry does not detect, identify, verify, or map underground utilities, pipelines, cables, water lines, gas lines, sewer lines, fiber optic lines, electrical infrastructure, or any other buried facilities.</p>
+      <p>All information stored within Findry is entered by users and may be incomplete, inaccurate, outdated, or incorrect.</p>
+      <p>Field conditions can change over time.</p>
+      <p>You are solely responsible for verifying all information before performing excavation, drilling, digging, demolition, construction, or any other activity that could affect underground or above-ground infrastructure.</p>
+      <p>Kaymer LLC is not responsible for any property damage, personal injury, utility strikes, project delays, financial loss, or other damages resulting from reliance on information stored within Findry.</p>
+      <h2 id="s-7-user-content">7. USER CONTENT</h2>
+      <p>You retain ownership of all content you create and upload within Findry, including but not limited to:</p>
+      <ul>
+        <li>Projects</li>
+        <li>Records</li>
+        <li>Photos</li>
+        <li>Notes</li>
+        <li>Measurements</li>
+        <li>Reference points</li>
+        <li>Materials</li>
+        <li>Warning information</li>
+        <li>Emergency information</li>
+        <li>Any other information you choose to save within the App</li>
+      </ul>
+      <p>By using Findry, you grant Kaymer LLC a limited, non-exclusive, revocable license to store, process, display, synchronize (where applicable), and transmit your content solely for the purpose of operating and providing the Findry service.</p>
+      <p>We do not claim ownership of your content.</p>
+      <p>You are solely responsible for ensuring that any information you store within Findry is accurate, lawful, and that you have the right to use or upload it.</p>
+      <h2 id="s-8-data-storage">8. DATA STORAGE</h2>
+      <p>Findry stores information differently depending on your subscription level.</p>
+      <h3>Free Plan</h3>
+      <p>For Free users:</p>
+      <ul>
+        <li>Projects and records are stored locally on your device.</li>
+        <li>Photos remain stored locally on your device.</li>
+        <li>Cloud backup is not included.</li>
+      </ul>
+      <h3>Findry Pro</h3>
+      <p>For Findry Pro users:</p>
+      <ul>
+        <li>Eligible project and record information may be securely backed up using Firebase cloud services.</li>
+        <li>Cloud backup currently includes supported project and record information but does not include record photos.</li>
+        <li>Photos remain stored locally on the device where they were captured or imported.</li>
+      </ul>
+      <p>Kaymer LLC is not responsible for data loss resulting from:</p>
+      <ul>
+        <li>Device damage</li>
+        <li>Device replacement</li>
+        <li>Device reset</li>
+        <li>Uninstallation of the App</li>
+        <li>Loss of locally stored photos</li>
+        <li>User deletion of records or photos</li>
+        <li>Circumstances beyond our reasonable control</li>
+      </ul>
+      <p>Users are responsible for maintaining their devices and understanding the current cloud backup capabilities of Findry.</p>
+      <h2 id="s-9-intellectual-property">9. INTELLECTUAL PROPERTY</h2>
+      <p>The Findry application, including its software, design, graphics, logos, trademarks, branding, icons, text, and other original content, is the property of Kaymer LLC or its licensors and is protected by applicable intellectual property laws.</p>
+      <p>Except as expressly permitted by these Terms, you may not:</p>
+      <ul>
+        <li>Copy</li>
+        <li>Modify</li>
+        <li>Distribute</li>
+        <li>Sell</li>
+        <li>License</li>
+        <li>Reverse engineer</li>
+        <li>Decompile</li>
+        <li>Create derivative works from</li>
+        <li>Exploit any portion of the App</li>
+      </ul>
+      <p>without prior written permission from Kaymer LLC.</p>
+      <h2 id="s-10-prohibited-use">10. PROHIBITED USE</h2>
+      <p>You agree not to use Findry to:</p>
+      <ul>
+        <li>Violate any applicable law or regulation.</li>
+        <li>Upload unlawful or fraudulent content.</li>
+        <li>Attempt to gain unauthorized access to the App or its systems.</li>
+        <li>Reverse engineer, decompile, or modify the App.</li>
+        <li>Interfere with the security or operation of the App.</li>
+        <li>Share your account credentials with others.</li>
+        <li>Use the App in a manner intended to disrupt other users or the service.</li>
+        <li>Misrepresent ownership of projects or records.</li>
+      </ul>
+      <p>Violation of these Terms may result in suspension or permanent termination of your account.</p>
+      <h2 id="s-11-account-suspension-or-termination">11. ACCOUNT SUSPENSION OR TERMINATION</h2>
+      <p>Kaymer LLC reserves the right to suspend or terminate access to Findry if:</p>
+      <ul>
+        <li>These Terms are violated.</li>
+        <li>Fraudulent or abusive activity is detected.</li>
+        <li>Use of the App threatens the security or operation of the service.</li>
+        <li>Required by applicable law.</li>
+      </ul>
+      <p>Where appropriate, we may investigate suspected misuse before taking action.</p>
+      <p>Termination of your account does not relieve you of obligations incurred before termination.</p>
+      <h2 id="s-12-disclaimer-of-warranties">12. DISCLAIMER OF WARRANTIES</h2>
+      <p>Findry is provided on an “AS IS” and “AS AVAILABLE” basis.</p>
+      <p>To the fullest extent permitted by law, Kaymer LLC disclaims all warranties, whether express, implied, or statutory, including warranties of:</p>
+      <ul>
+        <li>Merchantability</li>
+        <li>Fitness for a particular purpose</li>
+        <li>Non-infringement</li>
+      </ul>
+      <p>We do not guarantee that:</p>
+      <ul>
+        <li>The App will operate without interruption.</li>
+        <li>The App will always be error-free.</li>
+        <li>Information stored within the App will always remain available.</li>
+        <li>Every feature will operate under every circumstance.</li>
+      </ul>
+      <h2 id="s-13-limitation-of-liability">13. LIMITATION OF LIABILITY</h2>
+      <p>To the fullest extent permitted by applicable law, Kaymer LLC, its owners, employees, contractors, and affiliates shall not be liable for any indirect, incidental, consequential, special, exemplary, or punitive damages arising out of or relating to:</p>
+      <ul>
+        <li>Your use of Findry.</li>
+        <li>Your inability to use Findry.</li>
+        <li>Loss of data.</li>
+        <li>Loss of business.</li>
+        <li>Loss of profits.</li>
+        <li>Construction delays.</li>
+        <li>Utility strikes.</li>
+        <li>Property damage.</li>
+        <li>Personal injury.</li>
+        <li>Any reliance on user-created records or documentation.</li>
+      </ul>
+      <p>Your use of Findry is at your own risk.</p>
+      <h2 id="s-14-governing-law">14. GOVERNING LAW</h2>
+      <p>These Terms shall be governed by and interpreted in accordance with the laws of the Commonwealth of Massachusetts, without regard to its conflict of law principles.</p>
+      <p>Any legal dispute arising under these Terms shall be resolved in a court of competent jurisdiction located within Massachusetts, unless otherwise required by applicable law.</p>
+      <h2 id="s-15-changes-to-these-terms">15. CHANGES TO THESE TERMS</h2>
+      <p>We may update these Terms of Service from time to time to reflect changes in our services, legal requirements, or business practices.</p>
+      <p>When material changes are made, we will update the Effective Date shown at the top of these Terms.</p>
+      <p>Your continued use of Findry after updated Terms become effective constitutes your acceptance of the revised Terms.</p>
+      <h2 id="s-16-severability">16. SEVERABILITY</h2>
+      <p>If any provision of these Terms is determined to be invalid, unlawful, or unenforceable, the remaining provisions shall remain in full force and effect.</p>
+      <p>Failure by Kaymer LLC to enforce any provision of these Terms shall not constitute a waiver of that provision or any other right.</p>
+      <h2 id="s-17-contact-us">17. CONTACT US</h2>
+      <p>If you have questions regarding these Terms of Service, please contact us:</p>
+      <p>Kaymer LLC</p>
+      <p>Email: <a href="mailto:support@findryapp.com">support@findryapp.com</a></p>
+      <p>We will make reasonable efforts to respond to questions regarding these Terms in a timely manner.</p>
+    </div>
+
+    <div class="legal-footer-links"><a href="privacy.html">Findry Privacy Policy</a><a href="../apps/findry.html">About Findry</a><a href="../contact.html">Findry support</a></div>
   </div>
-</div>
-
-<div class="page-hero">
-  <h1>Terms of Service</h1>
-  <p>Effective Date: June 14, 2026</p>
-</div>
-
-<div class="content">
-  <p>These Terms of Service ("Terms") govern your use of the Findry mobile application ("App"), developed by Kaymer LLC ("Developer," "we," "us," or "our"). By using Findry, you agree to these Terms.</p>
-
-  <h2>1. Use of the App</h2>
-  <p>Findry is a field memory app designed for construction workers, contractors, and tradespeople. You may use the App to save and retrieve field records including measurements, photos, notes, and reference points.</p>
-
-  <h2>2. Accounts</h2>
-  <p>You must create an account to use Findry. You are responsible for maintaining the confidentiality of your account credentials. You agree to provide accurate information when creating your account.</p>
-
-  <h2>3. Free and Pro Plans</h2>
-  <p>Findry offers a Free plan and a Pro plan.</p>
-  <p><strong style="color:var(--head)">Free Plan includes:</strong></p>
-  <ul>
-    <li>Up to 3 projects</li>
-    <li>Up to 10 records per month (resets on the 1st of each month)</li>
-    <li>Up to 3 photos per record</li>
-    <li>Up to 2 reference points per record</li>
-    <li>Local storage only</li>
-  </ul>
-  <p><strong style="color:var(--head)">Pro Plan includes:</strong></p>
-  <ul>
-    <li>Unlimited projects, records, photos, and reference points</li>
-    <li>Cloud backup and sync of projects and records via Firebase</li>
-    <li>Photos are stored locally on your device and are not included in cloud backup</li>
-    <li>All future Pro features</li>
-  </ul>
-  <p>Subscription fees are billed monthly or yearly depending on the plan selected. You may cancel at any time through your Apple ID subscription settings.</p>
-
-  <h2>4. Important Disclaimer — Underground Utilities</h2>
-  <div class="warning-box">
-    <p>Findry is a documentation tool only. It does not detect, map, or identify underground utilities or infrastructure. ALWAYS CALL 811 BEFORE YOU DIG. Findry records are based on user-entered data and may not reflect actual field conditions. Kaymer LLC is not responsible for any damage, injury, or loss resulting from reliance on information stored in the App.</p>
-  </div>
-
-  <h2>5. User Content</h2>
-  <p>You retain ownership of all content you create in Findry. By using the App, you grant us a limited license to store and display your content solely for the purpose of providing the service.</p>
-
-  <h2>6. Data Storage</h2>
-  <p>Free plan data is stored locally on your device only. Pro plan project and record data is backed up to secure cloud storage via Firebase. Photos are stored locally on your device regardless of plan. Kaymer LLC is not responsible for data loss resulting from device failure, deletion, or uninstallation of the App.</p>
-
-  <h2>7. Prohibited Use</h2>
-  <p>You agree not to:</p>
-  <ul>
-    <li>Use the App for any unlawful purpose</li>
-    <li>Attempt to reverse engineer or modify the App</li>
-    <li>Share your account credentials with others</li>
-  </ul>
-
-  <h2>8. Termination</h2>
-  <p>We reserve the right to suspend or terminate your account if you violate these Terms.</p>
-
-  <h2>9. Disclaimer of Warranties</h2>
-  <p>The App is provided "as is" without warranties of any kind. We do not guarantee that the App will be error-free or uninterrupted.</p>
-
-  <h2>10. Limitation of Liability</h2>
-  <p>To the maximum extent permitted by law, Kaymer LLC shall not be liable for any indirect, incidental, or consequential damages arising from your use of the App.</p>
-
-  <h2>11. Governing Law</h2>
-  <p>These Terms are governed by the laws of the Commonwealth of Massachusetts, United States.</p>
-
-  <h2>12. Contact</h2>
-  <p>If you have any questions about these Terms, please contact us:</p>
-  <ul>
-    <li>Email: <a href="mailto:support@findryapp.com">support@findryapp.com</a></li>
-    <li>Business: Kaymer LLC</li>
-  </ul>
-</div>
-
-<footer>
-  <div class="footer-inner">
-    <img src="../logo.png" alt="Kaymer LLC" />
-    <span class="footer-copy">&copy; 2025 Kaymer LLC. All rights reserved.</span>
-    <div class="footer-links">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms of Service</a>
+</main>
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="../index.html"><span>KAYMER</span></a>
+        <p>An independent mobile app studio building focused tools for everyday work and life.</p>
+      </div>
+      <div>
+        <h2>Apps</h2>
+        <ul>
+        <li><a href="../apps/findry.html">Findry</a></li>
+        <li><a href="../apps/nos-beleza.html">Nôs Beleza</a></li>
+        <li><a href="../apps/placely.html">Placely</a></li>
+        <li><a href="../apps/yardmatch.html">YardMatch</a></li>
+          <li><a href="../apps.html">All apps</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Support</h2>
+        <ul>
+          <li><a href="../contact.html">Get support</a></li>
+          <li><a href="mailto:support@thekaymer.com">support@thekaymer.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="../legal.html">All legal documents</a></li>
+          <li><a href="../privacy.html">Privacy Policy</a></li>
+          <li><a href="../terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; 2026 Kaymer LLC. All rights reserved.</span>
+      <span>Massachusetts, USA</span>
     </div>
   </div>
 </footer>
-
-<script>
-  document.addEventListener('click', function(e) {
-    const menu = document.getElementById('mobileMenu');
-    if (!e.target.closest('nav')) menu.classList.remove('open');
-  });
-</script>
-
+<script src="../assets/js/site.js" defer></script>
 </body>
 </html>
