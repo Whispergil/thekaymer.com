@@ -304,9 +304,11 @@ h4 { font-size: 1.02rem; }
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.nav-mobile.is-open { display: block; }
+.nav-mobile.is-open,
+.nav-mobile.is-closing { display: block; }
 @media (prefers-reduced-motion: no-preference) {
   .nav-mobile.is-open { animation: rise 0.24s var(--ease) both; }
+  .nav-mobile.is-closing { animation: rise 0.22s var(--ease) reverse both; }
 }
 .nav-mobile ul { padding-block: var(--s-2) var(--s-4); }
 .nav-mobile li + li { border-top: 1px solid var(--border); }
