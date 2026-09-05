@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://whispergil.github.io/thekaymer.com/sitemap.xml
+Sitemap: https://thekaymer.com/sitemap.xml
