@@ -27,7 +27,7 @@ import re
 # runs from a checkout anywhere; --root points it at an isolated copy for
 # dry-run comparisons.
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE = 'https://whispergil.github.io/thekaymer.com/'
+SITE = 'https://thekaymer.com/'
 EMAIL = 'support@thekaymer.com'
 
 # NOTE ON THE SOURCE OF TRUTH FOR LEGAL WORDING
@@ -279,7 +279,7 @@ def footer(up):
 
 def page(path, title, description, current, body, structured=None, og_type='website'):
     up = '../' if '/' in path else ''
-    canonical = path
+    canonical = '' if path == 'index.html' else path
     out = head(title, description, canonical, up, og_type)
     out += header(current, up)
     out += body

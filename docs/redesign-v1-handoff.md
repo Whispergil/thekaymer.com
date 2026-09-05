@@ -14,13 +14,13 @@ could not be verified was left out of the site rather than guessed at.
 
 | Item | Value |
 |---|---|
-| Live URL | `https://whispergil.github.io/thekaymer.com/` |
+| Live URL | `https://thekaymer.com/` |
 | Pages source | branch `main`, path `/`, `build_type: legacy` (Jekyll) |
 | Custom domain | none (`cname: null`) — Squarespace and DNS are unrelated to this repo |
 
-- **All links and asset paths are relative.** The site is served from the
-  `/thekaymer.com/` subpath, so a root-relative `/assets/...` path would break it.
-  Verified: zero root-relative internal links.
+- **All links and asset paths are relative.** The site publishes at the
+  custom-domain root, and relative paths remain portable. Verified: zero
+  root-relative internal links.
 - **`.nojekyll` added.** Legacy Pages runs Jekyll, which silently drops paths
   beginning with `_`. The file makes deployment predictable regardless of future
   file naming.
