@@ -94,6 +94,9 @@ APPS = [
                 'with room for more categories as the marketplace grows.',
         'icon': None,
         'platform': None,
+        'privacy': 'nos-beleza/privacy.html',
+        'terms': 'nos-beleza/terms.html',
+        'support_page': 'nos-beleza/support.html',
         'features': [
             ('Discover local businesses', 'Browse businesses and the services they offer, filtered by island.'),
             ('Book an appointment', 'Request a booking, and let the business confirm, decline, or propose a new time.'),
@@ -922,6 +925,12 @@ def build_legal_index():
         row('findry/privacy.html', 'Findry Privacy Policy', legal_date_note('findry/privacy.html', '')),
         row('findry/terms.html', 'Findry Terms of Service', legal_date_note('findry/terms.html', '')),
     ])
+    nos_beleza_rows = '\n'.join([
+        row('nos-beleza/privacy.html', 'Nôs Beleza Privacy Policy', legal_date_note('nos-beleza/privacy.html', '')),
+        row('nos-beleza/terms.html', 'Nôs Beleza Terms of Service', legal_date_note('nos-beleza/terms.html', '')),
+        row('nos-beleza/support.html', 'Nôs Beleza Support',
+            'Help topics for bookings, accounts, storefronts, notifications, and deletion.'),
+    ])
     placely_rows = '\n'.join([
         row('placely-privacy.html', 'Placely Privacy Policy', legal_date_note('placely-privacy.html', '')),
         row('placely-terms.html', 'Placely Terms of Use', legal_date_note('placely-terms.html', '')),
@@ -958,8 +967,13 @@ def build_legal_index():
 {placely_rows}
       </div>
 
-      <h2 class="ui-head" style="margin-bottom:var(--s-3)">Nôs Beleza and YardMatch</h2>
-      <p class="note">Both apps are still in development and have no published privacy policy
+      <h2 class="ui-head" style="margin-bottom:var(--s-3)">Nôs Beleza</h2>
+      <div class="link-rows" style="margin-bottom:var(--s-6)">
+{nos_beleza_rows}
+      </div>
+
+      <h2 class="ui-head" style="margin-bottom:var(--s-3)">YardMatch</h2>
+      <p class="note">YardMatch is still in development and has no published privacy policy
         or terms yet. When those documents exist they will be listed here.</p>
 
     </div>
@@ -968,7 +982,7 @@ def build_legal_index():
 </main>
 '''
     return page('legal.html', 'Legal — Kaymer LLC',
-                'Privacy policies, terms, and support documents for Kaymer LLC and its apps, including Findry and Placely.',
+                'Privacy policies, terms, and support documents for Kaymer LLC and its apps, including Findry, Nôs Beleza, and Placely.',
                 'legal.html', body)
 
 
@@ -1084,6 +1098,35 @@ LEGACY = {
 }
 
 
+NOS_BELEZA = {
+    'nos-beleza/privacy.html': {
+        'title': 'Nôs Beleza Privacy Policy — Kaymer LLC',
+        'label': 'Nôs Beleza legal',
+        'desc': 'The Nôs Beleza privacy policy: account data, bookings, business listings, photos, reviews, verification documents, notifications, retention, and account deletion.',
+        'related': ['<a href="terms.html">Nôs Beleza Terms of Service</a>',
+                    '<a href="support.html">Nôs Beleza Support</a>',
+                    '<a href="../apps/nos-beleza.html">About Nôs Beleza</a>'],
+    },
+    'nos-beleza/terms.html': {
+        'title': 'Nôs Beleza Terms of Service — Kaymer LLC',
+        'label': 'Nôs Beleza legal',
+        'desc': 'The Nôs Beleza terms of service, covering the marketplace role, independent professionals, bookings, verification, reviews, and acceptable use.',
+        'related': ['<a href="privacy.html">Nôs Beleza Privacy Policy</a>',
+                    '<a href="support.html">Nôs Beleza Support</a>',
+                    '<a href="../apps/nos-beleza.html">About Nôs Beleza</a>'],
+    },
+    'nos-beleza/support.html': {
+        'title': 'Nôs Beleza Support — Kaymer LLC',
+        'label': 'Nôs Beleza support',
+        'desc': 'Help topics for Nôs Beleza: booking appointments, sign-in and accounts, business storefronts, photos, verification, notifications, reviews, safety, and account deletion.',
+        'related': ['<a href="privacy.html">Nôs Beleza Privacy Policy</a>',
+                    '<a href="terms.html">Nôs Beleza Terms of Service</a>',
+                    '<a href="../contact.html">Contact support</a>'],
+        'current': 'contact.html',
+    },
+}
+
+
 def read_approved_legal(path):
     """Return (body_html, updated_line) from a document already in the current
     shell. This is the source of truth: whatever wording is committed is what
@@ -1101,6 +1144,12 @@ def legal_date_note(path, prefix):
     plain = re.sub(r'<[^>]+>', '', updated)
     plain = plain.replace('&middot;', '\u00b7')
     m = re.search(r'((?:Last updated|Effective Date)[:]?\s*[A-Z][a-z]+ \d{1,2}, \d{4})', plain)
+    # A document whose effective date has not been set yet says so on the index rather than
+    # being given one here. The index still cannot disagree with the document: both are
+    # reporting the same unresolved state, and setting the date in the document is what
+    # changes this line.
+    if not m:
+        return f'{prefix} Draft — not yet published.'.strip() if prefix else 'Draft — not yet published.'
     date = m.group(1).replace('Effective Date:', 'Effective').replace('Last updated:', 'Last updated')
     return f'{prefix} {date}.' if prefix else f'{date}.'
 
@@ -1108,7 +1157,7 @@ def legal_date_note(path, prefix):
 def rebuild_legacy(path):
     """Re-emit a legal or support document into the shared shell, taking its
     wording and its date from the current approved file."""
-    cfg = LEGACY[path]
+    cfg = LEGACY[path] if path in LEGACY else NOS_BELEZA[path]
     body_html, updated_line = read_approved_legal(path)
 
     toc = [(f's-{slugify(re.sub(r"<[^>]+>", "", t))}', re.sub(r'<[^>]+>', '', t))
@@ -1147,6 +1196,8 @@ def main():
     pages.append(build_legal_index())
     pages.extend(build_findry_legal())
     for p in LEGACY:
+        pages.append(rebuild_legacy(p))
+    for p in NOS_BELEZA:
         pages.append(rebuild_legacy(p))
 
     build_extras(pages)
