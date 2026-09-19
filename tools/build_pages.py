@@ -94,6 +94,9 @@ APPS = [
                 'with room for more categories as the marketplace grows.',
         'icon': None,
         'platform': None,
+        'privacy': 'nos-beleza/privacy.html',
+        'terms': 'nos-beleza/terms.html',
+        'support_page': 'nos-beleza/support.html',
         'features': [
             ('Discover local businesses', 'Browse businesses and the services they offer, filtered by island.'),
             ('Book an appointment', 'Request a booking, and let the business confirm, decline, or propose a new time.'),
@@ -819,6 +822,19 @@ def build_support():
             'Account data, saved places, location, and photos.'),
     ])
 
+    nos_beleza_topics = '\n'.join([
+        row('nos-beleza/support.html', 'Nôs Beleza help topics',
+            'Accounts, finding a business, booking, services and schedule, reviews, photos, deletion.'),
+        row('nos-beleza/support.html#s-2-customer-or-professional-which-account-do-i-need',
+            'Customer or professional account',
+            'Which account to open, and why a professional account cannot book.'),
+        row('nos-beleza/support.html#s-8-professional-verification', 'Professional verification',
+            'What to submit, who reviews it, and what the badge does not mean.'),
+        row('nos-beleza/privacy.html#s-13-retention-and-deletion',
+            'Deleting your Nôs Beleza account',
+            'What is removed, what is kept, and what happens to your reviews.'),
+    ])
+
     body = f'''<main id="main">
 
   <section class="hero hero--intro shell" aria-labelledby="support-title">
@@ -861,13 +877,17 @@ def build_support():
       </div>
 
       <h3 class="ui-head" style="margin-bottom:var(--s-3)">Placely</h3>
-      <div class="link-rows">
+      <div class="link-rows" style="margin-bottom:var(--s-6)">
 {placely_topics}
       </div>
 
-      <p class="note" style="margin-top:var(--s-6)">Nôs Beleza and YardMatch are still in
-        development and do not have published help documents yet. Email the studio and we will
-        answer directly.</p>
+      <h3 class="ui-head" style="margin-bottom:var(--s-3)">Nôs Beleza</h3>
+      <div class="link-rows">
+{nos_beleza_topics}
+      </div>
+
+      <p class="note" style="margin-top:var(--s-6)">YardMatch is still in development and does
+        not have published help documents yet. Email the studio and we will answer directly.</p>
     </div>
   </section>
 
@@ -898,7 +918,7 @@ def build_support():
 </main>
 '''
     return page('contact.html', 'Support — Kaymer LLC',
-                'Get support for Kaymer LLC apps. Email support@thekaymer.com, or jump straight to the published help and legal documents for Findry and Placely.',
+                'Get support for Kaymer LLC apps. Email support@thekaymer.com, or jump straight to the published help and legal documents for Findry, Placely, and Nôs Beleza.',
                 'contact.html', body)
 
 
@@ -927,6 +947,14 @@ def build_legal_index():
         row('placely-terms.html', 'Placely Terms of Use', legal_date_note('placely-terms.html', '')),
         row('placely-support.html', 'Placely Support',
             'Help topics for accounts, places, photos, and deletion.'),
+    ])
+    nos_beleza_rows = '\n'.join([
+        row('nos-beleza/privacy.html', 'Nôs Beleza Privacy Policy',
+            legal_date_note('nos-beleza/privacy.html', '')),
+        row('nos-beleza/terms.html', 'Nôs Beleza Terms of Service',
+            legal_date_note('nos-beleza/terms.html', '')),
+        row('nos-beleza/support.html', 'Nôs Beleza Support',
+            'Help topics for accounts, bookings, verification, reviews, and deletion.'),
     ])
 
     body = f'''<main id="main">
@@ -958,9 +986,14 @@ def build_legal_index():
 {placely_rows}
       </div>
 
-      <h2 class="ui-head" style="margin-bottom:var(--s-3)">Nôs Beleza and YardMatch</h2>
-      <p class="note">Both apps are still in development and have no published privacy policy
-        or terms yet. When those documents exist they will be listed here.</p>
+      <h2 class="ui-head" style="margin-bottom:var(--s-3)">Nôs Beleza</h2>
+      <div class="link-rows" style="margin-bottom:var(--s-6)">
+{nos_beleza_rows}
+      </div>
+
+      <h2 class="ui-head" style="margin-bottom:var(--s-3)">YardMatch</h2>
+      <p class="note">YardMatch is still in development and has no published privacy policy or
+        terms yet. When those documents exist they will be listed here.</p>
 
     </div>
   </section>
@@ -968,7 +1001,7 @@ def build_legal_index():
 </main>
 '''
     return page('legal.html', 'Legal — Kaymer LLC',
-                'Privacy policies, terms, and support documents for Kaymer LLC and its apps, including Findry and Placely.',
+                'Privacy policies, terms, and support documents for Kaymer LLC and its apps, including Findry, Placely, and Nôs Beleza.',
                 'legal.html', body)
 
 
@@ -1071,6 +1104,31 @@ LEGACY = {
         'related': ['<a href="placely-privacy.html">Placely Privacy Policy</a>',
                     '<a href="placely-support.html">Placely Support</a>',
                     '<a href="apps/placely.html">About Placely</a>'],
+    },
+    'nos-beleza/privacy.html': {
+        'title': 'Nôs Beleza Privacy Policy — Kaymer LLC',
+        'label': 'Nôs Beleza legal',
+        'desc': 'The Nôs Beleza privacy policy: accounts, bookings, reviews, photos, professional verification, notifications, and account deletion.',
+        'related': ['<a href="terms.html">Nôs Beleza Terms of Service</a>',
+                    '<a href="support.html">Nôs Beleza Support</a>',
+                    '<a href="../apps/nos-beleza.html">About Nôs Beleza</a>'],
+    },
+    'nos-beleza/terms.html': {
+        'title': 'Nôs Beleza Terms of Service — Kaymer LLC',
+        'label': 'Nôs Beleza legal',
+        'desc': 'The Nôs Beleza terms of service, covering accounts, the marketplace relationship, bookings, professional verification, reviews, and liability.',
+        'related': ['<a href="privacy.html">Nôs Beleza Privacy Policy</a>',
+                    '<a href="support.html">Nôs Beleza Support</a>',
+                    '<a href="../apps/nos-beleza.html">About Nôs Beleza</a>'],
+    },
+    'nos-beleza/support.html': {
+        'title': 'Nôs Beleza Support — Kaymer LLC',
+        'label': 'Nôs Beleza support',
+        'desc': 'Help topics for Nôs Beleza: accounts, finding a business, booking and managing appointments, professional services and verification, reviews, photos, notifications, and account deletion.',
+        'related': ['<a href="privacy.html">Nôs Beleza Privacy Policy</a>',
+                    '<a href="terms.html">Nôs Beleza Terms of Service</a>',
+                    '<a href="../contact.html">Contact support</a>'],
+        'current': 'contact.html',
     },
     'placely-support.html': {
         'title': 'Placely Support — Kaymer LLC',
