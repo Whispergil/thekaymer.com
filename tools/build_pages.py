@@ -92,7 +92,8 @@ APPS = [
                 'designed to let people discover nearby businesses, browse the services they '
                 'offer, and book an appointment — starting with beauty and personal care, '
                 'with room for more categories as the marketplace grows.',
-        'icon': None,
+        'icon': 'assets/img/nos-beleza-icon.png',
+        'icon_webp': 'assets/img/nos-beleza-icon.webp',
         'platform': None,
         'privacy': 'nos-beleza/privacy.html',
         'terms': 'nos-beleza/terms.html',
