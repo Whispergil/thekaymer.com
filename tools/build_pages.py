@@ -1178,6 +1178,18 @@ def rebuild_legacy(path):
                        current=cfg.get('current', 'legal.html'))
 
 
+# Portuguese editions of the Nôs Beleza legal and support documents. They are
+# hand-maintained translations of the English pages above and are NOT
+# regenerated here (the generator never writes them); they are listed only so
+# the sitemap includes them. tools/check_pt_parity.py verifies them against
+# their English sources.
+PT_STATIC_PAGES = [
+    'nos-beleza/pt/privacy.html',
+    'nos-beleza/pt/terms.html',
+    'nos-beleza/pt/support.html',
+]
+
+
 # ================================================================== extras ===
 def build_extras(pages):
     with open(os.path.join(ROOT, '.nojekyll'), 'w') as fh:
@@ -1207,6 +1219,7 @@ def main():
     pages.extend(build_findry_legal())
     for p in LEGACY:
         pages.append(rebuild_legacy(p))
+    pages.extend(PT_STATIC_PAGES)
 
     build_extras(pages)
 
