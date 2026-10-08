@@ -114,48 +114,6 @@ APPS = [
             ('Built for more than beauty', 'The underlying marketplace is category-driven, so new kinds of local services can be added later.'),
         ],
     },
-    {
-        'slug': 'placely',
-        'name': 'Placely',
-        'status': 'coming-soon',
-        'badge': 'Coming soon',
-        'tagline': 'Save places today. Find them later.',
-        'short': 'A personal place memory app. Save the places that matter with photos and '
-                 'notes, and find them again later.',
-        'long': 'Placely is a personal place memory app. Save the places you want to '
-                'remember with a photo and your own notes, organise them by country, state, '
-                'and city, and come back to them whenever you need them.',
-        'icon': None,
-        'platform': None,
-        'privacy': 'placely-privacy.html',
-        'terms': 'placely-terms.html',
-        'support_page': 'placely-support.html',
-        'features': [
-            ('Save a place with context', 'Keep a name, category, notes, and a photo alongside the location itself.'),
-            ('Organise by where it is', 'Places are grouped by country, state or province, and city.'),
-            ('Come back to it', 'Revisit your saved places and see them on a map when you need them again.'),
-        ],
-    },
-    {
-        'slug': 'yardmatch',
-        'name': 'YardMatch',
-        'status': 'in-development',
-        'badge': 'In development',
-        'tagline': 'A marketplace for construction sites, hauling, and equipment.',
-        'short': 'A marketplace connecting construction contractors, drivers, dump sites, '
-                 'and equipment rentals.',
-        'long': 'YardMatch is a marketplace for construction work. It is being built to '
-                'connect contractors, drivers, dump sites and facilities, equipment rental '
-                'listings, and jobs — so a crew can find the site, hauler, or machine a job '
-                'needs without working the phone all morning.',
-        'icon': None,
-        'platform': None,
-        'features': [
-            ('Find a site', 'Locate dump sites and facilities, including ones that have not been claimed by an owner yet.'),
-            ('Match work with capacity', 'Post jobs and availability, so contractors and drivers can find each other.'),
-            ('Rent what you need', 'Browse equipment rental listings created by the providers who own them.'),
-        ],
-    },
 ]
 APP = {a['slug']: a for a in APPS}
 
@@ -423,10 +381,10 @@ def build_home():
       <div class="section-head">
         <p class="eyebrow">In the workshop</p>
         <h2 id="more-apps">What we are building next.</h2>
-        <p class="lead">Three more apps are in progress. None of them is released yet, and we
-          will not pretend otherwise — each one gets a store link the day it earns one.</p>
+        <p class="lead">Nôs Beleza is in progress and is not released yet. It will get a store
+          link when it is ready to launch.</p>
       </div>
-      <div class="card-grid card-grid--three">
+      <div class="card-grid">
 {cards}
       </div>
     </div>
@@ -529,8 +487,8 @@ def build_apps():
       <p class="eyebrow">Our apps</p>
       <h1 id="apps-title">Tools built for real life.</h1>
       <div class="rule"></div>
-      <p class="lead">Findry is available for iPhone and Android today. Three more apps are in
-        development. This page shows exactly where each one stands.</p>
+      <p class="lead">Findry is available for iPhone and Android today. Nôs Beleza is in
+        development. This page shows exactly where each app stands.</p>
     </div>
   </section>
 
@@ -541,7 +499,6 @@ def build_apps():
       <div class="filter-bar" role="group" aria-label="Filter apps by status" hidden>
         <button type="button" data-filter="all" aria-pressed="true">All</button>
         <button type="button" data-filter="available" aria-pressed="false">Available</button>
-        <button type="button" data-filter="coming-soon" aria-pressed="false">Coming soon</button>
         <button type="button" data-filter="in-development" aria-pressed="false">In development</button>
       </div>
       <p id="filter-status" class="visually-hidden" role="status" aria-live="polite"></p>
@@ -564,11 +521,6 @@ def build_apps():
             iPhone and on Google Play for Android.</p>
         </div>
         <div class="value-item">
-          <div class="badge-row" style="margin-bottom:var(--s-3)"><span class="badge badge--soon">Coming soon</span></div>
-          <p>Feature work is largely done and the app is being prepared for release. No release
-            date is announced.</p>
-        </div>
-        <div class="value-item">
           <div class="badge-row" style="margin-bottom:var(--s-3)"><span class="badge badge--dev">In development</span></div>
           <p>Actively being built. Screens, icons, and store listings are not final, and no
             platform commitment has been made.</p>
@@ -580,7 +532,7 @@ def build_apps():
 </main>
 '''
     return page('apps.html', 'Apps — Kaymer LLC',
-                'The Kaymer LLC app portfolio: Findry for iPhone and Android, plus Nôs Beleza, Placely, and YardMatch in development.',
+                'The Kaymer LLC app portfolio: Findry for iPhone and Android, plus Nôs Beleza in development.',
                 'apps.html', body)
 
 
@@ -875,13 +827,6 @@ def build_support():
             'What happens to your data when you delete an account.'),
     ])
 
-    placely_topics = '\n'.join([
-        row('placely-support.html', 'Placely help topics',
-            'Sign-in, saving places, location and photos, account deletion.'),
-        row('placely-privacy.html', 'What Placely collects',
-            'Account data, saved places, location, and photos.'),
-    ])
-
     nos_beleza_topics = '\n'.join([
         row('nos-beleza/support.html', 'Nôs Beleza help topics',
             'Accounts, finding a business, booking, services and schedule, reviews, photos, deletion.'),
@@ -936,18 +881,10 @@ def build_support():
 {findry_topics}
       </div>
 
-      <h3 class="ui-head" style="margin-bottom:var(--s-3)">Placely</h3>
-      <div class="link-rows" style="margin-bottom:var(--s-6)">
-{placely_topics}
-      </div>
-
       <h3 class="ui-head" style="margin-bottom:var(--s-3)">Nôs Beleza</h3>
       <div class="link-rows">
 {nos_beleza_topics}
       </div>
-
-      <p class="note" style="margin-top:var(--s-6)">YardMatch is still in development and does
-        not have published help documents yet. Email the studio and we will answer directly.</p>
     </div>
   </section>
 
@@ -978,7 +915,7 @@ def build_support():
 </main>
 '''
     return page('contact.html', 'Support — Kaymer LLC',
-                'Get support for Kaymer LLC apps. Email support@thekaymer.com, or jump straight to the published help and legal documents for Findry, Placely, and Nôs Beleza.',
+                'Get support for Kaymer LLC apps. Email support@thekaymer.com, or jump straight to the published help and legal documents for Findry and Nôs Beleza.',
                 'contact.html', body)
 
 
@@ -1001,12 +938,6 @@ def build_legal_index():
     findry_rows = '\n'.join([
         row('findry/privacy.html', 'Findry Privacy Policy', legal_date_note('findry/privacy.html', '')),
         row('findry/terms.html', 'Findry Terms of Service', legal_date_note('findry/terms.html', '')),
-    ])
-    placely_rows = '\n'.join([
-        row('placely-privacy.html', 'Placely Privacy Policy', legal_date_note('placely-privacy.html', '')),
-        row('placely-terms.html', 'Placely Terms of Use', legal_date_note('placely-terms.html', '')),
-        row('placely-support.html', 'Placely Support',
-            'Help topics for accounts, places, photos, and deletion.'),
     ])
     nos_beleza_rows = '\n'.join([
         row('nos-beleza/privacy.html', 'Nôs Beleza Privacy Policy',
@@ -1041,19 +972,10 @@ def build_legal_index():
 {findry_rows}
       </div>
 
-      <h2 class="ui-head" style="margin-bottom:var(--s-3)">Placely</h2>
-      <div class="link-rows" style="margin-bottom:var(--s-6)">
-{placely_rows}
-      </div>
-
       <h2 class="ui-head" style="margin-bottom:var(--s-3)">Nôs Beleza</h2>
-      <div class="link-rows" style="margin-bottom:var(--s-6)">
+      <div class="link-rows">
 {nos_beleza_rows}
       </div>
-
-      <h2 class="ui-head" style="margin-bottom:var(--s-3)">YardMatch</h2>
-      <p class="note">YardMatch is still in development and has no published privacy policy or
-        terms yet. When those documents exist they will be listed here.</p>
 
     </div>
   </section>
@@ -1061,7 +983,7 @@ def build_legal_index():
 </main>
 '''
     return page('legal.html', 'Legal — Kaymer LLC',
-                'Privacy policies, terms, and support documents for Kaymer LLC and its apps, including Findry, Placely, and Nôs Beleza.',
+                'Privacy policies, terms, and support documents for Kaymer LLC, Findry, and Nôs Beleza.',
                 'legal.html', body)
 
 
@@ -1149,22 +1071,6 @@ LEGACY = {
         'related': ['<a href="privacy.html">Privacy Policy</a>',
                     '<a href="legal.html">All legal documents</a>'],
     },
-    'placely-privacy.html': {
-        'title': 'Placely Privacy Policy — Kaymer LLC',
-        'label': 'Placely legal',
-        'desc': 'The Placely privacy policy: account data, saved places, location, photos, storage, and account deletion.',
-        'related': ['<a href="placely-terms.html">Placely Terms of Use</a>',
-                    '<a href="placely-support.html">Placely Support</a>',
-                    '<a href="apps/placely.html">About Placely</a>'],
-    },
-    'placely-terms.html': {
-        'title': 'Placely Terms of Use — Kaymer LLC',
-        'label': 'Placely legal',
-        'desc': 'The Placely terms of use, covering accounts, user content, acceptable use, and account deletion.',
-        'related': ['<a href="placely-privacy.html">Placely Privacy Policy</a>',
-                    '<a href="placely-support.html">Placely Support</a>',
-                    '<a href="apps/placely.html">About Placely</a>'],
-    },
     'nos-beleza/privacy.html': {
         'title': 'Nôs Beleza Privacy Policy — Kaymer LLC',
         'label': 'Nôs Beleza legal',
@@ -1188,15 +1094,6 @@ LEGACY = {
         'related': ['<a href="privacy.html">Nôs Beleza Privacy Policy</a>',
                     '<a href="terms.html">Nôs Beleza Terms of Service</a>',
                     '<a href="../contact.html">Contact support</a>'],
-        'current': 'contact.html',
-    },
-    'placely-support.html': {
-        'title': 'Placely Support — Kaymer LLC',
-        'label': 'Placely support',
-        'desc': 'Help topics for Placely: account and sign-in, saving places, location and photos, and account deletion.',
-        'related': ['<a href="placely-privacy.html">Placely Privacy Policy</a>',
-                    '<a href="placely-terms.html">Placely Terms of Use</a>',
-                    '<a href="contact.html">Contact support</a>'],
         'current': 'contact.html',
     },
 }
