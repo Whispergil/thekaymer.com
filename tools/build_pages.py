@@ -52,21 +52,24 @@ APPS = [
         'status': 'available',
         'badge': 'Available',
         'tagline': 'Save it now. Find it later.',
-        'short': 'Field documentation for contractors and trades. Save jobsite records, '
-                 'photos, measurements, and reference points to the right project.',
-        'long': 'Findry is a field documentation and jobsite memory app for contractors, '
-                'utility crews, excavators, plumbers, electricians, inspectors, and anyone '
-                'who needs to record important jobsite information and find it again. Every '
-                'record belongs to a project, so details stay organised whether you return '
-                'to a job next week or in five years.',
+        'short': 'Jobsite documentation for contractors and field crews. Save photos, depths, '
+                 'measurements, buried utility details, and notes by project.',
+        'long': 'Findry is a jobsite record and field documentation app for contractors, '
+                'utility crews, excavators, plumbers, electricians, municipalities, and '
+                'inspectors. Document buried pipes and utility installations with photos, '
+                'depths, measurements, materials, valves, reference points, and field notes. '
+                'Every record belongs to a project, so important details are easier to find '
+                'when you return to a job days, months, or years later.',
         'icon': 'assets/img/findry-icon.png',
         'icon_webp': 'assets/img/findry-icon.webp',
-        'platform': 'iPhone — requires iOS 16.4 or later',
-        'store_name': 'Apple App Store',
+        'platform': 'iPhone (iOS 16.4 or later) and Android (7.0 or later)',
+        'store_name': 'Apple App Store and Google Play',
         'store_url': 'https://apps.apple.com/us/app/findry/id6773192473',
+        'play_url': 'https://play.google.com/store/apps/details?id=com.whisper92.findry',
+        'operating_system': 'iOS 16.4 or later; Android 7.0 or later',
         'price': 'Free, with an optional Findry Pro subscription',
-        'category': 'Productivity',
-        'released': 'August 15, 2026',
+        'category': 'Productivity and tools',
+        'released': 'iPhone: August 15, 2026; Android: September 18, 2026',
         'privacy': 'findry/privacy.html',
         'terms': 'findry/terms.html',
         'shots': [
@@ -75,9 +78,16 @@ APPS = [
             ('assets/img/findry-screenshot-3', 'Findry app store screenshot: the project list, with each project showing its saved record count.'),
         ],
         'features': [
-            ('Save records in seconds', 'Capture photos, depths, measurements, pipe sizes, materials, valve locations, reference points, and field notes before they are forgotten.'),
-            ('Organise every project', 'Each project keeps its own records, photos, reference points, and notes, from a residential repair to a large infrastructure installation.'),
-            ('Find it later', 'Search and browse your saved field information when you come back to a job — next week or next year.'),
+            ('Document buried pipes and utilities', 'Save photos, depths, measurements, pipe sizes, materials, valve locations, GPS reference points, warnings, and field notes after installation.'),
+            ('Keep jobsite records by project', 'Organise field information for residential repairs, commercial work, municipal utilities, and infrastructure projects instead of leaving it scattered across notebooks and camera rolls.'),
+            ('Find field information later', 'Search by project, record title, utility type, keywords, notes, and locations when you return to a job — next week or years later.'),
+        ],
+        'safety_note': ('Findry stores information entered by its users. It does not detect, '
+                        'verify, or professionally locate underground utilities, and it does '
+                        'not replace 811 or local utility-marking requirements.'),
+        'upcoming': [
+            ('Material Calculator', 'Calculate common jobsite material quantities from project measurements.'),
+            ('Truck Load Calculator', 'Estimate how many truckloads may be needed for a material quantity.'),
         ],
     },
     {
@@ -327,13 +337,20 @@ def badge(app):
 APPSTORE_SVG = ('<svg width="17" height="20" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">'
                 '<path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>')
 
+PLAYSTORE_SVG = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+                 '<path d="M8 5v14l11-7z"/></svg>')
 
-def store_button(app, small=False):
+
+def store_buttons(app, small=False):
     if app['status'] != 'available':
         return ''
     size = ' btn--sm' if small else ''
-    return (f'<a class="btn btn--appstore{size}" href="{app["store_url"]}">'
-            f'{APPSTORE_SVG}<span>Download on the App Store</span></a>')
+    buttons = [f'<a class="btn btn--appstore{size}" href="{app["store_url"]}">'
+               f'{APPSTORE_SVG}<span>Download on the App Store</span></a>']
+    if app.get('play_url'):
+        buttons.append(f'<a class="btn btn--playstore{size}" href="{app["play_url"]}">'
+                       f'{PLAYSTORE_SVG}<span>Get it on Google Play</span></a>')
+    return '\n          '.join(buttons)
 
 
 def shot(src, alt, up='', lazy=True):
@@ -393,7 +410,7 @@ def build_home():
           {hero_shot}
         </div>
         <div class="btn-row">
-          {store_button(findry, small=True)}
+          {store_buttons(findry, small=True)}
           <a class="btn btn--quiet" href="apps/findry.html">View Findry</a>
         </div>
       </div>
@@ -470,7 +487,7 @@ def build_home():
     }
     return page('index.html',
                 'Kaymer LLC — Independent Mobile App Studio',
-                'Kaymer LLC is an independent mobile app studio in Massachusetts building focused tools for everyday work and life, including Findry on the App Store.',
+                'Kaymer LLC is an independent mobile app studio in Massachusetts building focused tools for everyday work and life, including Findry for iPhone and Android.',
                 'index.html', body, structured)
 
 
@@ -488,8 +505,11 @@ def build_apps():
         links_html = ('\n            <div class="card-links">' + ''.join(links) + '</div>') if links else ''
 
         meta = f'\n          <p class="card-meta">{e(a["platform"])}</p>' if a.get('platform') else ''
-        store = ('\n            <a class="btn btn--quiet" href="' + a['store_url'] + '">App Store</a>') \
-            if a['status'] == 'available' else ''
+        store = ''
+        if a['status'] == 'available':
+            store += '\n            <a class="btn btn--quiet" href="' + a['store_url'] + '">App Store</a>'
+            if a.get('play_url'):
+                store += '\n            <a class="btn btn--quiet" href="' + a['play_url'] + '">Google Play</a>'
 
         cards.append(f'''        <article class="app-card" data-status="{a['status']}">
           {icon_markup(a)}
@@ -509,8 +529,8 @@ def build_apps():
       <p class="eyebrow">Our apps</p>
       <h1 id="apps-title">Tools built for real life.</h1>
       <div class="rule"></div>
-      <p class="lead">One app is on the App Store today. Three more are in development. This
-        page shows exactly where each one stands.</p>
+      <p class="lead">Findry is available for iPhone and Android today. Three more apps are in
+        development. This page shows exactly where each one stands.</p>
     </div>
   </section>
 
@@ -540,8 +560,8 @@ def build_apps():
       <div class="value-grid">
         <div class="value-item">
           <div class="badge-row" style="margin-bottom:var(--s-3)"><span class="badge badge--available">Available</span></div>
-          <p>Released and downloadable today. Findry is on the Apple App Store for iPhone. It
-            is not on Google Play yet.</p>
+          <p>Released and downloadable today. Findry is available on the Apple App Store for
+            iPhone and on Google Play for Android.</p>
         </div>
         <div class="value-item">
           <div class="badge-row" style="margin-bottom:var(--s-3)"><span class="badge badge--soon">Coming soon</span></div>
@@ -560,7 +580,7 @@ def build_apps():
 </main>
 '''
     return page('apps.html', 'Apps — Kaymer LLC',
-                'The Kaymer LLC app portfolio: Findry on the App Store, plus Nôs Beleza, Placely, and YardMatch in development.',
+                'The Kaymer LLC app portfolio: Findry for iPhone and Android, plus Nôs Beleza, Placely, and YardMatch in development.',
                 'apps.html', body)
 
 
@@ -570,7 +590,7 @@ def build_app_page(a):
 
     if a['status'] == 'available':
         actions = f'''<div class="btn-row">
-          {store_button(a)}
+          {store_buttons(a)}
           <a class="btn btn--quiet" href="{mailto(a['name'] + ' Support')}">Get {e(a['name'])} Support</a>
         </div>'''
     else:
@@ -599,6 +619,38 @@ def build_app_page(a):
           <h3>{e(t)}</h3>
           <p>{e(d)}</p>
         </div>''' for t, d in a['features'])
+
+    safety_block = ''
+    if a.get('safety_note'):
+        safety_block = f'''\n      <p class="note" style="margin-top:var(--s-6)"><strong>Documentation, not utility detection.</strong> {e(a["safety_note"])}</p>'''
+
+    upcoming = a.get('upcoming', [])
+    if upcoming:
+        upcoming_items = '\n'.join(
+            f'''        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>{e(t)}</h3>
+          <p>{e(d)}</p>
+        </div>''' for t, d in upcoming)
+        upcoming_block = f'''  <section class="section" aria-labelledby="coming-next">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Coming in the next update</p>
+        <h2 id="coming-next">More field tools are on the way.</h2>
+        <p class="lead">These calculators are planned for the next Findry update and are not
+          included in the current App Store or Google Play version yet.</p>
+      </div>
+      <div class="feature-list feature-list--two">
+{upcoming_items}
+      </div>
+    </div>
+  </section>
+
+'''
+        details_class = 'section section--tinted'
+    else:
+        upcoming_block = ''
+        details_class = 'section'
 
     meta = []
     if a.get('platform'):
@@ -642,8 +694,9 @@ def build_app_page(a):
             "@type": "SoftwareApplication",
             "name": a['name'],
             "applicationCategory": "BusinessApplication",
-            "operatingSystem": "iOS 16.4",
-            "url": a['store_url'],
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": f'{SITE}apps/{a["slug"]}.html',
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
             "author": {"@type": "Organization", "name": "Kaymer LLC"},
             "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
         }
@@ -674,11 +727,11 @@ def build_app_page(a):
       </div>
       <div class="feature-list">
 {features}
-      </div>
+      </div>{safety_block}
     </div>
   </section>
 
-  <section class="section" aria-labelledby="details">
+{upcoming_block}  <section class="{details_class}" aria-labelledby="details">
     <div class="shell">
       <div class="section-head">
         <h2 id="details">Details</h2>
@@ -703,8 +756,14 @@ def build_app_page(a):
 
 </main>
 '''
-    return page(f'apps/{a["slug"]}.html', f'{a["name"]} — Kaymer LLC',
-                a['short'], 'apps.html', body, structured, og_type='article')
+    title = f'{a["name"]} — Kaymer LLC'
+    description = a['short']
+    if a['slug'] == 'findry':
+        title = 'Findry — Jobsite & Underground Utility Records'
+        description = ('Document buried pipes, utility installations, depths, measurements, '
+                       'photos, and field notes by project with Findry for iPhone and Android.')
+    return page(f'apps/{a["slug"]}.html', title,
+                description, 'apps.html', body, structured, og_type='article')
 
 
 # ============================================================== about page ===
