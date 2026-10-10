@@ -1034,7 +1034,7 @@ def build_findry_legal():
     written = []
     for path, title, label, desc in [
         ('findry/privacy.html', 'Findry Privacy Policy — Kaymer LLC', 'Findry legal',
-         'The Findry privacy policy: what the app collects, how it is used and stored, and how to delete your account. Effective August 02, 2026.'),
+         'The Findry privacy policy: what the app collects, how it is used and stored, and how to delete your account. Effective October 9, 2026.'),
         ('findry/terms.html', 'Findry Terms of Service — Kaymer LLC', 'Findry legal',
          'The Findry terms of service, covering accounts, the free plan and Findry Pro, subscriptions, and safety. Effective August 02, 2026.'),
     ]:
