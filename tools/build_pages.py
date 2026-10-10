@@ -22,6 +22,7 @@ import html
 import json
 import os
 import re
+from urllib.parse import urljoin, urlsplit, urlunsplit
 
 # Repository root. Defaults to the directory containing tools/, so the script
 # runs from a checkout anywhere; --root points it at an isolated copy for
@@ -203,9 +204,21 @@ def header(current, up):
 '''
 
 
+def app_route(app):
+    return f"apps/{app['slug']}/"
+
+
+def canonical_route(path):
+    if path == 'index.html':
+        return ''
+    if path.endswith('/index.html'):
+        return path[:-len('index.html')]
+    return path[:-len('.html')] + '/' if path.endswith('.html') else path
+
+
 def footer(up):
     app_links = '\n'.join(
-        '        <li><a href="{}apps/{}.html">{}</a></li>'.format(up, a['slug'], e(a['name']))
+        '        <li><a href="{}{}">{}</a></li>'.format(up, app_route(a), e(a['name']))
         for a in APPS)
     return f'''<footer class="site-footer">
   <div class="shell">
@@ -249,9 +262,48 @@ def footer(up):
 '''
 
 
+def clean_links(markup, source_path):
+    """Resolve local references against their original page before moving it.
+    Root-relative links also make legal-body regeneration safe on later runs.
+    External URLs and fragment-only links are preserved verbatim.
+    """
+    def replace(match):
+        prefix, value, quote = match.groups()
+        decoded = html.unescape(value)
+        parsed = urlsplit(decoded)
+        if not parsed.path or parsed.scheme or parsed.netloc:
+            return match.group(0)
+        resolved = urlsplit(urljoin(SITE + source_path, decoded))
+        route = canonical_route(resolved.path.lstrip('/'))
+        target = urlunsplit(('', '', '/' + route, resolved.query, resolved.fragment))
+        return prefix + html.escape(target, quote=True) + quote
+    return re.sub(r'((?:href|src|srcset)=["\'])([^"\']+)(["\'])', replace, markup)
+
+
+def write_redirect(path, route):
+    target = '/' + route
+    out = f'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page moved — Kaymer LLC</title>
+<link rel="canonical" href="{SITE}{route}">
+<script>window.location.replace({json.dumps(target)} + window.location.search + window.location.hash);</script>
+<noscript><meta http-equiv="refresh" content="0; url={target}"></noscript>
+</head>
+<body><p>This page has moved. <a href="{target}">Continue to the page</a>.</p></body>
+</html>
+'''
+    full = os.path.join(ROOT, path)
+    os.makedirs(os.path.dirname(full), exist_ok=True)
+    with open(full, 'w', encoding='utf-8') as fh:
+        fh.write(out)
+
+
 def page(path, title, description, current, body, structured=None, og_type='website'):
-    up = '../' if '/' in path else ''
-    canonical = '' if path == 'index.html' else path
+    up = '../' * path.count('/')
+    canonical = canonical_route(path)
     out = head(title, description, canonical, up, og_type)
     out += header(current, up)
     out += body
@@ -263,11 +315,20 @@ def page(path, title, description, current, body, structured=None, og_type='webs
     if structured:
         out = out.replace('</head>', '<script type="application/ld+json">\n{}\n</script>\n</head>'.format(
             json.dumps(structured, indent=2, ensure_ascii=False)))
-    full = os.path.join(ROOT, path)
+    # Also clean explicit /index.html URLs without redirecting normal visits.
+    out = out.replace('</head>',
+                      '<script>if (window.location.pathname.endsWith("/index.html")) { '
+                      'window.location.replace(window.location.pathname.slice(0, -10) + '
+                      'window.location.search + window.location.hash); }</script>\n</head>')
+    out = clean_links(out, path)
+    output_path = canonical + 'index.html'
+    full = os.path.join(ROOT, output_path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, 'w', encoding='utf-8') as fh:
         fh.write(out)
-    return path
+    if path != output_path:
+        write_redirect(path, canonical)
+    return output_path
 
 
 # ------------------------------------------------------------- app helpers ---
@@ -336,7 +397,7 @@ def build_home():
           <div class="badge-row">{badge(a)}</div>
           <p>{e(a['short'])}</p>
           <div class="card-actions">
-            <a class="btn btn--quiet" href="apps/{a['slug']}.html">About {e(a['name'])}</a>
+            <a class="btn btn--quiet" href="{app_route(a)}">About {e(a['name'])}</a>
           </div>
         </article>''')
     cards = '\n'.join(cards)
@@ -373,7 +434,7 @@ def build_home():
         </div>
         <div class="btn-row">
           {store_buttons(findry, small=True)}
-          <a class="btn btn--quiet" href="apps/findry.html">View Findry</a>
+          <a class="btn btn--quiet" href="apps/findry/">View Findry</a>
         </div>
       </div>
 
@@ -479,7 +540,7 @@ def build_apps():
           <div class="badge-row">{badge(a)}</div>{meta}
           <p>{e(a['short'])}</p>
           <div class="card-actions">
-            <a class="btn btn--secondary btn--sm" href="apps/{a['slug']}.html">View {e(a['name'])}</a>{store}{links_html}
+            <a class="btn btn--secondary btn--sm" href="{app_route(a)}">View {e(a['name'])}</a>{store}{links_html}
           </div>
         </article>''')
     cards = '\n'.join(cards)
@@ -542,7 +603,8 @@ def build_apps():
 
 # ========================================================== app detail page ==
 def build_app_page(a):
-    up = '../'
+    path = 'apps/findry/index.html' if a['slug'] == 'findry' else f"apps/{a['slug']}.html"
+    up = '../' * path.count('/')
 
     if a['status'] == 'available':
         actions = f'''<div class="btn-row">
@@ -651,7 +713,7 @@ def build_app_page(a):
             "name": a['name'],
             "applicationCategory": "BusinessApplication",
             "operatingSystem": a.get('operating_system', a.get('platform', '')),
-            "url": f'{SITE}apps/{a["slug"]}.html',
+            "url": SITE + app_route(a),
             "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
             "author": {"@type": "Organization", "name": "Kaymer LLC"},
             "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -718,7 +780,7 @@ def build_app_page(a):
         title = 'Findry — Jobsite & Underground Utility Records'
         description = ('Document buried pipes, utility installations, depths, measurements, '
                        'photos, and field notes by project with Findry for iPhone and Android.')
-    return page(f'apps/{a["slug"]}.html', title,
+    return page(path, title,
                 description, 'apps.html', body, structured, og_type='article')
 
 
@@ -925,6 +987,17 @@ def build_support():
 
 # ============================================================== legal index ==
 def build_legal_index():
+    # The URL migration must preserve the reviewed index copy and date labels.
+    source = os.path.join(ROOT, 'legal/index.html')
+    if not os.path.isfile(source):
+        source = os.path.join(ROOT, 'legal.html')
+    if os.path.isfile(source):
+        markup = open(source, encoding='utf-8').read()
+        existing_main = re.search(r'(?s)<main\b.*?</main>', markup)
+        if existing_main:
+            return page('legal.html', 'Legal — Kaymer LLC',
+                        'Privacy policies, terms, and support documents for Kaymer LLC, Findry, and Nôs Beleza.',
+                        'legal.html', existing_main.group(0) + '\n')
     def row(href, label, note):
         return f'''        <a href="{href}">
           <span class="row-label">{label}<span class="row-note">{note}</span></span>
@@ -1052,7 +1125,7 @@ def build_findry_legal():
         other_label = 'Findry Terms of Service' if path.endswith('privacy.html') else 'Findry Privacy Policy'
         related = [
             f'<a href="{other}">{other_label}</a>',
-            '<a href="../apps/findry.html">About Findry</a>',
+            '<a href="../apps/findry/">About Findry</a>',
             '<a href="../contact.html">Findry support</a>',
         ]
         written.append(legal_shell(path, title, desc, 'Findry', label, effective,
@@ -1107,7 +1180,9 @@ def read_approved_legal(path):
     """Return (body_html, updated_line) from a document already in the current
     shell. This is the source of truth: whatever wording is committed is what
     gets re-emitted."""
-    src = open(os.path.join(ROOT, path), encoding='utf-8').read()
+    clean_path = os.path.join(ROOT, canonical_route(path), 'index.html')
+    source = clean_path if os.path.isfile(clean_path) else os.path.join(ROOT, path)
+    src = open(source, encoding='utf-8').read()
     body = re.search(r'(?s)<div class="legal-body">\n(.*?)\n    </div>', src).group(1)
     updated = re.search(r'(?s)<p class="updated">(.*?)</p>', src).group(1).strip()
     return body, updated
@@ -1147,7 +1222,7 @@ def build_extras(pages):
         fh.write('User-agent: *\nAllow: /\n\nSitemap: {}sitemap.xml\n'.format(SITE))
 
     urls = '\n'.join(
-        '  <url>\n    <loc>{}{}</loc>\n  </url>'.format(SITE, '' if p == 'index.html' else p)
+        '  <url>\n    <loc>{}{}</loc>\n  </url>'.format(SITE, canonical_route(p))
         for p in pages)
     with open(os.path.join(ROOT, 'sitemap.xml'), 'w') as fh:
         fh.write('<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -1168,6 +1243,7 @@ def main():
     for p in LEGACY:
         pages.append(rebuild_legacy(p))
 
+    write_redirect('apps/findry.html', 'apps/findry/')
     build_extras(pages)
 
     print('generated {} pages:'.format(len(pages)))
