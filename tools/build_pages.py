@@ -255,7 +255,11 @@ def page(path, title, description, current, body, structured=None, og_type='webs
     out = head(title, description, canonical, up, og_type)
     out += header(current, up)
     out += body
-    out += footer(up)
+    page_footer = footer(up)
+    if path == 'about.html':
+        page_footer = page_footer.replace('<span>Massachusetts, USA</span>',
+                                          '<span>United States</span>')
+    out += page_footer
     if structured:
         out = out.replace('</head>', '<script type="application/ld+json">\n{}\n</script>\n</head>'.format(
             json.dumps(structured, indent=2, ensure_ascii=False)))
@@ -733,15 +737,16 @@ def build_about():
 
   <section class="section section--flush-top">
     <div class="shell prose">
-      <p>Kaymer LLC is an independent mobile app studio based in Massachusetts, USA. We design
-        and build our own apps rather than taking on client work.</p>
-      <p>Every app starts the same way: with a specific, practical problem that someone deals
-        with regularly, and that existing software handles badly or not at all. Findry came
-        from field crews needing to remember exactly where something was buried. The apps still
-        in development each began the same way.</p>
-      <p>We keep the catalogue small on purpose. A studio this size can either ship many
-        shallow apps or a few that hold up over years of real use, and we would rather do the
-        second.</p>
+      <p>Kaymer LLC is an independent mobile app studio based in the United States. We design
+        and build our own apps around practical needs, with a focus on simplicity, usefulness,
+        and thoughtful development.</p>
+      <p>Findry helps contractors and field crews document jobsites, save photos and measurements,
+        and keep reference points for underground work—making important project information
+        easier to find when it’s needed.</p>
+      <p>Nôs Beleza is our beauty-services platform in development for Cape Verde, designed to
+        help people discover local businesses and connect with beauty professionals.</p>
+      <p>We keep our focus on a small collection of apps, improving each one through careful
+        testing, real-world feedback, and ongoing updates.</p>
     </div>
   </section>
 
@@ -753,21 +758,20 @@ def build_about():
       <div class="value-grid">
         <div class="value-item">
           <div class="rule"></div>
-          <h3>Practical before clever</h3>
-          <p>Features earn their place by making a real task faster, not by being interesting
-            to build.</p>
+          <h3>Built for real tasks</h3>
+          <p>We focus on features that help people organize information, save time, and make
+            everyday work easier.</p>
         </div>
         <div class="value-item">
           <div class="rule"></div>
-          <h3>Honest about status</h3>
-          <p>An app is listed as available only once it is genuinely downloadable. Everything
-            else is labelled as what it is.</p>
+          <h3>Clear about availability</h3>
+          <p>We clearly distinguish available apps and features from those still in development.</p>
         </div>
         <div class="value-item">
           <div class="rule"></div>
           <h3>Clear about data</h3>
-          <p>Each released app publishes its own privacy policy describing what it collects and
-            where that information lives.</p>
+          <p>Each released app has its own privacy policy explaining how information is collected,
+            used, stored, and managed.</p>
         </div>
       </div>
     </div>
@@ -778,7 +782,7 @@ def build_about():
       <div class="email-card">
         <div class="email-card-body">
           <h2>Get in touch</h2>
-          <p>Questions about an app, or about the studio.</p>
+          <p>Questions about our apps or about Kaymer LLC? Visit our support page.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--primary" href="contact.html">Get Support</a>
@@ -790,7 +794,7 @@ def build_about():
 </main>
 '''
     return page('about.html', 'About — Kaymer LLC',
-                'Kaymer LLC is an independent mobile app studio based in Massachusetts, USA, building focused tools for everyday work and life.',
+                'Kaymer LLC is an independent mobile app studio based in the United States, building focused tools for everyday work and life.',
                 'about.html', body)
 
 
