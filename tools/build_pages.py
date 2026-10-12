@@ -1021,6 +1021,129 @@ def build_findry_truck_load_calculator():
                 description, 'apps.html', body, structured, og_type='article')
 
 
+# ============================================ Findry underground utility records ===
+def build_findry_underground_utility_records():
+    a = APP['findry']
+    path = 'apps/findry/underground-utility-records/index.html'
+    up = '../../../'
+    description = ('Document buried pipes, underground utilities, measurements, photos, '
+                   'reference points, and field notes by project with Findry.')
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Findry field records</p>
+        <h1>Underground Utility &amp; Jobsite Records</h1>
+        <p class="tagline">Document the work now so the details are easier to find later.</p>
+        <p class="lead">Findry helps contractors and field crews document buried pipes,
+          underground utility installations, measurements, photos, reference points, warnings,
+          and field notes. Records stay organized by project so important jobsite information
+          is easier to find when you return to the work later.</p>
+        <div class="btn-row">
+          {store_buttons(a)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="utility-record-features">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Field documentation</p>
+        <h2 id="utility-record-features">Keep buried utility details with the project they belong to.</h2>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Document buried pipes and utilities</h3>
+          <p>Save pipe sizes, materials, depths, measurements, valve information, warnings,
+            photos, and notes after installation or repair work.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Save reference measurements</h3>
+          <p>Record distances and reference points from visible jobsite features so a saved
+            location is easier to understand when the project is revisited.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Organize records by project</h3>
+          <p>Keep field records attached to the correct project instead of scattering
+            measurements, photos, and notes across notebooks and camera rolls.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="find-later">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Find it later</p>
+        <h2 id="find-later">Search the record when the job brings you back.</h2>
+        <p class="lead">Use project details, record titles, utility types, keywords, notes,
+          and saved jobsite information to locate the record you need without relying on memory.</p>
+      </div>
+      <p class="note"><strong>Documentation, not utility detection.</strong> Findry stores
+        information entered by its users. It does not detect, verify, or professionally locate
+        underground utilities, and it does not replace 811 or local utility-marking requirements.</p>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="findry-records">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="findry-records">Field records, reference points, photos, and calculators in one app.</h2>
+          <p>Findry combines project-based jobsite documentation with search, Find Later,
+            Emergency Lookup, the Material Calculator, and the Truck Load Calculator.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Underground Utility & Jobsite Records | Findry",
+        "url": SITE + "apps/findry/underground-utility-records/",
+        "description": description,
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "Findry",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": SITE + app_route(a),
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
+            "featureList": [
+                "Underground utility records",
+                "Project-based jobsite documentation",
+                "Photos and measurements",
+                "Reference points and field notes",
+                "Search and Find Later",
+            ],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+    }
+
+    return page(path, 'Underground Utility & Jobsite Records | Findry',
+                description, 'apps.html', body, structured, og_type='article')
+
+
 # ============================================================== about page ===
 def build_about():
     body = '''<main id="main">
@@ -1475,6 +1598,7 @@ def main():
         pages.append(build_app_page(a))
     pages.append(build_findry_material_calculator())
     pages.append(build_findry_truck_load_calculator())
+    pages.append(build_findry_underground_utility_records())
     pages.append(build_about())
     pages.append(build_support())
     pages.append(build_legal_index())
