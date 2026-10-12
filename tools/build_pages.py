@@ -784,6 +784,124 @@ def build_app_page(a):
                 description, 'apps.html', body, structured, og_type='article')
 
 
+# =============================================== Findry material calculator ===
+def build_findry_material_calculator():
+    a = APP['findry']
+    path = 'apps/findry/material-calculator/index.html'
+    up = '../../../'
+    description = ('Estimate jobsite material volume, weight, and truck trips from field '
+                   'measurements with Findry’s Material Calculator for construction.')
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Findry field tools</p>
+        <h1>Material Calculator for Construction</h1>
+        <p class="tagline">Estimate material quantities from jobsite measurements.</p>
+        <p class="lead">Findry’s Material Calculator helps contractors and field crews turn
+          measurements into practical jobsite estimates. Calculate material volume, view an
+          estimated material weight, and estimate truck trips based on the capacity you enter.</p>
+        <div class="btn-row">
+          {store_buttons(a)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="material-features">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Construction material estimates</p>
+        <h2 id="material-features">From measurements to a usable field estimate.</h2>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Calculate material volume</h3>
+          <p>Enter project measurements and calculate material volume using Imperial or Metric units.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>View estimated material weight</h3>
+          <p>Use the selected material and calculated quantity to view an estimated material weight.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Estimate truck trips</h3>
+          <p>Enter a truck capacity to estimate how many trips may be needed for the calculated quantity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="history">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Calculator History</p>
+        <h2 id="history">Save a calculation and come back to it.</h2>
+        <p class="lead">Completed calculations can be saved to Calculator History and reopened
+          later, making it easier to reuse field estimates without starting over.</p>
+      </div>
+      <p class="note"><strong>Estimates only.</strong> Calculator results are estimates. Findry
+        does not determine legal payload, vehicle ratings, axle compliance, or safe hauling
+        capacity. Verify project requirements and hauling limits before relying on an estimate.</p>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="findry-material">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="findry-material">Keep the estimate with the rest of your field workflow.</h2>
+          <p>Findry combines field calculators with project records, measurements, photos,
+            reference points, notes, search, and jobsite documentation.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Material Calculator for Construction | Findry",
+        "url": SITE + "apps/findry/material-calculator/",
+        "description": description,
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "Findry",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": SITE + app_route(a),
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
+            "featureList": [
+                "Material volume estimates",
+                "Estimated material weight",
+                "Estimated truck trips",
+                "Calculator History",
+            ],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+    }
+
+    return page(path, 'Material Calculator for Construction | Findry',
+                description, 'apps.html', body, structured, og_type='article')
+
+
 # ============================================================== about page ===
 def build_about():
     body = '''<main id="main">
@@ -1236,6 +1354,7 @@ def main():
     pages.append(build_apps())
     for a in APPS:
         pages.append(build_app_page(a))
+    pages.append(build_findry_material_calculator())
     pages.append(build_about())
     pages.append(build_support())
     pages.append(build_legal_index())
