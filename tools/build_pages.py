@@ -902,6 +902,125 @@ def build_findry_material_calculator():
                 description, 'apps.html', body, structured, og_type='article')
 
 
+# ============================================== Findry truck load calculator ===
+def build_findry_truck_load_calculator():
+    a = APP['findry']
+    path = 'apps/findry/truck-load-calculator/index.html'
+    up = '../../../'
+    description = ('Estimate truck trips from material quantity and truck capacity with '
+                   'Findry’s Truck Load Calculator for construction and field work.')
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Findry field tools</p>
+        <h1>Truck Load Calculator for Construction</h1>
+        <p class="tagline">Estimate truck trips from quantity and truck capacity.</p>
+        <p class="lead">Findry’s Truck Load Calculator helps contractors and field crews
+          estimate how many truck trips may be needed for a material quantity. Enter the
+          quantity, choose supported volume or weight units, and enter the truck capacity
+          you want to use for the estimate.</p>
+        <div class="btn-row">
+          {store_buttons(a)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="truck-features">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Truck trip estimates</p>
+        <h2 id="truck-features">Turn a material quantity into a quick trip estimate.</h2>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Enter the material quantity</h3>
+          <p>Start with the amount of material you need to move using a supported volume or weight unit.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Set the truck capacity</h3>
+          <p>Use a truck capacity that matches the vehicle or hauling setup you are estimating.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Estimate the number of trips</h3>
+          <p>Findry calculates the estimated trips required from the quantity and capacity you entered.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="truck-history">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Calculator History</p>
+        <h2 id="truck-history">Save estimates and reuse them later.</h2>
+        <p class="lead">Completed truck-load calculations can be saved to Calculator History
+          and reopened later when you need to review or reuse the estimate.</p>
+      </div>
+      <p class="note"><strong>Estimates only.</strong> Findry does not determine legal payload,
+        gross vehicle weight ratings, axle compliance, road restrictions, or safe hauling
+        capacity. Always verify the actual vehicle, material, and legal requirements before hauling.</p>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="findry-truck">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="findry-truck">Keep truck estimates with the rest of your field workflow.</h2>
+          <p>Findry combines field calculators with project records, measurements, photos,
+            reference points, notes, search, and jobsite documentation.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Truck Load Calculator for Construction | Findry",
+        "url": SITE + "apps/findry/truck-load-calculator/",
+        "description": description,
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "Findry",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": SITE + app_route(a),
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
+            "featureList": [
+                "Truck trip estimates",
+                "Volume and weight units",
+                "Custom truck capacity",
+                "Calculator History",
+            ],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+    }
+
+    return page(path, 'Truck Load Calculator for Construction | Findry',
+                description, 'apps.html', body, structured, og_type='article')
+
+
 # ============================================================== about page ===
 def build_about():
     body = '''<main id="main">
@@ -1355,6 +1474,7 @@ def main():
     for a in APPS:
         pages.append(build_app_page(a))
     pages.append(build_findry_material_calculator())
+    pages.append(build_findry_truck_load_calculator())
     pages.append(build_about())
     pages.append(build_support())
     pages.append(build_legal_index())
