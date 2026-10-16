@@ -700,6 +700,20 @@ def build_app_page(a):
                        'does not exist, this page links nowhere — the documents will appear here when '
                        'they are written.</p>')
 
+    download_block = ''
+    if a['slug'] == 'findry' and a['status'] == 'available':
+        download_block = f'''
+      <div class="email-card" style="margin-top:var(--s-7)">
+        <div class="email-card-body">
+          <h3 class="ui-head">Get Findry</h3>
+          <p>Available for iPhone and Android.</p>
+        </div>
+        <div class="btn-row">
+          {store_buttons(a)}
+        </div>
+      </div>
+'''
+
     grid_mod = '' if a.get('shots') else ' app-hero-grid--single'
 
     structured = None
@@ -753,7 +767,7 @@ def build_app_page(a):
       </div>
       <dl class="meta-list">
 {meta_rows}
-      </dl>
+      </dl>{download_block}
 
       <div class="email-card" style="margin-top:var(--s-7)">
         <div class="email-card-body">
