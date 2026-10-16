@@ -252,7 +252,7 @@ def footer(up):
     </div>
     <div class="footer-base">
       <span>&copy; 2026 Kaymer LLC. All rights reserved.</span>
-      <span>Massachusetts, USA</span>
+      <span>United States</span>
     </div>
   </div>
 </footer>
@@ -308,9 +308,6 @@ def page(path, title, description, current, body, structured=None, og_type='webs
     out += header(current, up)
     out += body
     page_footer = footer(up)
-    if path == 'about.html':
-        page_footer = page_footer.replace('<span>Massachusetts, USA</span>',
-                                          '<span>United States</span>')
     out += page_footer
     if structured:
         out = out.replace('</head>', '<script type="application/ld+json">\n{}\n</script>\n</head>'.format(
@@ -958,9 +955,8 @@ def build_support():
     <div class="shell">
       <div class="section-head">
         <h2 id="direct">Contact the studio</h2>
-        <p class="lead">There is no contact form here on purpose: a form that silently drops
-          messages is worse than no form. Email is the whole support system, and it is read by
-          the people who build the apps.</p>
+        <p class="lead">Email us for help with our apps. Your message goes directly to the
+          people who build them.</p>
       </div>
       <div class="email-card">
         <div class="email-card-body">
@@ -970,8 +966,10 @@ def build_support():
         </div>
         <div class="btn-row">
           <a class="btn btn--primary" href="mailto:{EMAIL}">{EMAIL}</a>
+          <button class="btn btn--secondary" type="button" id="copy-support-email" hidden>Copy email address</button>
         </div>
       </div>
+      <p id="copy-email-status" class="note" role="status" aria-live="polite" aria-atomic="true"></p>
       <p class="note" style="margin-top:var(--s-5)">Findry's own legal documents list
         <a href="mailto:support@findryapp.com">support@findryapp.com</a> for questions about
         those documents. Both addresses reach Kaymer LLC.</p>

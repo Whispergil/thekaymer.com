@@ -1,8 +1,32 @@
 /* Kaymer LLC — shared behaviour.
-   Two progressive enhancements only: the mobile menu and the apps filter.
+   Progressive enhancements: the mobile menu, apps filter, and support email copy.
    Every page renders its full content without this file. */
 (function () {
   'use strict';
+
+  /* Copy only the public support address; keep the mail link usable without JS. */
+  var copyEmail = document.getElementById('copy-support-email');
+  var copyStatus = document.getElementById('copy-email-status');
+  if (copyEmail && copyStatus) {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      copyEmail.hidden = false;
+      copyEmail.addEventListener('click', async function () {
+        if (copyEmail.disabled) return;
+        copyEmail.disabled = true;
+        copyStatus.textContent = '';
+        try {
+          await navigator.clipboard.writeText('support@thekaymer.com');
+          copyStatus.textContent = 'Email address copied: support@thekaymer.com';
+        } catch (error) {
+          copyStatus.textContent = 'Could not copy automatically. Select and copy support@thekaymer.com, or use the email link.';
+        } finally {
+          copyEmail.disabled = false;
+        }
+      });
+    } else {
+      copyStatus.textContent = 'You can select and copy support@thekaymer.com, or use the email link.';
+    }
+  }
 
   /* ------------------------------------------------------- mobile menu -- */
   var toggle = document.querySelector('.nav-toggle');

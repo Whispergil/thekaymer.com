@@ -404,6 +404,7 @@ h4 { font-size: 1.02rem; }
 .btn--sm { min-height: 44px; padding: 0.6rem 1.15rem; font-size: 0.9rem; }
 
 .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-4); }
+#copy-support-email[hidden] { display: none; }
 
 /* ----------------------------------------------------------------- hero -- */
 .hero { padding-block: clamp(2.75rem, 7vw, 5rem) var(--s-section); }
