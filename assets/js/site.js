@@ -269,11 +269,20 @@
 
     var nearest = function () {
       var railBox = rail.getBoundingClientRect();
+      var railCenter = railBox.left + railBox.width / 2;
       var best = 0;
-      var bestDist = Infinity;
+      var bestVisible = -1;
       frames.forEach(function (frame, i) {
-        var dist = Math.abs(frame.getBoundingClientRect().left - railBox.left);
-        if (dist < bestDist) { bestDist = dist; best = i; }
+        var box = frame.getBoundingClientRect();
+        var visible = Math.min(box.right, railBox.right) - Math.max(box.left, railBox.left);
+        if (visible < 0) visible = 0;
+        var closer = Math.abs((box.left + box.width / 2) - railCenter);
+        var bestBox = frames[best].getBoundingClientRect();
+        var bestCloser = Math.abs((bestBox.left + bestBox.width / 2) - railCenter);
+        if (visible > bestVisible + 1 || (Math.abs(visible - bestVisible) <= 1 && closer < bestCloser)) {
+          bestVisible = visible;
+          best = i;
+        }
       });
       return best;
     };
@@ -281,26 +290,61 @@
     var paint = function () {
       var max = rail.scrollWidth - rail.clientWidth;
       var overflowing = max > 8;
+      var index = frames.length ? nearest() : 0;
       rail.classList.toggle('is-overflowing', overflowing);
-      rail.classList.toggle('is-at-end', rail.scrollLeft >= max - 8);
-      prev.disabled = rail.scrollLeft <= 8;
-      next.disabled = !overflowing || rail.scrollLeft >= max - 8;
-      if (indexEl) indexEl.textContent = String(nearest() + 1);
+      rail.classList.toggle('is-at-end', !overflowing || index >= frames.length - 1 || rail.scrollLeft >= max - 8);
+      prev.disabled = !overflowing || index <= 0;
+      next.disabled = !overflowing || index >= frames.length - 1;
+      if (indexEl) indexEl.textContent = String(index + 1);
     };
 
     var go = function (dir) {
       var i = Math.min(frames.length - 1, Math.max(0, nearest() + dir));
       var frame = frames[i];
       if (!frame) return;
-      var left = frame.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft;
-      rail.scrollTo({ left: left, behavior: motionOK ? 'smooth' : 'auto' });
+      var frameBox = frame.getBoundingClientRect();
+      var railBox = rail.getBoundingClientRect();
+      /* Match scroll-snap-align: center. A left-edge target is closer to the
+         last snap point on a wide rail, so the browser would skip a slide. */
+      var delta = (frameBox.left + frameBox.width / 2) - (railBox.left + railBox.width / 2);
+      rail.scrollTo({ left: rail.scrollLeft + delta, behavior: motionOK ? 'smooth' : 'auto' });
     };
+
+    /* Lazy images have no intrinsic size yet when this deferred script runs.
+       Remeasure when they decode or the rail's box changes, instead of waiting
+       for the user to scroll. */
+    var paintQueued = false;
+    var schedulePaint = function () {
+      if (paintQueued) return;
+      paintQueued = true;
+      window.requestAnimationFrame(function () {
+        paintQueued = false;
+        paint();
+      });
+    };
+
+    frames.forEach(function (frame) {
+      var img = frame.querySelector('img');
+      if (!img || img.complete) return;
+      img.addEventListener('load', schedulePaint);
+    });
+
+    if ('ResizeObserver' in window) {
+      var observer = new ResizeObserver(schedulePaint);
+      observer.observe(rail);
+      frames.forEach(function (frame) { observer.observe(frame); });
+    }
 
     prev.addEventListener('click', function () { go(-1); });
     next.addEventListener('click', function () { go(1); });
     rail.addEventListener('scroll', paint, { passive: true });
-    window.addEventListener('resize', paint);
-    paint();
+    rail.addEventListener('keydown', function (event) {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      go(event.key === 'ArrowRight' ? 1 : -1);
+    });
+    window.addEventListener('resize', schedulePaint);
+    schedulePaint();
   });
 
 }());
