@@ -119,11 +119,9 @@ APPS = [
 APP = {a['slug']: a for a in APPS}
 
 NAV = [
-    ('index.html', 'Home'),
     ('apps.html', 'Apps'),
     ('about.html', 'About'),
     ('contact.html', 'Support'),
-    ('legal.html', 'Legal'),
 ]
 
 
@@ -141,8 +139,10 @@ def mailto(subject):
 
 
 # ------------------------------------------------------------------- shell ---
-def head(title, description, canonical, up, og_type='website'):
+def head(title, description, canonical, up, og_type='website', og_image=None, og_alt=None):
     p = up
+    image = SITE + (og_image or 'assets/img/og-kaymer.jpg')
+    image_alt = html.escape(og_alt or 'Kaymer LLC — practical apps, thoughtfully built.')
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,14 +156,14 @@ def head(title, description, canonical, up, og_type='website'):
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(description)}">
 <meta property="og:url" content="{SITE}{canonical}">
-<meta property="og:image" content="{SITE}assets/img/og-kaymer.jpg">
+<meta property="og:image" content="{image}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Kaymer LLC — practical apps, thoughtfully built.">
+<meta property="og:image:alt" content="{image_alt}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{html.escape(title)}">
 <meta name="twitter:description" content="{html.escape(description)}">
-<meta name="twitter:image" content="{SITE}assets/img/og-kaymer.jpg">
+<meta name="twitter:image" content="{image}">
 <meta name="theme-color" content="#FCFAF6">
 <link rel="icon" href="{p}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="{p}assets/img/apple-touch-icon.png">
@@ -301,10 +301,10 @@ def write_redirect(path, route):
         fh.write(out)
 
 
-def page(path, title, description, current, body, structured=None, og_type='website'):
+def page(path, title, description, current, body, structured=None, og_type='website', og_image=None, og_alt=None):
     up = '../' * path.count('/')
     canonical = canonical_route(path)
-    out = head(title, description, canonical, up, og_type)
+    out = head(title, description, canonical, up, og_type, og_image, og_alt)
     out += header(current, up)
     out += body
     page_footer = footer(up)
@@ -357,8 +357,8 @@ def badge(app):
 APPSTORE_SVG = ('<svg width="17" height="20" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">'
                 '<path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>')
 
-PLAYSTORE_SVG = ('<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-                 '<path d="M8 5v14l11-7z"/></svg>')
+PLAYSTORE_SVG = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
+                 '<path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.515-3.521 3.919 2.219c1.574.885 1.574 2.692 0 3.577zm-5.322-2.278L6.372 21.344c-.518.505-1.416.156-1.416-.553V3.21c0-.709.898-1.058 1.416-.553l10.324 10.363z"/></svg>')
 
 
 def store_buttons(app, small=False):
@@ -388,7 +388,7 @@ def build_home():
 
     cards = []
     for i, a in enumerate(others):
-        cards.append(f'''        <article class="app-card rise rise-{min(i + 1, 3)}">
+        cards.append(f'''        <article class="app-card rise-in">
           {icon_markup(a)}
           <h3>{e(a['name'])}</h3>
           <div class="badge-row">{badge(a)}</div>
@@ -446,7 +446,7 @@ def build_home():
         <p class="lead">Nôs Beleza is in progress and is not released yet. It will get a store
           link when it is ready to launch.</p>
       </div>
-      <div class="card-grid">
+      <div class="card-grid{' card-grid--solo' if len(others) == 1 else ''}">
 {cards}
       </div>
     </div>
@@ -459,19 +459,19 @@ def build_home():
         <h2 id="values">Small studio. Narrow focus.</h2>
       </div>
       <div class="value-grid">
-        <div class="value-item">
+        <div class="value-item rise-in">
           <div class="rule"></div>
           <h3>Built around a real problem</h3>
           <p>Each app starts with a specific job someone actually has to do, not with a
             feature list.</p>
         </div>
-        <div class="value-item">
+        <div class="value-item rise-in">
           <div class="rule"></div>
           <h3>Only the data the app needs</h3>
           <p>What each app collects, and where it is stored, is written down in its own
             privacy policy in plain language.</p>
         </div>
-        <div class="value-item">
+        <div class="value-item rise-in">
           <div class="rule"></div>
           <h3>Answered by the people who built it</h3>
           <p>Support email goes to the studio. There is no queue and no call centre.</p>
@@ -501,13 +501,13 @@ def build_home():
         "@type": "Organization",
         "name": "Kaymer LLC",
         "url": SITE,
-        "description": "Independent mobile app studio based in Massachusetts, USA.",
+        "description": "Independent mobile app studio based in the United States.",
         "email": EMAIL,
-        "address": {"@type": "PostalAddress", "addressRegion": "MA", "addressCountry": "US"},
+        "address": {"@type": "PostalAddress", "addressCountry": "US"},
     }
     return page('index.html',
                 'Kaymer LLC — Independent Mobile App Studio',
-                'Kaymer LLC is an independent mobile app studio in Massachusetts building focused tools for everyday work and life, including Findry for iPhone and Android.',
+                'Kaymer LLC is an independent mobile app studio in the United States building focused tools for everyday work and life, including Findry for iPhone and Android.',
                 'index.html', body, structured)
 
 
@@ -571,26 +571,6 @@ def build_apps():
     </div>
   </section>
 
-  <section class="section section--tinted" aria-labelledby="status-key">
-    <div class="shell">
-      <div class="section-head">
-        <h2 id="status-key">What the statuses mean</h2>
-      </div>
-      <div class="value-grid">
-        <div class="value-item">
-          <div class="badge-row" style="margin-bottom:var(--s-3)"><span class="badge badge--available">Available</span></div>
-          <p>Released and downloadable today. Findry is available on the Apple App Store for
-            iPhone and on Google Play for Android.</p>
-        </div>
-        <div class="value-item">
-          <div class="badge-row" style="margin-bottom:var(--s-3)"><span class="badge badge--dev">In development</span></div>
-          <p>Actively being built. Screens, icons, and store listings are not final, and no
-            platform commitment has been made.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </main>
 '''
     return page('apps.html', 'Apps — Kaymer LLC',
@@ -618,11 +598,22 @@ def build_app_page(a):
         </div>'''
 
     if a.get('shots'):
-        rail = '\n'.join('        ' + shot(src, alt, up=up) for src, alt in a['shots'])
+        rail = '\n'.join('          ' + shot(src, alt, up=up) for src, alt in a['shots'])
         aside = f'''
       <div class="rise rise-2">
-        <div class="shot-rail" tabindex="0" role="group" aria-label="{e(a['name'])} screenshots">
+        <div class="shot-rail-wrap">
+          <div class="shot-rail" tabindex="0" role="group" aria-label="{e(a['name'])} screenshots">
 {rail}
+          </div>
+          <div class="shot-rail-ui">
+            <button class="shot-nav shot-prev" type="button" aria-label="Previous screenshot" disabled>
+              <span aria-hidden="true">&larr;</span>
+            </button>
+            <p class="shot-count" aria-live="polite"><span class="shot-index">1</span> of {len(a['shots'])}</p>
+            <button class="shot-nav shot-next" type="button" aria-label="Next screenshot">
+              <span aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
         </div>
       </div>'''
     else:
@@ -791,8 +782,14 @@ def build_app_page(a):
         title = 'Findry — Jobsite & Underground Utility Records'
         description = ('Document buried pipes, utility installations, depths, measurements, '
                        'photos, and field notes by project with Findry for iPhone and Android.')
+    og_image = None
+    og_alt = None
+    if a['slug'] == 'findry':
+        og_image = 'assets/img/og-findry.jpg'
+        og_alt = 'Findry — save it now, find it later.'
     return page(path, title,
-                description, 'apps.html', body, structured, og_type='article')
+                description, 'apps.html', body, structured, og_type='article',
+                og_image=og_image, og_alt=og_alt)
 
 
 # ============================================================== about page ===
@@ -810,43 +807,13 @@ def build_about():
 
   <section class="section section--flush-top">
     <div class="shell prose">
-      <p>Kaymer LLC is an independent mobile app studio based in the United States. We design
-        and build our own apps around practical needs, with a focus on simplicity, usefulness,
-        and thoughtful development.</p>
-      <p>Findry helps contractors and field crews document jobsites, save photos and measurements,
-        and keep reference points for underground work—making important project information
-        easier to find when it’s needed.</p>
-      <p>Nôs Beleza is our beauty-services platform in development for Cape Verde, designed to
-        help people discover local businesses and connect with beauty professionals.</p>
-      <p>We keep our focus on a small collection of apps, improving each one through careful
-        testing, real-world feedback, and ongoing updates.</p>
-    </div>
-  </section>
-
-  <section class="section section--tinted" aria-labelledby="principles">
-    <div class="shell">
-      <div class="section-head">
-        <h2 id="principles">What that means in practice</h2>
-      </div>
-      <div class="value-grid">
-        <div class="value-item">
-          <div class="rule"></div>
-          <h3>Built for real tasks</h3>
-          <p>We focus on features that help people organize information, save time, and make
-            everyday work easier.</p>
-        </div>
-        <div class="value-item">
-          <div class="rule"></div>
-          <h3>Clear about availability</h3>
-          <p>We clearly distinguish available apps and features from those still in development.</p>
-        </div>
-        <div class="value-item">
-          <div class="rule"></div>
-          <h3>Clear about data</h3>
-          <p>Each released app has its own privacy policy explaining how information is collected,
-            used, stored, and managed.</p>
-        </div>
-      </div>
+      <p>Kaymer LLC is an independent mobile app studio in the United States. Support email
+        goes to the people who build the apps. There is no queue and no call centre.</p>
+      <p>Findry is available now for iPhone and Android. It keeps jobsite records for
+        contractors and field crews: photos, depths, measurements, buried utility details,
+        and notes, organised by project.</p>
+      <p>Nôs Beleza is in development. It is a local services marketplace for Cape Verde,
+        starting with beauty and personal care, and it does not have a store listing yet.</p>
     </div>
   </section>
 
