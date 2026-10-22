@@ -754,20 +754,33 @@ h4 { font-size: 1.02rem; }
 }
 .shot-rail:focus-visible { outline: 2px solid var(--bronze); outline-offset: 3px; }
 .shot-rail > * { flex: 0 0 auto; scroll-snap-align: center; }
-.shot-rail img {
-  width: auto;
-  height: clamp(300px, 52vw, 420px);
+/* A definite width, not a percentage of the picture, so a screenshot keeps
+   its box before the file decodes. A cyclic max-width collapsed lazy images
+   to the border and made the rail look like it had nothing to scroll. */
+.shot-rail img,
+.shot-figure img {
+  width: min(280px, calc(min(68vh, 520px) * 1080 / 1920), 78vw);
+  height: auto;
+  aspect-ratio: 1080 / 1920;
+  object-fit: contain;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   background: var(--ivory);
   box-shadow: var(--shadow-sm);
+}
+.shot-figure {
+  margin: 0;
+  width: fit-content;
+  max-width: 100%;
+  justify-self: center;
 }
 /* The rail stays scrollable at every width: even on a wide screen the aside
    column is narrower than three phone screenshots laid side by side, and
    switching it to a non-scrolling row is what pushed the page sideways. */
 @media (min-width: 960px) {
   .shot-rail { padding: var(--s-4); gap: var(--s-4); }
-  .shot-rail img { height: 380px; }
+  .shot-rail img,
+  .shot-figure img { width: min(280px, calc(460px * 1080 / 1920)); }
 }
 
 .feature-list { display: grid; gap: var(--s-5); }
