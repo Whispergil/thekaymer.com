@@ -165,7 +165,7 @@
     else if (reducedMotion.addListener) reducedMotion.addListener(onMotionChange);
 
     /* Returning to the desktop breakpoint discards the mobile state. */
-    var query = window.matchMedia('(min-width: 861px)');
+    var query = window.matchMedia('(min-width: 881px)');
     var onChange = function (event) { if (event.matches) close(false, true); };
     if (query.addEventListener) query.addEventListener('change', onChange);
     else if (query.addListener) query.addListener(onChange);
@@ -180,6 +180,8 @@
     var cards = Array.prototype.slice.call(cardList.querySelectorAll('[data-status]'));
     var buttons = Array.prototype.slice.call(filterBar.querySelectorAll('button[data-filter]'));
 
+    /* Two apps do not need a filter. Reveal it once the list is long enough. */
+    if (cards.length < 4) return;
     filterBar.hidden = false;
 
     var apply = function (value) {
@@ -210,4 +212,95 @@
 
     apply('all');
   }
+
+  /* ------------------------------------------------- scroll and entrance -- */
+  var header = document.querySelector('.site-header');
+  if (header) {
+    var onScroll = function () {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  var motionOK = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  if (motionOK && 'IntersectionObserver' in window) {
+    Array.prototype.forEach.call(document.querySelectorAll('.rise-in'), function (node) {
+      var siblings = node.parentElement.querySelectorAll('.rise-in');
+      var index = Array.prototype.indexOf.call(siblings, node);
+      node.style.setProperty('--d', (index * 60) + 'ms');
+      node.classList.add('will-rise');
+    });
+    var riseObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        riseObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(document.querySelectorAll('.rise-in'), function (node) {
+      riseObserver.observe(node);
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('.rule'), function (rule) {
+      rule.classList.add('will-draw');
+    });
+    var ruleObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var rule = entry.target;
+        window.requestAnimationFrame(function () { rule.classList.add('is-drawn'); });
+        ruleObserver.unobserve(rule);
+      });
+    }, { threshold: 0.6 });
+    Array.prototype.forEach.call(document.querySelectorAll('.rule'), function (rule) {
+      ruleObserver.observe(rule);
+    });
+  }
+
+  /* ------------------------------------------------------ screenshot rail -- */
+  Array.prototype.forEach.call(document.querySelectorAll('.shot-rail-wrap'), function (wrap) {
+    var rail = wrap.querySelector('.shot-rail');
+    var prev = wrap.querySelector('.shot-prev');
+    var next = wrap.querySelector('.shot-next');
+    var indexEl = wrap.querySelector('.shot-index');
+    if (!rail || !prev || !next) return;
+    var frames = Array.prototype.slice.call(rail.querySelectorAll('picture'));
+
+    var nearest = function () {
+      var railBox = rail.getBoundingClientRect();
+      var best = 0;
+      var bestDist = Infinity;
+      frames.forEach(function (frame, i) {
+        var dist = Math.abs(frame.getBoundingClientRect().left - railBox.left);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      return best;
+    };
+
+    var paint = function () {
+      var max = rail.scrollWidth - rail.clientWidth;
+      var overflowing = max > 8;
+      rail.classList.toggle('is-overflowing', overflowing);
+      rail.classList.toggle('is-at-end', rail.scrollLeft >= max - 8);
+      prev.disabled = rail.scrollLeft <= 8;
+      next.disabled = !overflowing || rail.scrollLeft >= max - 8;
+      if (indexEl) indexEl.textContent = String(nearest() + 1);
+    };
+
+    var go = function (dir) {
+      var i = Math.min(frames.length - 1, Math.max(0, nearest() + dir));
+      var frame = frames[i];
+      if (!frame) return;
+      var left = frame.getBoundingClientRect().left - rail.getBoundingClientRect().left + rail.scrollLeft;
+      rail.scrollTo({ left: left, behavior: motionOK ? 'smooth' : 'auto' });
+    };
+
+    prev.addEventListener('click', function () { go(-1); });
+    next.addEventListener('click', function () { go(1); });
+    rail.addEventListener('scroll', paint, { passive: true });
+    window.addEventListener('resize', paint);
+    paint();
+  });
+
 }());

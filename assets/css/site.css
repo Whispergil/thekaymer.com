@@ -112,6 +112,20 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .rise { animation: rise 0.5s var(--ease) both; }
   .rise-2 { animation-delay: 0.07s; }
   .rise-3 { animation-delay: 0.14s; }
+
+  /* Below-the-fold entrance. JS adds .will-rise, then .is-in once. Without
+     JS the elements stay visible. */
+  .rise-in.will-rise { opacity: 0; transform: translateY(12px); animation: none; }
+  .rise-in.is-in {
+    animation: rise 0.45s var(--ease) both;
+    animation-delay: var(--d, 0ms);
+  }
+  .rule.will-draw {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s var(--ease);
+  }
+  .rule.will-draw.is-drawn { transform: none; }
 }
 
 /* ------------------------------------------------------------ utilities -- */
@@ -207,7 +221,9 @@ h4 { font-size: 1.02rem; }
   backdrop-filter: blur(14px) saturate(1.1);
   -webkit-backdrop-filter: blur(14px) saturate(1.1);
   border-bottom: 1px solid var(--border);
+  transition: box-shadow 0.2s var(--ease);
 }
+.site-header.is-scrolled { box-shadow: var(--shadow-md); }
 
 .header-bar {
   display: flex;
@@ -415,7 +431,7 @@ h4 { font-size: 1.02rem; }
 
 /* Desktop: the copy shares the hero with the one app that has actually
    shipped, which fills what was otherwise an empty right half. */
-.hero-split { display: grid; gap: var(--s-7); align-items: center; }
+.hero-split { display: grid; gap: var(--s-7); align-items: start; }
 @media (min-width: 1000px) {
   .hero-split { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(2.5rem, 5vw, 4.5rem); }
 }
@@ -449,7 +465,7 @@ h4 { font-size: 1.02rem; }
 .showcase-figure img {
   width: auto;
   max-width: 100%;
-  max-height: clamp(260px, 38vh, 320px);
+  max-height: clamp(380px, 48vh, 480px);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-md);
 }
@@ -461,7 +477,15 @@ h4 { font-size: 1.02rem; }
   grid-template-columns: 1fr;
 }
 @media (min-width: 640px) { .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 640px) { .card-grid--solo { grid-template-columns: minmax(0, 32rem); } }
 @media (min-width: 1000px) { .card-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Cards and notes on a cream band need an ivory face or they disappear. */
+.section--tinted .app-card,
+.section--tinted .email-card,
+.section--tinted .note,
+.section--tinted .support-card,
+.section--tinted .link-rows { background: var(--ivory-lift); }
 
 .app-card {
   display: flex;
@@ -597,6 +621,7 @@ h4 { font-size: 1.02rem; }
 .meta-list dd { color: var(--warm-gray); }
 
 /* --------------------------------------------------------------- filter -- */
+.filter-bar[hidden] { display: none !important; }
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -665,6 +690,42 @@ h4 { font-size: 1.02rem; }
 
 /* Screenshot rail. On narrow screens it scrolls sideways rather than stacking
    three full-height phone shots into thousands of pixels of page. */
+.shot-rail-wrap { display: grid; gap: var(--s-3); }
+.shot-rail-ui {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-2);
+}
+.shot-count {
+  min-width: 4.75rem;
+  margin: 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+.shot-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--ivory-lift);
+  color: var(--charcoal);
+  transition: border-color 0.18s var(--ease), transform 0.12s var(--ease);
+}
+.shot-nav:hover:not(:disabled) { border-color: var(--gold); }
+.shot-nav:active:not(:disabled) { transform: scale(0.96); }
+.shot-nav:disabled { opacity: 0.35; }
+.shot-rail.is-overflowing:not(.is-at-end) {
+  -webkit-mask-image: linear-gradient(to right, #000 0 82%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 0 82%, transparent 100%);
+}
 .shot-rail {
   display: flex;
   gap: var(--s-3);
@@ -887,10 +948,13 @@ h4 { font-size: 1.02rem; }
 
 /* --------------------------------------------------------------- footer -- */
 .site-footer {
-  background: var(--cream);
-  border-top: 1px solid var(--border);
+  background: var(--charcoal);
+  border-top: 0;
   padding-block: var(--s-7) var(--s-5);
+  color: #E8E2D8;
 }
+.site-footer .wordmark { color: var(--ivory); }
+.site-footer .wordmark:hover { color: #F3E2B6; }
 .footer-grid {
   display: grid;
   gap: var(--s-6) var(--s-5);
@@ -905,7 +969,7 @@ h4 { font-size: 1.02rem; }
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--warm-gray);
+  color: #F3E2B6;
   margin-bottom: var(--s-2);
 }
 .footer-grid ul { display: grid; }
@@ -914,12 +978,12 @@ h4 { font-size: 1.02rem; }
   align-items: center;
   min-height: 44px;
   font-size: 0.93rem;
-  color: var(--charcoal);
+  color: var(--ivory);
   text-decoration: none;
   transition: color 0.18s var(--ease);
 }
-.footer-grid a:hover { color: var(--bronze); }
-.footer-brand p { font-size: 0.91rem; color: var(--warm-gray); margin-top: var(--s-2); max-width: 32ch; }
+.footer-grid a:hover { color: #F3E2B6; }
+.footer-brand p { font-size: 0.91rem; color: #C8C0B4; margin-top: var(--s-2); max-width: 32ch; }
 
 .footer-base {
   display: flex;
@@ -928,9 +992,9 @@ h4 { font-size: 1.02rem; }
   justify-content: space-between;
   margin-top: var(--s-6);
   padding-top: var(--s-4);
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(252, 250, 246, 0.16);
   font-size: 0.84rem;
-  color: var(--warm-gray);
+  color: #C8C0B4;
 }
 
 /* ------------------------------------------------------------- value row - */
@@ -939,6 +1003,14 @@ h4 { font-size: 1.02rem; }
 .value-item h3 { font-family: var(--font-sans); font-size: 1rem; font-weight: 700; margin-bottom: var(--s-1); }
 .value-item p { color: var(--warm-gray); font-size: 0.94rem; max-width: 38ch; }
 .value-item .rule { width: 30px; height: 2px; margin: 0 0 var(--s-3); }
+
+h2.ui-head, h3.ui-head {
+  font-family: var(--font-sans);
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
 
 /* --------------------------------------------------------------- prose --- */
 .prose { max-width: var(--measure); }
