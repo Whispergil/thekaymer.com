@@ -357,8 +357,12 @@ def badge(app):
 APPSTORE_SVG = ('<svg width="17" height="20" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">'
                 '<path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>')
 
-PLAYSTORE_SVG = ('<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'
-                 '<path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.515-3.521 3.919 2.219c1.574.885 1.574 2.692 0 3.577zm-5.322-2.278L6.372 21.344c-.518.505-1.416.156-1.416-.553V3.21c0-.709.898-1.058 1.416-.553l10.324 10.363z"/></svg>')
+PLAYSTORE_SVG = ('<svg width="16" height="18" viewBox="0 0 28.99 31.99" aria-hidden="true">'
+                 '<path fill="#4285F4" d="M.12 2.66a3.57 3.57 0 0 0-.12.92v24.84a3.57 3.57 0 0 0 .12.92L14 15.64Z"/>'
+                 '<path fill="#34A853" d="m13.64 16 6.94-6.85L5.5.51A3.73 3.73 0 0 0 3.63 0 3.64 3.64 0 0 0 .12 2.65Z"/>'
+                 '<path fill="#FBBC04" d="m27.11 12.89-6.53-3.74-7.35 6.45 7.38 7.28 6.48-3.7a3.54 3.54 0 0 0 1.5-4.79 3.62 3.62 0 0 0-1.5-1.5z"/>'
+                 '<path fill="#EA4335" d="M13.54 15.28.12 29.34a3.66 3.66 0 0 0 5.33 2.16l15.1-8.6Z"/>'
+                 '</svg>')
 
 
 def store_buttons(app, small=False):
@@ -429,7 +433,7 @@ def build_home():
         <div class="showcase-figure">
           {hero_shot}
         </div>
-        <div class="btn-row">
+        <div class="btn-row btn-row--stores">
           {store_buttons(findry, small=True)}
           <a class="btn btn--quiet" href="apps/findry/">View Findry</a>
         </div>
@@ -584,7 +588,7 @@ def build_app_page(a):
     up = '../' * path.count('/')
 
     if a['status'] == 'available':
-        actions = f'''<div class="btn-row">
+        actions = f'''<div class="btn-row btn-row--stores">
           {store_buttons(a)}
           <a class="btn btn--quiet" href="{mailto(a['name'] + ' Support')}">Get {e(a['name'])} Support</a>
         </div>'''
@@ -691,20 +695,6 @@ def build_app_page(a):
                        'does not exist, this page links nowhere — the documents will appear here when '
                        'they are written.</p>')
 
-    download_block = ''
-    if a['slug'] == 'findry' and a['status'] == 'available':
-        download_block = f'''
-      <div class="email-card" style="margin-top:var(--s-7)">
-        <div class="email-card-body">
-          <h3 class="ui-head">Get Findry</h3>
-          <p>Available for iPhone and Android.</p>
-        </div>
-        <div class="btn-row">
-          {store_buttons(a)}
-        </div>
-      </div>
-'''
-
     grid_mod = '' if a.get('shots') else ' app-hero-grid--single'
 
     structured = None
@@ -758,7 +748,7 @@ def build_app_page(a):
       </div>
       <dl class="meta-list">
 {meta_rows}
-      </dl>{download_block}
+      </dl>
 
       <div class="email-card" style="margin-top:var(--s-7)">
         <div class="email-card-body">
@@ -929,29 +919,7 @@ def build_support():
       <div class="link-rows">
 {nos_beleza_topics}
       </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="direct">
-    <div class="shell">
-      <div class="section-head">
-        <h2 id="direct">Contact the studio</h2>
-        <p class="lead">Email us for help with our apps. Your message goes directly to the
-          people who build them.</p>
-      </div>
-      <div class="email-card">
-        <div class="email-card-body">
-          <h3 class="ui-head">General support</h3>
-          <p>Include the app name and a description of the issue. We typically reply within one
-            business day.</p>
-        </div>
-        <div class="btn-row">
-          <a class="btn btn--primary" href="mailto:{EMAIL}">{EMAIL}</a>
-          <button class="btn btn--secondary" type="button" id="copy-support-email" hidden>Copy email address</button>
-        </div>
-      </div>
-      <p id="copy-email-status" class="note" role="status" aria-live="polite" aria-atomic="true"></p>
-      <p class="note" style="margin-top:var(--s-5)">Findry's own legal documents list
+      <p class="note" style="margin-top:var(--s-6)">Findry's own legal documents list
         <a href="mailto:support@findryapp.com">support@findryapp.com</a> for questions about
         those documents. Both addresses reach Kaymer LLC.</p>
     </div>
