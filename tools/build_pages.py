@@ -685,7 +685,7 @@ def build_app_page(a):
       <div class="section-head">
         <p class="eyebrow">Included in Findry</p>
         <h2 id="field-tools">Calculators and field records.</h2>
-        <p class="lead">The Material Calculator and Truck Load Calculator are included in Findry 1.0.2 on iPhone. Calculator results are estimates. They do not set legal payload, vehicle ratings, or safe hauling limits.</p>
+        <p class="lead">The Material Calculator and Truck Load Calculator are included in Findry 1.0.2, available on iPhone and Android. Calculator results are estimates. They do not set legal payload, vehicle ratings, or safe hauling limits.</p>
       </div>
       <div class="feature-list">
 {guide_items}
@@ -820,7 +820,9 @@ def build_app_page(a):
 
 
 def _findry_tool_page(path, title, description, body, structured):
-    return page(path, title, description, 'apps.html', body, structured, og_type='article')
+    return page(path, title, description, 'apps.html', body, structured, og_type='article',
+                og_image='assets/img/og-findry.jpg',
+                og_alt='Findry — save it now, find it later.')
 
 
 # =============================================== Findry material calculator ===
