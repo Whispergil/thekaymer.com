@@ -113,12 +113,16 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .rise-2 { animation-delay: 0.07s; }
   .rise-3 { animation-delay: 0.14s; }
 
-  /* Below-the-fold entrance. JS adds .will-rise, then .is-in once. Without
-     JS the elements stay visible. */
-  .rise-in.will-rise { opacity: 0; transform: translateY(12px); animation: none; }
+  /* Below the fold, move the block up a few pixels. The words stay visible
+     the whole time. JS adds .will-rise, then .is-in once. Without JS nothing moves. */
+  .rise-in.will-rise { transform: translateY(8px); animation: none; }
   .rise-in.is-in {
-    animation: rise 0.45s var(--ease) both;
+    animation: rise-nudge 0.45s var(--ease) both;
     animation-delay: var(--d, 0ms);
+  }
+  @keyframes rise-nudge {
+    from { transform: translateY(8px); }
+    to { transform: none; }
   }
   .rule.will-draw {
     transform: scaleX(0);
@@ -416,11 +420,20 @@ h4 { font-size: 1.02rem; }
 .btn--playstore:active { transform: translateY(0); box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4); }
 .btn--appstore svg,
 .btn--playstore svg { flex: none; }
+.btn--appstore svg { width: 17px; height: 20px; }
+.btn--playstore svg { width: 16px; height: 18px; }
 
 .btn--sm { min-height: 44px; padding: 0.6rem 1.15rem; font-size: 0.9rem; }
 
 .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-4); }
+/* Store buttons stack at the same width. The text link sits on the line
+   below them, only as wide as its words. */
+.btn-row--stores { align-items: stretch; }
+.btn-row--stores .btn--appstore,
+.btn-row--stores .btn--playstore { flex: 1 1 100%; }
+.btn-row--stores .btn--quiet { flex: 0 0 auto; justify-content: flex-start; }
 #copy-support-email[hidden] { display: none; }
+#copy-email-status:empty { display: none; }
 
 /* ----------------------------------------------------------------- hero -- */
 .hero { padding-block: clamp(2.75rem, 7vw, 5rem) var(--s-section); }
