@@ -79,16 +79,26 @@ APPS = [
             ('assets/img/findry-screenshot-3', 'Findry app store screenshot: the project list, with each project showing its saved record count.'),
         ],
         'features': [
-            ('Document buried pipes and utilities', 'Save photos, depths, measurements, pipe sizes, materials, valve locations, GPS reference points, warnings, and field notes after installation.'),
+            ('Document buried pipes and utilities', 'Save photos, depths, measurements, pipe sizes, materials, valve locations, reference points, warnings, and field notes after installation.'),
             ('Keep jobsite records by project', 'Organise field information for residential repairs, commercial work, municipal utilities, and infrastructure projects instead of leaving it scattered across notebooks and camera rolls.'),
             ('Find field information later', 'Search by project, record title, utility type, keywords, notes, and locations when you return to a job — next week or years later.'),
         ],
         'safety_note': ('Findry stores information entered by its users. It does not detect, '
                         'verify, or professionally locate underground utilities, and it does '
                         'not replace 811 or local utility-marking requirements.'),
-        'upcoming': [
-            ('Material Calculator', 'Calculate common jobsite material quantities from project measurements.'),
-            ('Truck Load Calculator', 'Estimate how many truckloads may be needed for a material quantity.'),
+        'guides': [
+            ('Material Calculator',
+             'Calculate material volume in Imperial or Metric units, view an estimated material weight, and estimate truck trips from a capacity you enter. Saved calculations can be reopened from Calculator History.',
+             '/apps/findry/material-calculator/',
+             'See the Material Calculator'),
+            ('Truck Load Calculator',
+             'Estimate how many truck trips a material quantity may take from the quantity and the truck capacity you enter. Saved estimates can be reopened from Calculator History.',
+             '/apps/findry/truck-load-calculator/',
+             'See the Truck Load Calculator'),
+            ('Underground utility records',
+             'Document buried pipes and utility installations with photos, measurements, reference points, and field notes, kept with the project they belong to.',
+             '/apps/findry/underground-utility-records/',
+             'See underground utility records'),
         ],
     },
     {
@@ -634,24 +644,24 @@ def build_app_page(a):
     if a.get('safety_note'):
         safety_block = f'''\n      <p class="note" style="margin-top:var(--s-6)"><strong>Documentation, not utility detection.</strong> {e(a["safety_note"])}</p>'''
 
-    upcoming = a.get('upcoming', [])
-    if upcoming:
-        upcoming_items = '\n'.join(
+    guides = a.get('guides', [])
+    if guides:
+        guide_items = '\n'.join(
             f'''        <div class="feature-item">
           <div class="rule"></div>
           <h3>{e(t)}</h3>
           <p>{e(d)}</p>
-        </div>''' for t, d in upcoming)
-        upcoming_block = f'''  <section class="section" aria-labelledby="coming-next">
+          <p><a href="{href}">{e(label)}</a></p>
+        </div>''' for t, d, href, label in guides)
+        guides_block = f'''  <section class="section" aria-labelledby="field-tools">
     <div class="shell">
       <div class="section-head">
-        <p class="eyebrow">Coming in the next update</p>
-        <h2 id="coming-next">More field tools are on the way.</h2>
-        <p class="lead">These calculators are planned for the next Findry update and are not
-          included in the current App Store or Google Play version yet.</p>
+        <p class="eyebrow">Included in Findry</p>
+        <h2 id="field-tools">Calculators and field records.</h2>
+        <p class="lead">The Material Calculator and Truck Load Calculator are included in Findry 1.0.2 on iPhone. Calculator results are estimates. They do not set legal payload, vehicle ratings, or safe hauling limits.</p>
       </div>
-      <div class="feature-list feature-list--two">
-{upcoming_items}
+      <div class="feature-list">
+{guide_items}
       </div>
     </div>
   </section>
@@ -659,7 +669,7 @@ def build_app_page(a):
 '''
         details_class = 'section section--tinted'
     else:
-        upcoming_block = ''
+        guides_block = ''
         details_class = 'section'
 
     meta = []
@@ -741,7 +751,7 @@ def build_app_page(a):
     </div>
   </section>
 
-{upcoming_block}  <section class="{details_class}" aria-labelledby="details">
+{guides_block}  <section class="{details_class}" aria-labelledby="details">
     <div class="shell">
       <div class="section-head">
         <h2 id="details">Details</h2>
@@ -780,6 +790,370 @@ def build_app_page(a):
     return page(path, title,
                 description, 'apps.html', body, structured, og_type='article',
                 og_image=og_image, og_alt=og_alt)
+
+
+def _findry_tool_page(path, title, description, body, structured):
+    return page(path, title, description, 'apps.html', body, structured, og_type='article')
+
+
+# =============================================== Findry material calculator ===
+def build_findry_material_calculator():
+    a = APP['findry']
+    path = 'apps/findry/material-calculator/index.html'
+    up = '../' * path.count('/')
+    description = ('Estimate jobsite material volume, weight, and truck trips from field '
+                   'measurements with Findry’s Material Calculator for construction.')
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Findry field tools</p>
+        <h1>Material Calculator for Construction</h1>
+        <p class="tagline">Estimate material quantities from jobsite measurements.</p>
+        <p class="lead">Findry’s Material Calculator helps contractors and field crews turn
+          measurements into practical jobsite estimates. Calculate material volume, view an
+          estimated material weight, and estimate truck trips based on the capacity you enter.</p>
+        <div class="btn-row btn-row--stores">
+          {store_buttons(a)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="material-features">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Construction material estimates</p>
+        <h2 id="material-features">From measurements to a usable field estimate.</h2>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Calculate material volume</h3>
+          <p>Enter project measurements and calculate material volume using Imperial or Metric units.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>View estimated material weight</h3>
+          <p>Use the selected material and calculated quantity to view an estimated material weight.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Estimate truck trips</h3>
+          <p>Enter a truck capacity to estimate how many trips may be needed for the calculated quantity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="history">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Calculator History</p>
+        <h2 id="history">Save a calculation and come back to it.</h2>
+        <p class="lead">Completed calculations can be saved to Calculator History and reopened
+          later, making it easier to reuse field estimates without starting over.</p>
+      </div>
+      <p class="note"><strong>Estimates only.</strong> Calculator results are estimates. Findry
+        does not determine legal payload, vehicle ratings, axle compliance, or safe hauling
+        capacity. Verify project requirements and hauling limits before relying on an estimate.</p>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="findry-material">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="findry-material">Keep the estimate with the rest of your field workflow.</h2>
+          <p>Findry combines field calculators with project records, measurements, photos,
+            reference points, notes, search, and jobsite documentation.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Material Calculator for Construction | Findry",
+        "url": SITE + "apps/findry/material-calculator/",
+        "description": description,
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "Findry",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": SITE + app_route(a),
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
+            "featureList": [
+                "Material volume estimates",
+                "Estimated material weight",
+                "Estimated truck trips",
+                "Calculator History",
+            ],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+    }
+
+    return _findry_tool_page(path, 'Material Calculator for Construction | Findry',
+                             description, body, structured)
+
+
+# ============================================== Findry truck load calculator ===
+def build_findry_truck_load_calculator():
+    a = APP['findry']
+    path = 'apps/findry/truck-load-calculator/index.html'
+    up = '../' * path.count('/')
+    description = ('Estimate truck trips from material quantity and truck capacity with '
+                   'Findry’s Truck Load Calculator for construction and field work.')
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Findry field tools</p>
+        <h1>Truck Load Calculator for Construction</h1>
+        <p class="tagline">Estimate truck trips from quantity and truck capacity.</p>
+        <p class="lead">Findry’s Truck Load Calculator helps contractors and field crews
+          estimate how many truck trips may be needed for a material quantity. Enter the
+          quantity, choose supported volume or weight units, and enter the truck capacity
+          you want to use for the estimate.</p>
+        <div class="btn-row btn-row--stores">
+          {store_buttons(a)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="truck-features">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Truck trip estimates</p>
+        <h2 id="truck-features">Turn a material quantity into a quick trip estimate.</h2>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Enter the material quantity</h3>
+          <p>Start with the amount of material you need to move using a supported volume or weight unit.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Set the truck capacity</h3>
+          <p>Use a truck capacity that matches the vehicle or hauling setup you are estimating.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Estimate the number of trips</h3>
+          <p>Findry calculates the estimated trips required from the quantity and capacity you entered.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="truck-history">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Calculator History</p>
+        <h2 id="truck-history">Save estimates and reuse them later.</h2>
+        <p class="lead">Completed truck-load calculations can be saved to Calculator History
+          and reopened later when you need to review or reuse the estimate.</p>
+      </div>
+      <p class="note"><strong>Estimates only.</strong> Findry does not determine legal payload,
+        gross vehicle weight ratings, axle compliance, road restrictions, or safe hauling
+        capacity. Always verify the actual vehicle, material, and legal requirements before hauling.</p>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="findry-truck">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="findry-truck">Keep truck estimates with the rest of your field workflow.</h2>
+          <p>Findry combines field calculators with project records, measurements, photos,
+            reference points, notes, search, and jobsite documentation.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Truck Load Calculator for Construction | Findry",
+        "url": SITE + "apps/findry/truck-load-calculator/",
+        "description": description,
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "Findry",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": SITE + app_route(a),
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
+            "featureList": [
+                "Truck trip estimates",
+                "Volume and weight units",
+                "Custom truck capacity",
+                "Calculator History",
+            ],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+    }
+
+    return _findry_tool_page(path, 'Truck Load Calculator for Construction | Findry',
+                             description, body, structured)
+
+
+# ============================================ Findry underground utility records ===
+def build_findry_underground_utility_records():
+    a = APP['findry']
+    path = 'apps/findry/underground-utility-records/index.html'
+    up = '../' * path.count('/')
+    description = ('Document buried pipes, underground utilities, measurements, photos, '
+                   'reference points, and field notes by project with Findry.')
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Findry field records</p>
+        <h1>Underground Utility & Jobsite Records</h1>
+        <p class="tagline">Document the work now so the details are easier to find later.</p>
+        <p class="lead">Findry helps contractors and field crews document buried pipes,
+          underground utility installations, measurements, photos, reference points, warnings,
+          and field notes. Records stay organized by project so important jobsite information
+          is easier to find when you return to the work later.</p>
+        <div class="btn-row btn-row--stores">
+          {store_buttons(a)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="utility-record-features">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Field documentation</p>
+        <h2 id="utility-record-features">Keep buried utility details with the project they belong to.</h2>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Document buried pipes and utilities</h3>
+          <p>Save pipe sizes, materials, depths, measurements, valve information, warnings,
+            photos, and notes after installation or repair work.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Save reference measurements</h3>
+          <p>Record distances and reference points from visible jobsite features so a saved
+            location is easier to understand when the project is revisited.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Organize records by project</h3>
+          <p>Keep field records attached to the correct project instead of scattering
+            measurements, photos, and notes across notebooks and camera rolls.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="find-later">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Find it later</p>
+        <h2 id="find-later">Search the record when the job brings you back.</h2>
+        <p class="lead">Use project details, record titles, utility types, keywords, notes,
+          and saved jobsite information to locate the record you need without relying on memory.</p>
+      </div>
+      <p class="note"><strong>Documentation, not utility detection.</strong> Findry stores
+        information entered by its users. It does not detect, verify, or professionally locate
+        underground utilities, and it does not replace 811 or local utility-marking requirements.</p>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="findry-records">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="findry-records">Field records, reference points, photos, and calculators in one app.</h2>
+          <p>Findry combines project-based jobsite documentation with search, Find Later,
+            Emergency Lookup, the Material Calculator, and the Truck Load Calculator.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Underground Utility & Jobsite Records | Findry",
+        "url": SITE + "apps/findry/underground-utility-records/",
+        "description": description,
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "Findry",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": SITE + app_route(a),
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
+            "featureList": [
+                "Underground utility records",
+                "Project-based jobsite documentation",
+                "Photos and measurements",
+                "Reference points and field notes",
+                "Search and Find Later",
+            ],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+    }
+
+    return _findry_tool_page(path, 'Underground Utility & Jobsite Records | Findry',
+                             description, body, structured)
 
 
 # ============================================================== about page ===
@@ -1183,6 +1557,10 @@ def main():
     pages.append(build_apps())
     for a in APPS:
         pages.append(build_app_page(a))
+        if a['slug'] == 'findry':
+            pages.append(build_findry_material_calculator())
+            pages.append(build_findry_truck_load_calculator())
+            pages.append(build_findry_underground_utility_records())
     pages.append(build_about())
     pages.append(build_support())
     pages.append(build_legal_index())
