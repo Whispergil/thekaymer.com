@@ -78,6 +78,14 @@ APPS = [
             ('assets/img/findry-screenshot-2', 'Findry app store screenshot: a record showing the depth and location of a buried utility.'),
             ('assets/img/findry-screenshot-3', 'Findry app store screenshot: the project list, with each project showing its saved record count.'),
         ],
+        'detail_shots': [
+            ('assets/img/findry/findry-home.webp',
+             'Findry home screen with a work overview, the Material Calculator, the Truck Load Calculator, and a list of projects.'),
+            ('assets/img/findry/findry-projects.webp',
+             'Findry projects screen listing jobsite projects with their records and photos.'),
+            ('assets/img/findry/findry-records.webp',
+             'A Findry project screen showing notes, contact details, and a recent record with a depth measurement.'),
+        ],
         'features': [
             ('Document buried pipes and utilities', 'Save photos, depths, measurements, pipe sizes, materials, valve locations, reference points, warnings, and field notes after installation.'),
             ('Keep jobsite records by project', 'Organise field information for residential repairs, commercial work, municipal utilities, and infrastructure projects instead of leaving it scattered across notebooks and camera rolls.'),
@@ -387,12 +395,44 @@ def store_buttons(app, small=False):
     return '\n          '.join(buttons)
 
 
-def shot(src, alt, up='', lazy=True):
+def shot(src, alt, up='', lazy=True, width=540, height=1168):
     loading = ' loading="lazy" decoding="async"' if lazy else ' decoding="async"'
+    # Supplied screenshots are WebP only. Do not invent a JPEG stand-in.
+    if src.endswith('.webp'):
+        return (f'<picture>\n'
+                f'          <img src="{up}{src}" width="{width}" height="{height}"{loading} alt="{e(alt)}">\n'
+                f'        </picture>')
     return (f'<picture>\n'
             f'          <source srcset="{up}{src}.webp" type="image/webp">\n'
-            f'          <img src="{up}{src}.jpg" width="540" height="1168"{loading} alt="{e(alt)}">\n'
+            f'          <img src="{up}{src}.jpg" width="{width}" height="{height}"{loading} alt="{e(alt)}">\n'
             f'        </picture>')
+
+
+def shot_gallery(label, shots, up):
+    """A sideways rail when there is more than one screenshot, so phone
+    posters stay a readable size instead of stacking down the page."""
+    frames = []
+    for i, (src, alt) in enumerate(shots):
+        frames.append('          ' + shot(src, alt, up=up, lazy=i > 0, width=1080, height=1920))
+    rail = '\n'.join(frames)
+    if len(shots) == 1:
+        return f'''<figure class="shot-figure">
+{rail}
+        </figure>'''
+    return f'''<div class="shot-rail-wrap">
+          <div class="shot-rail" tabindex="0" role="group" aria-label="{e(label)}">
+{rail}
+          </div>
+          <div class="shot-rail-ui">
+            <button class="shot-nav shot-prev" type="button" aria-label="Previous screenshot" disabled>
+              <span aria-hidden="true">&larr;</span>
+            </button>
+            <p class="shot-count" aria-live="polite"><span class="shot-index">1</span> of {len(shots)}</p>
+            <button class="shot-nav shot-next" type="button" aria-label="Next screenshot">
+              <span aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+        </div>'''
 
 
 # =============================================================== home page ===
@@ -611,24 +651,11 @@ def build_app_page(a):
           <a class="btn btn--secondary" href="{mailto(a['name'] + ' Support')}">Contact the studio</a>
         </div>'''
 
-    if a.get('shots'):
-        rail = '\n'.join('          ' + shot(src, alt, up=up) for src, alt in a['shots'])
+    gallery = a.get('detail_shots') or a.get('shots')
+    if gallery:
         aside = f'''
       <div class="rise rise-2">
-        <div class="shot-rail-wrap">
-          <div class="shot-rail" tabindex="0" role="group" aria-label="{e(a['name'])} screenshots">
-{rail}
-          </div>
-          <div class="shot-rail-ui">
-            <button class="shot-nav shot-prev" type="button" aria-label="Previous screenshot" disabled>
-              <span aria-hidden="true">&larr;</span>
-            </button>
-            <p class="shot-count" aria-live="polite"><span class="shot-index">1</span> of {len(a['shots'])}</p>
-            <button class="shot-nav shot-next" type="button" aria-label="Next screenshot">
-              <span aria-hidden="true">&rarr;</span>
-            </button>
-          </div>
-        </div>
+        {shot_gallery(a['name'] + ' screenshots', gallery, up)}
       </div>'''
     else:
         aside = ''  
@@ -803,6 +830,12 @@ def build_findry_material_calculator():
     up = '../' * path.count('/')
     description = ('Estimate jobsite material volume, weight, and truck trips from field '
                    'measurements with Findry’s Material Calculator for construction.')
+    gallery = shot_gallery('Material Calculator screenshots', [
+        ('assets/img/findry/findry-material-calculator-input.webp',
+         'Material Calculator screen for entering measurements, a material, and truck capacity.'),
+        ('assets/img/findry/findry-material-calculator-results.webp',
+         'Material Calculator estimate showing volume, weight, and truck trips from the measurements entered.'),
+    ], up)
 
     body = f'''<main id="main">
 
@@ -811,7 +844,7 @@ def build_findry_material_calculator():
   </div>
 
   <section class="app-hero shell">
-    <div class="app-hero-grid app-hero-grid--single">
+    <div class="app-hero-grid">
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field tools</p>
@@ -823,6 +856,9 @@ def build_findry_material_calculator():
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
+      </div>
+      <div class="rise rise-2">
+        {gallery}
       </div>
     </div>
   </section>
@@ -921,6 +957,12 @@ def build_findry_truck_load_calculator():
     up = '../' * path.count('/')
     description = ('Estimate truck trips from material quantity and truck capacity with '
                    'Findry’s Truck Load Calculator for construction and field work.')
+    gallery = shot_gallery('Truck Load Calculator screenshots', [
+        ('assets/img/findry/findry-truck-load-input.webp',
+         'Truck Load Calculator screen for entering a material quantity and truck capacity.'),
+        ('assets/img/findry/findry-truck-load-results.webp',
+         'Truck Load Calculator estimate showing the trips for the quantity and truck capacity entered.'),
+    ], up)
 
     body = f'''<main id="main">
 
@@ -929,7 +971,7 @@ def build_findry_truck_load_calculator():
   </div>
 
   <section class="app-hero shell">
-    <div class="app-hero-grid app-hero-grid--single">
+    <div class="app-hero-grid">
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field tools</p>
@@ -942,6 +984,9 @@ def build_findry_truck_load_calculator():
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
+      </div>
+      <div class="rise rise-2">
+        {gallery}
       </div>
     </div>
   </section>
@@ -1040,6 +1085,10 @@ def build_findry_underground_utility_records():
     up = '../' * path.count('/')
     description = ('Document buried pipes, underground utilities, measurements, photos, '
                    'reference points, and field notes by project with Findry.')
+    gallery = shot_gallery('Underground utility record screenshot', [
+        ('assets/img/findry/findry-underground-documentation.webp',
+         'A Findry record for a buried storm-drain cleanout, with depth, length, reference points, and photos.'),
+    ], up)
 
     body = f'''<main id="main">
 
@@ -1048,7 +1097,7 @@ def build_findry_underground_utility_records():
   </div>
 
   <section class="app-hero shell">
-    <div class="app-hero-grid app-hero-grid--single">
+    <div class="app-hero-grid">
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field records</p>
@@ -1061,6 +1110,9 @@ def build_findry_underground_utility_records():
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
+      </div>
+      <div class="rise rise-2">
+        {gallery}
       </div>
     </div>
   </section>
