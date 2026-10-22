@@ -453,7 +453,13 @@ def build_home():
         </article>''')
     cards = '\n'.join(cards)
 
-    hero_shot = shot(findry['shots'][0][0], findry['shots'][0][1], lazy=False)
+    hero_shot = shot(
+        'assets/img/findry/findry-home.webp',
+        'Findry home screen with the heading “YOUR JOBSITE. ALL IN ONE PLACE.”, the Material Calculator, the Truck Load Calculator, and a list of projects.',
+        lazy=False,
+        width=1080,
+        height=1920,
+    )
 
     body = f'''<main id="main">
 
