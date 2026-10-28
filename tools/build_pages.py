@@ -298,8 +298,14 @@ def clean_links(markup, source_path):
     return re.sub(r'((?:href|src|srcset)=["\'])([^"\']+)(["\'])', replace, markup)
 
 
-def write_redirect(path, route):
+def write_redirect(path, route, *, meta_refresh=False):
     target = '/' + route
+    # GitHub Pages returns HTTP 200 for an existing HTML file, so it cannot
+    # send a 301. An immediate meta refresh is the crawler-visible equivalent,
+    # and it has to live outside <noscript> or non-JS crawlers still index the
+    # stub as a second URL. Other aliases keep the original noscript refresh.
+    refresh = f'<meta http-equiv="refresh" content="0; url={target}">\n' if meta_refresh else ''
+    noscript = '' if meta_refresh else f'<noscript><meta http-equiv="refresh" content="0; url={target}"></noscript>\n'
     out = f'''<!doctype html>
 <html lang="en">
 <head>
@@ -307,9 +313,8 @@ def write_redirect(path, route):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page moved — Kaymer LLC</title>
 <link rel="canonical" href="{SITE}{route}">
-<script>window.location.replace({json.dumps(target)} + window.location.search + window.location.hash);</script>
-<noscript><meta http-equiv="refresh" content="0; url={target}"></noscript>
-</head>
+{refresh}<script>window.location.replace({json.dumps(target)} + window.location.search + window.location.hash);</script>
+{noscript}</head>
 <body><p>This page has moved. <a href="{target}">Continue to the page</a>.</p></body>
 </html>
 '''
@@ -836,8 +841,9 @@ def build_findry_material_calculator():
     a = APP['findry']
     path = 'apps/findry/material-calculator/index.html'
     up = '../' * path.count('/')
-    description = ('Estimate jobsite material volume, weight, and truck trips from field '
-                   'measurements with Findry’s Material Calculator for construction.')
+    title = 'Materials Estimator for Construction | Findry App'
+    description = ('Estimate construction material volume and weight from jobsite measurements. '
+                   'Imperial or Metric. Save calculations in Findry on iPhone and Android.')
     gallery = shot_gallery('Material Calculator screenshots', [
         ('assets/img/findry/findry-material-calculator-input.webp',
          'Material Calculator screen for entering measurements, a material, and truck capacity.'),
@@ -856,7 +862,7 @@ def build_findry_material_calculator():
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field tools</p>
-        <h1>Material Calculator for Construction</h1>
+        <h1>Materials Estimator for Construction</h1>
         <p class="tagline">Estimate material quantities from jobsite measurements.</p>
         <p class="lead">Findry’s Material Calculator helps contractors and field crews turn
           measurements into practical jobsite estimates. Calculate material volume, view an
@@ -933,7 +939,7 @@ def build_findry_material_calculator():
     structured = {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Material Calculator for Construction | Findry",
+        "name": title,
         "url": SITE + "apps/findry/material-calculator/",
         "description": description,
         "about": {
@@ -954,8 +960,7 @@ def build_findry_material_calculator():
         },
     }
 
-    return _findry_tool_page(path, 'Material Calculator for Construction | Findry',
-                             description, body, structured)
+    return _findry_tool_page(path, title, description, body, structured)
 
 
 # ============================================== Findry truck load calculator ===
@@ -963,8 +968,9 @@ def build_findry_truck_load_calculator():
     a = APP['findry']
     path = 'apps/findry/truck-load-calculator/index.html'
     up = '../' * path.count('/')
-    description = ('Estimate truck trips from material quantity and truck capacity with '
-                   'Findry’s Truck Load Calculator for construction and field work.')
+    title = 'Truck Load Calculator — Estimate Trips | Findry'
+    description = ('Estimate how many truck trips you need from material quantity and truck capacity. '
+                   'Save and reuse estimates in Findry. Free on iPhone and Android.')
     gallery = shot_gallery('Truck Load Calculator screenshots', [
         ('assets/img/findry/findry-truck-load-input.webp',
          'Truck Load Calculator screen for entering a material quantity and truck capacity.'),
@@ -983,7 +989,7 @@ def build_findry_truck_load_calculator():
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field tools</p>
-        <h1>Truck Load Calculator for Construction</h1>
+        <h1>Truck Load Calculator — Estimate Trips</h1>
         <p class="tagline">Estimate truck trips from quantity and truck capacity.</p>
         <p class="lead">Findry’s Truck Load Calculator helps contractors and field crews
           estimate how many truck trips may be needed for a material quantity. Enter the
@@ -1061,7 +1067,7 @@ def build_findry_truck_load_calculator():
     structured = {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Truck Load Calculator for Construction | Findry",
+        "name": title,
         "url": SITE + "apps/findry/truck-load-calculator/",
         "description": description,
         "about": {
@@ -1082,8 +1088,7 @@ def build_findry_truck_load_calculator():
         },
     }
 
-    return _findry_tool_page(path, 'Truck Load Calculator for Construction | Findry',
-                             description, body, structured)
+    return _findry_tool_page(path, title, description, body, structured)
 
 
 # ============================================ Findry underground utility records ===
@@ -1628,7 +1633,7 @@ def main():
     for p in LEGACY:
         pages.append(rebuild_legacy(p))
 
-    write_redirect('apps/findry.html', 'apps/findry/')
+    write_redirect('apps/findry.html', 'apps/findry/', meta_refresh=True)
     build_extras(pages)
 
     print('generated {} pages:'.format(len(pages)))
