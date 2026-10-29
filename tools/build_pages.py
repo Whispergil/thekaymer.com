@@ -243,7 +243,7 @@ def footer(up):
     <div class="footer-grid">
       <div class="footer-brand">
         <a class="wordmark" href="{up}index.html"><span>KAYMER</span></a>
-        <p>An independent mobile app studio building focused tools for everyday work and life.</p>
+        <p>Practical mobile products for real work and everyday life.</p>
       </div>
       <div>
         <h2>Apps</h2>
@@ -472,7 +472,7 @@ def build_home():
     <div class="hero-split">
 
       <div class="hero-copy rise">
-        <p class="eyebrow">Independent app studio</p>
+        <p class="eyebrow">PRACTICAL MOBILE PRODUCTS</p>
         <h1 id="hero-title">Practical apps. Thoughtfully built.</h1>
         <div class="rule"></div>
         <p class="lead">Focused mobile tools that make everyday work and life simpler.</p>
@@ -521,7 +521,7 @@ def build_home():
     <div class="shell">
       <div class="section-head">
         <p class="eyebrow">How we work</p>
-        <h2 id="values">Small studio. Narrow focus.</h2>
+        <h2 id="values">Focused products. Practical purpose.</h2>
       </div>
       <div class="value-grid">
         <div class="value-item rise-in">
@@ -539,7 +539,7 @@ def build_home():
         <div class="value-item rise-in">
           <div class="rule"></div>
           <h3>Answered by the people who built it</h3>
-          <p>Support email goes to the studio. There is no queue and no call centre.</p>
+          <p>Questions and feedback go directly to the people who build and improve our apps.</p>
         </div>
       </div>
     </div>
@@ -550,7 +550,7 @@ def build_home():
       <div class="email-card">
         <div class="email-card-body">
           <h2 id="contact">Questions about an app?</h2>
-          <p>Email the studio directly. We read everything that arrives.</p>
+          <p>Email Kaymer directly. We read everything that arrives.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--primary" href="contact.html">Get Support</a>
@@ -566,13 +566,13 @@ def build_home():
         "@type": "Organization",
         "name": "Kaymer LLC",
         "url": SITE,
-        "description": "Independent mobile app studio based in the United States.",
+        "description": "Mobile app company based in the United States.",
         "email": EMAIL,
         "address": {"@type": "PostalAddress", "addressCountry": "US"},
     }
     return page('index.html',
-                'Kaymer LLC — Independent Mobile App Studio',
-                'Kaymer LLC is an independent mobile app studio in the United States building focused tools for everyday work and life, including Findry for iPhone and Android.',
+                'Kaymer LLC — Practical Mobile Apps',
+                'Kaymer LLC builds practical mobile apps for real work and everyday life, including Findry for iPhone and Android.',
                 'index.html', body, structured)
 
 
@@ -659,7 +659,7 @@ def build_app_page(a):
           finished screens to show. Rather than mock something up, this page waits for the
           real thing.</p>
         <div class="btn-row">
-          <a class="btn btn--secondary" href="{mailto(a['name'] + ' Support')}">Contact the studio</a>
+          <a class="btn btn--secondary" href="{mailto(a['name'] + ' Support')}">Contact Kaymer</a>
         </div>'''
 
     gallery = a.get('detail_shots') or a.get('shots')
@@ -801,7 +801,7 @@ def build_app_page(a):
       <div class="email-card" style="margin-top:var(--s-7)">
         <div class="email-card-body">
           <h3 class="ui-head">Need help with {e(a['name'])}?</h3>
-          <p>Email the studio and mention the app name.</p>
+          <p>Email Kaymer and mention the app name.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--primary" href="{mailto(a['name'] + ' Support')}">Email {e(a['name'])} Support</a>
@@ -1227,22 +1227,33 @@ def build_about():
 
   <section class="hero hero--intro shell" aria-labelledby="about-title">
     <div class="rise">
-      <p class="eyebrow">About</p>
-      <h1 id="about-title">An independent app studio.</h1>
+      <p class="eyebrow">ABOUT</p>
+      <h1 id="about-title">Built for real work and everyday life.</h1>
       <div class="rule"></div>
-      <p class="lead">Kaymer LLC builds focused mobile tools for everyday work and life.</p>
+      <p class="lead">Kaymer LLC creates focused mobile products that solve practical problems through clear, thoughtful design.</p>
+      <div class="prose">
+        <p>Based in the United States, we build technology around the way people actually work and live. Every product begins with a real need and is shaped to be useful, dependable, and easy to understand.</p>
+      </div>
     </div>
   </section>
 
-  <section class="section section--flush-top">
-    <div class="shell prose">
-      <p>Kaymer LLC is an independent mobile app studio in the United States. Support email
-        goes to the people who build the apps. There is no queue and no call centre.</p>
-      <p>Findry is available now for iPhone and Android. It keeps jobsite records for
-        contractors and field crews: photos, depths, measurements, buried utility details,
-        and notes, organised by project.</p>
-      <p>Nôs Beleza is in development. It is a local services marketplace for Cape Verde,
-        starting with beauty and personal care, and it does not have a store listing yet.</p>
+  <section class="section section--tinted" aria-labelledby="building">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="building">What we’re building</h2>
+      </div>
+      <div class="feature-list feature-list--two">
+        <article class="feature-item">
+          <div class="rule"></div>
+          <h3>Findry</h3>
+          <p>Findry helps contractors and field crews organize important jobsite information—including photos, measurements, notes, and project details—and use practical tools such as the Material Calculator and Truck Load Calculator. It is available for iPhone and Android.</p>
+        </article>
+        <article class="feature-item">
+          <div class="rule"></div>
+          <h3>Nôs Beleza</h3>
+          <p>Nôs Beleza is an upcoming local services marketplace for Cape Verde, beginning with beauty and personal care. It is currently in development and is not yet available in app stores.</p>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -1263,7 +1274,7 @@ def build_about():
 </main>
 '''
     return page('about.html', 'About — Kaymer LLC',
-                'Kaymer LLC is an independent mobile app studio based in the United States, building focused tools for everyday work and life.',
+                'Kaymer LLC creates focused mobile products that solve practical problems through clear, thoughtful design.',
                 'about.html', body)
 
 
@@ -1320,7 +1331,7 @@ def build_support():
       <p class="eyebrow">Support</p>
       <h1 id="support-title">How can we help?</h1>
       <div class="rule"></div>
-      <p class="lead">Email reaches the studio directly. Tell us which app you are using and
+      <p class="lead">Your email goes directly to Kaymer. Tell us which app you are using and
         what happened, and we will take it from there.</p>
       <div class="btn-row">
         <a class="btn btn--primary" href="mailto:{EMAIL}">Email {EMAIL}</a>
