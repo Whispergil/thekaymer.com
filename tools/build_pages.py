@@ -841,15 +841,64 @@ def build_findry_material_calculator():
     a = APP['findry']
     path = 'apps/findry/material-calculator/index.html'
     up = '../' * path.count('/')
-    title = 'Materials Estimator for Construction | Findry App'
-    description = ('Estimate construction material volume and weight from jobsite measurements. '
-                   'Imperial or Metric. Save calculations in Findry on iPhone and Android.')
+    title = 'Gravel, Sand & Material Calculator (Yards & Tons) | Findry'
+    description = ('Estimate cubic yards, tons, and truck trips for gravel, sand, topsoil, '
+                   'fill dirt, mulch, concrete, and more. Free Findry app for iPhone and Android.')
     gallery = shot_gallery('Material Calculator screenshots', [
         ('assets/img/findry/findry-material-calculator-input.webp',
          'Material Calculator screen for entering measurements, a material, and truck capacity.'),
         ('assets/img/findry/findry-material-calculator-results.webp',
          'Material Calculator estimate showing volume, weight, and truck trips from the measurements entered.'),
     ], up)
+    # Visible FAQ and FAQPage JSON-LD are built from the same strings.
+    faqs = [
+        ('How do I calculate cubic yards of material?',
+         'Multiply length in feet by width in feet by depth in feet, then divide by 27. '
+         'If your depth is in inches, divide it by 12 first. For example, 150 ft × 55 ft × 3 in '
+         'is 150 × 55 × 0.25 = 2,062.5 cubic feet, or about 76.39 cubic yards.'),
+        ('How much gravel, sand, or topsoil do I need?',
+         'Measure the length, width, and finished depth of the area and work out the cubic yards. '
+         'Then convert to tons if your supplier sells by weight. Findry’s Material Calculator does '
+         'both for gravel, crushed stone, sand, topsoil, fill dirt, mulch, concrete, and asphalt '
+         'millings. Confirm the final quantity with your supplier.'),
+        ('How does Findry estimate tons of material?',
+         'Findry applies a built-in weight for the material you choose to the calculated volume and '
+         'shows the result in US short tons. It is an estimate. Actual weight depends on the exact '
+         'product, moisture, and supplier, so check with your supplier before ordering by the ton.'),
+        ('How many truck loads will I need?',
+         'Divide the cubic yards by your truck’s capacity in cubic yards, then round up to a whole '
+         'number of trips. In Findry you can pick a truck size from 5 to 20 cubic yards or enter a '
+         'custom capacity, and it shows both the load equivalent and the estimated trips. Results '
+         'are estimates and do not set legal payload or safe hauling limits.'),
+        ('Does the calculator add extra for waste or compaction?',
+         'No. The Material Calculator uses exactly the measurements you enter. If your job needs '
+         'extra material for waste, compaction, or uneven ground, ask your supplier or engineer '
+         'how much to add.'),
+        ('Is the Material Calculator free, and what phones does it work on?',
+         'Yes. The Material Calculator and the Truck Load Calculator are completely free for all '
+         'users, on both the free plan and Findry Pro, and no subscription is needed. Findry is '
+         'free to download for iPhone (iOS 16.4 or later) and Android (7.0 or later). You can save '
+         'calculations to Calculator History and reopen them later.'),
+    ]
+    faq_items = '\n'.join(
+        f'''        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>{e(question)}</h3>
+          <p>{e(answer)}</p>
+        </div>'''
+        for question, answer in faqs)
+    faq_ld = json.dumps({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+            {
+                '@type': 'Question',
+                'name': question,
+                'acceptedAnswer': {'@type': 'Answer', 'text': answer},
+            }
+            for question, answer in faqs
+        ],
+    }, indent=2, ensure_ascii=False)
 
     body = f'''<main id="main">
 
@@ -862,11 +911,13 @@ def build_findry_material_calculator():
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field tools</p>
-        <h1>Materials Estimator for Construction</h1>
+        <h1>Material Calculator for Gravel, Sand, Topsoil, and More</h1>
         <p class="tagline">Estimate material quantities from jobsite measurements.</p>
-        <p class="lead">Findry’s Material Calculator helps contractors and field crews turn
-          measurements into practical jobsite estimates. Calculate material volume, view an
-          estimated material weight, and estimate truck trips based on the capacity you enter.</p>
+        <p class="lead">Findry’s Material Calculator helps contractors and field crews estimate
+          material volume, weight, and volume-based truck trips from jobsite measurements. Enter
+          the length, width, and depth, pick a material and a truck capacity, and Findry shows
+          cubic yards, cubic metres, estimated tons, and how many truck trips the job may take.
+          The Material Calculator is part of the Findry app for iPhone and Android.</p>
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
@@ -903,6 +954,181 @@ def build_findry_material_calculator():
     </div>
   </section>
 
+  <section class="section" aria-labelledby="materials">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Materials</p>
+        <h2 id="materials">Materials included in the calculator</h2>
+        <p class="lead">Choose one of eight common jobsite and landscape materials. Findry applies a built-in weight for each material to estimate tons.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Gravel</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Crushed Stone</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Sand</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Topsoil</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Fill Dirt</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Mulch</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Concrete</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Asphalt Millings</h3>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:var(--s-6)">
+        <p>Weights are estimates. The actual weight of a load depends on the exact product, moisture, and supplier, so check with your supplier before you order by the ton.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="how-to">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Step by step</p>
+        <h2 id="how-to">How to use the Material Calculator</h2>
+        <p class="lead">Open Findry and tap Material Calculator on the Home screen. A typical estimate takes five steps.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 1: Choose the material</h3>
+          <p>Pick Gravel, Crushed Stone, Sand, Topsoil, Fill Dirt, Mulch, Concrete, or Asphalt Millings. The material you choose sets the estimated weight.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 2: Choose a truck capacity</h3>
+          <p>Work in cubic yards or cubic metres. For cubic yards, pick a common truck size from 5 to 20 yd³, or enter a custom capacity for your own truck, such as 24 yd³.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 3: Pick Imperial or Metric</h3>
+          <p>Choose your measurement units before you type anything. Changing units clears the measurements you have already entered.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 4: Enter length, width, and depth</h3>
+          <p>In Imperial, enter length and width in feet and depth in inches. Measure the area you need to fill or cover, and use the depth of the finished layer.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 5: Calculate, then save or adjust</h3>
+          <p>Tap Calculate to see cubic yards, cubic metres, estimated US short tons, the load equivalent, and the estimated number of trips. Use Edit Measurements to change a number, or save the result to Calculator History to reopen it later.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="formula">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">The formula</p>
+        <h2 id="formula">How to calculate cubic yards and tons of material</h2>
+        <p class="lead">The Material Calculator uses the same math you would do by hand. Here it is in plain words, so you can check any estimate.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Volume in cubic yards</h3>
+          <p>Multiply length (ft) × width (ft) × depth (ft) to get cubic feet. Depth is usually measured in inches, so divide inches by 12 first. Then divide cubic feet by 27, because one cubic yard is 3 ft × 3 ft × 3 ft = 27 cubic feet.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Cubic metres</h3>
+          <p>One cubic yard is about 0.765 cubic metres, so Findry also shows the volume in m³.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Estimated weight in tons</h3>
+          <p>Findry applies a built-in weight for the material you selected and shows the result in US short tons (2,000 lb). Gravel, sand, topsoil, mulch, and the other materials all weigh different amounts, and real weights vary by product and moisture. Check with your supplier before you order by the ton.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Truck loads and trips</h3>
+          <p>The load equivalent is the volume divided by your truck’s capacity. Trips is that number rounded up to whole trucks, because a partly full truck still makes a trip. Trips are based on volume only, not on weight.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="example-crushed-stone">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Example</p>
+        <h2 id="example-crushed-stone">Example: crushed stone for a 150 ft × 55 ft lot</h2>
+      </div>
+      <div class="prose">
+        <p>(Illustrative example using the same numbers as the app screenshot on this page.)</p>
+        <p>A crew needs a 3-inch layer of crushed stone over an area 150 ft long and 55 ft wide, using a 20 yd³ truck.</p>
+        <ul>
+          <li><strong>Cubic feet:</strong> 150 × 55 × (3 ÷ 12) = 2,062.5 ft³</li>
+          <li><strong>Cubic yards:</strong> 2,062.5 ÷ 27 = <strong>76.39 yd³</strong></li>
+          <li><strong>Cubic metres:</strong> about <strong>58.4 m³</strong></li>
+          <li><strong>Estimated weight:</strong> the app estimates about <strong>114.6 tons</strong> for crushed stone</li>
+          <li><strong>Loads:</strong> 76.39 ÷ 20 = <strong>3.82 loads</strong>, so <strong>4 trips</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="example-gravel">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Example</p>
+        <h2 id="example-gravel">Example: gravel for an 80 ft × 40 ft pad</h2>
+      </div>
+      <div class="prose">
+        <p>(Illustrative example with made-up sample values.)</p>
+        <p>A contractor is placing a 4-inch layer of gravel on an 80 ft × 40 ft pad and has a 10 yd³ truck.</p>
+        <ul>
+          <li><strong>Cubic feet:</strong> 80 × 40 × (4 ÷ 12) = 1,066.67 ft³</li>
+          <li><strong>Cubic yards:</strong> 1,066.67 ÷ 27 = <strong>39.51 yd³</strong></li>
+          <li><strong>Cubic metres:</strong> about <strong>30.2 m³</strong></li>
+          <li><strong>Loads:</strong> 39.51 ÷ 10 = <strong>3.95 loads</strong>, so <strong>4 trips</strong></li>
+          <li><strong>Weight:</strong> select Gravel in Findry to see the estimated tons, and confirm the weight with your supplier.</li>
+          <li><strong>Custom truck:</strong> with a 24 yd³ truck entered as a custom capacity, the same pad is 39.51 ÷ 24 = <strong>1.65 loads</strong>, so <strong>2 trips</strong>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="order-tips">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Before you order</p>
+        <h2 id="order-tips">Tips before you order gravel, soil, or fill</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>Measure the finished depth.</strong> Use the depth of the layer after it is placed and compacted, not the loose pile.</li>
+          <li><strong>Break odd shapes into rectangles.</strong> Run one calculation per rectangle, save each to Calculator History, and add the yards together.</li>
+          <li><strong>Plan for extra.</strong> The calculator uses exactly the measurements you enter and doesn’t add a waste or compaction allowance. Fill dirt, topsoil, and base materials often settle, so ask your supplier or engineer how much extra to order for your job.</li>
+          <li><strong>Ask how it’s sold.</strong> Some suppliers sell by the cubic yard and others by the ton. Findry shows both, so you can compare against the quote.</li>
+          <li><strong>Confirm weight and truck limits.</strong> Trips are based on volume. Legal hauling limits depend on the vehicle and the load weight, so check them before you rely on an estimate.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="history">
     <div class="shell">
       <div class="section-head">
@@ -917,6 +1143,18 @@ def build_findry_material_calculator():
     </div>
   </section>
 
+  <section class="section section--tinted" aria-labelledby="material-faq">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="material-faq">Material calculator FAQ</h2>
+      </div>
+      <div class="feature-list">
+{faq_items}
+      </div>
+    </div>
+  </section>
+
   <section class="section section--tinted" aria-labelledby="findry-material">
     <div class="shell">
       <div class="email-card">
@@ -925,7 +1163,7 @@ def build_findry_material_calculator():
           <h2 id="findry-material">Keep the estimate with the rest of your field workflow.</h2>
           <p>Findry combines field calculators with project records, measurements, photos,
             reference points, notes, search, and jobsite documentation.</p>
-          <p>And keep <a href="/apps/findry/underground-utility-records/">underground utility records</a> for the same project.</p>
+          <p>Already know your quantity? Use the <a href="/apps/findry/truck-load-calculator/">Truck Load Calculator</a> to estimate trips. And keep <a href="/apps/findry/underground-utility-records/">underground utility records</a> for the same project.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
@@ -933,6 +1171,10 @@ def build_findry_material_calculator():
       </div>
     </div>
   </section>
+
+  <script type="application/ld+json">
+{faq_ld}
+  </script>
 
 </main>
 '''
@@ -955,6 +1197,8 @@ def build_findry_material_calculator():
                 "Estimated material weight",
                 "Estimated truck trips",
                 "Calculator History",
+                "Gravel, crushed stone, sand, topsoil, fill dirt, mulch, concrete, and asphalt millings",
+                "Preset and custom truck capacities",
             ],
             "author": {"@type": "Organization", "name": "Kaymer LLC"},
             "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
@@ -1054,6 +1298,7 @@ def build_findry_truck_load_calculator():
           <h2 id="findry-truck">Keep truck estimates with the rest of your field workflow.</h2>
           <p>Findry combines field calculators with project records, measurements, photos,
             reference points, notes, search, and jobsite documentation.</p>
+          <p>Don’t know the quantity yet? Start with the <a href="/apps/findry/material-calculator/">Material Calculator</a>.</p>
           <p>And keep <a href="/apps/findry/underground-utility-records/">underground utility records</a> for the same project.</p>
         </div>
         <div class="btn-row">
