@@ -1213,15 +1213,62 @@ def build_findry_truck_load_calculator():
     a = APP['findry']
     path = 'apps/findry/truck-load-calculator/index.html'
     up = '../' * path.count('/')
-    title = 'Truck Load Calculator — Estimate Trips | Findry'
-    description = ('Estimate how many truck trips you need from material quantity and truck capacity. '
-                   'Save and reuse estimates in Findry. Free on iPhone and Android.')
+    title = 'Truck Load Calculator: Cubic Yards & Trips | Findry'
+    description = ('Estimate how many dump truck trips you need from material quantity and truck capacity. '
+                   'Presets 5–20 yd³ or custom. Free Findry app for iPhone and Android.')
     gallery = shot_gallery('Truck Load Calculator screenshots', [
         ('assets/img/findry/findry-truck-load-input.webp',
          'Truck Load Calculator screen for entering a material quantity and truck capacity.'),
         ('assets/img/findry/findry-truck-load-results.webp',
          'Truck Load Calculator estimate showing the trips for the quantity and truck capacity entered.'),
     ], up)
+    # Visible FAQ and FAQPage JSON-LD are built from the same strings.
+    faqs = [
+        ('How do I calculate how many truck loads I need?',
+         'Divide the material quantity by the truck’s capacity, using the same unit for both, '
+         'then round up to a whole number of trips. For example, 400 cubic yards ÷ 24 yd³ = '
+         '16.67 loads, which is 17 trips.'),
+        ('How many truck loads of gravel or dirt will I need?',
+         'Once you know the cubic yards of gravel, fill dirt, or another material, divide by '
+         'your dump truck’s capacity in cubic yards and round up. Findry’s Truck Load Calculator '
+         'does that math for you. If you still need the cubic yards from a length, width, and '
+         'depth, use the Material Calculator first.'),
+        ('What dump truck capacities does Findry include?',
+         'For cubic yards, Findry includes presets of 5, 6, 8, 10, 12, 14, 16, 18, and 20 yd³, '
+         'plus a custom capacity field for other sizes. You can also work in cubic metres.'),
+        ('Does the Truck Load Calculator use volume or weight?',
+         'You can choose Volume or Weight in the app. When you work in volume, you pick cubic '
+         'yards or cubic metres, and trips are based on volume. Results are estimates and do not '
+         'set legal payload or safe hauling limits.'),
+        ('Why does Findry round trips up?',
+         'A partly full truck still makes a trip. The load equivalent can be a decimal (for '
+         'example 16.67 loads), and Estimated Trips is that number rounded up to a whole truck '
+         'count.'),
+        ('Is the Truck Load Calculator free, and what phones does it work on?',
+         'Yes. The Truck Load Calculator and the Material Calculator are completely free for all '
+         'users, on both the free plan and Findry Pro, and no subscription is needed. Findry is '
+         'free to download for iPhone (iOS 16.4 or later) and Android (7.0 or later). You can save '
+         'calculations to Calculator History and reopen them later.'),
+    ]
+    faq_items = '\n'.join(
+        f'''        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>{e(question)}</h3>
+          <p>{e(answer)}</p>
+        </div>'''
+        for question, answer in faqs)
+    faq_ld = json.dumps({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+            {
+                '@type': 'Question',
+                'name': question,
+                'acceptedAnswer': {'@type': 'Answer', 'text': answer},
+            }
+            for question, answer in faqs
+        ],
+    }, indent=2, ensure_ascii=False)
 
     body = f'''<main id="main">
 
@@ -1234,12 +1281,14 @@ def build_findry_truck_load_calculator():
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field tools</p>
-        <h1>Truck Load Calculator — Estimate Trips</h1>
+        <h1>Truck Load Calculator for Gravel, Dirt, and Jobsite Hauling</h1>
         <p class="tagline">Estimate truck trips from quantity and truck capacity.</p>
         <p class="lead">Findry’s Truck Load Calculator helps contractors and field crews
-          estimate how many truck trips may be needed for a material quantity. Enter the
-          quantity, choose supported volume or weight units, and enter the truck capacity
-          you want to use for the estimate.</p>
+          estimate how many truck trips a material quantity may take. Enter the quantity,
+          choose Volume or Weight, pick cubic yards or cubic metres when you work by volume,
+          set a truck capacity, and Findry shows the load equivalent and the estimated number
+          of trips. The Truck Load Calculator is part of the Findry app for iPhone and Android,
+          and it is free for all users.</p>
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
@@ -1276,6 +1325,176 @@ def build_findry_truck_load_calculator():
     </div>
   </section>
 
+  <section class="section" aria-labelledby="truck-capacities">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Truck sizes</p>
+        <h2 id="truck-capacities">Dump truck capacity presets (cubic yards)</h2>
+        <p class="lead">Choose a common dump truck size, or enter the capacity of the truck you actually have. When you work in cubic yards, Findry includes presets for:</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>5 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>6 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>8 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>10 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>12 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>14 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>16 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>18 yd³</h3>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>20 yd³</h3>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:var(--s-6)">
+        <p>Need a different size? Use <strong>Custom Capacity</strong> (for example 24 yd³). You can also work in cubic metres. Changing the calculation type or unit clears the quantity and capacity you already entered, so set those first.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="how-to">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Step by step</p>
+        <h2 id="how-to">How to use the Truck Load Calculator</h2>
+        <p class="lead">Open Findry and tap Truck Load Calculator on the Home screen. A typical estimate takes four steps.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 1: Enter the material quantity</h3>
+          <p>Type the amount of material you need to move. Use a quantity you already know from a supplier quote, a takeoff, or Findry’s Material Calculator.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 2: Choose Volume or Weight, then the unit</h3>
+          <p>Pick Volume to work in cubic yards or cubic metres. A Weight option is also available in the app. Set the calculation type and unit before you finish the other fields, because changing them clears quantity and capacity.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 3: Set the truck capacity</h3>
+          <p>Pick a preset from 5 to 20 cubic yards, enter a custom capacity for your own truck, or use cubic metres if that matches how you measure the vehicle.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 4: Calculate, then save or adjust</h3>
+          <p>Tap Calculate to see the load equivalent by volume and the estimated number of trips. Use Edit Inputs to change a number, or save the result to Calculator History to reopen it later.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="formula">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">The formula</p>
+        <h2 id="formula">How to calculate truck loads and trips</h2>
+        <p class="lead">The Truck Load Calculator uses the same math you would do by hand. Here it is in plain words, so you can check any estimate.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Load equivalent</h3>
+          <p>Divide the material quantity by the truck’s capacity, using the same unit for both. For volume work: quantity (yd³) ÷ truck capacity (yd³) = load equivalent.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Estimated trips</h3>
+          <p>Round the load equivalent <strong>up</strong> to a whole number of trips. A partly full truck still makes a trip, so 3.1 loads is 4 trips, and 16.67 loads is 17 trips.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Volume-based trips</h3>
+          <p>When you work in volume units, trips are based on volume only, not on weight. Real trucks also have weight limits. Findry does not set legal payload or safe hauling capacity, so verify the vehicle and the load before you haul.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Don’t know the quantity yet?</h3>
+          <p>Use the <a href="/apps/findry/material-calculator/">Material Calculator</a> to estimate cubic yards from length, width, and depth for gravel, crushed stone, sand, topsoil, fill dirt, mulch, concrete, and asphalt millings. Then bring that quantity here to plan trips.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="example-400">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Example</p>
+        <h2 id="example-400">Example: 400 cubic yards with a 24 yd³ truck</h2>
+      </div>
+      <div class="prose">
+        <p>(Illustrative example using the same numbers as the app screenshot on this page.)</p>
+        <p>A crew has <strong>400 yd³</strong> of material to move and a dump truck with a <strong>24 yd³</strong> custom capacity.</p>
+        <ul>
+          <li><strong>Load equivalent:</strong> 400 ÷ 24 = <strong>16.67 loads</strong></li>
+          <li><strong>Estimated trips:</strong> round up → <strong>17 trips</strong></li>
+        </ul>
+        <p>That is the same result shown on the Truck Load Estimate screen in the Findry screenshots on this page.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="example-fill-dirt">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Example</p>
+        <h2 id="example-fill-dirt">Example: how many truck loads of fill dirt</h2>
+      </div>
+      <div class="prose">
+        <p>(Illustrative example with made-up sample values.)</p>
+        <p>A contractor has <strong>85 yd³</strong> of fill dirt to haul and wants to compare two dump trucks.</p>
+        <ul>
+          <li><strong>With a 12 yd³ truck:</strong> 85 ÷ 12 = <strong>7.08 loads</strong>, so <strong>8 trips</strong></li>
+          <li><strong>With a 20 yd³ truck:</strong> 85 ÷ 20 = <strong>4.25 loads</strong>, so <strong>5 trips</strong></li>
+        </ul>
+        <p>Same quantity of fill dirt; the larger truck cuts the trip count from 8 to 5. If the quantity came from a pad or trench measurement, run it first in the Material Calculator, then use those cubic yards here.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="trip-tips">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Before you haul</p>
+        <h2 id="trip-tips">Tips for planning truck trips</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>Match the unit to the quote.</strong> If the supplier sells by the cubic yard, work in cubic yards. If your takeoff is in cubic metres, switch the unit before you enter numbers.</li>
+          <li><strong>Use the truck you will actually load.</strong> Presets cover common sizes from 5 to 20 yd³. For a different body size, enter a custom capacity instead of forcing a preset.</li>
+          <li><strong>Round trips up, not down.</strong> A leftover 0.2 load still needs another run to the site or the dump.</li>
+          <li><strong>Plan staging and turnaround.</strong> Trip count is only the hauling math. Access, dump time, and whether trucks can pass each other on site also affect the day.</li>
+          <li><strong>Confirm weight and legal limits.</strong> Volume trips are not the same as a legal load. Moisture, material type, and the vehicle’s ratings can reduce how full you should load. Always verify before you haul.</li>
+          <li><strong>Still need the yards?</strong> For gravel, dirt, sand, topsoil, and similar materials measured on site, start with the Material Calculator, then return here for trips.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="truck-history">
     <div class="shell">
       <div class="section-head">
@@ -1287,6 +1506,18 @@ def build_findry_truck_load_calculator():
       <p class="note"><strong>Estimates only.</strong> Findry does not determine legal payload,
         gross vehicle weight ratings, axle compliance, road restrictions, or safe hauling
         capacity. Always verify the actual vehicle, material, and legal requirements before hauling.</p>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="truck-faq">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="truck-faq">Truck load calculator FAQ</h2>
+      </div>
+      <div class="feature-list">
+{faq_items}
+      </div>
     </div>
   </section>
 
@@ -1308,6 +1539,10 @@ def build_findry_truck_load_calculator():
     </div>
   </section>
 
+  <script type="application/ld+json">
+{faq_ld}
+  </script>
+
 </main>
 '''
 
@@ -1326,8 +1561,9 @@ def build_findry_truck_load_calculator():
             "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
             "featureList": [
                 "Truck trip estimates",
-                "Volume and weight units",
+                "Preset truck capacities from 5 to 20 cubic yards",
                 "Custom truck capacity",
+                "Volume and weight calculation types",
                 "Calculator History",
             ],
             "author": {"@type": "Organization", "name": "Kaymer LLC"},
