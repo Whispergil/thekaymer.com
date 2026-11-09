@@ -925,6 +925,7 @@ def build_findry_material_calculator():
           <h2 id="findry-material">Keep the estimate with the rest of your field workflow.</h2>
           <p>Findry combines field calculators with project records, measurements, photos,
             reference points, notes, search, and jobsite documentation.</p>
+          <p>And keep <a href="/apps/findry/underground-utility-records/">underground utility records</a> for the same project.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
@@ -1053,6 +1054,7 @@ def build_findry_truck_load_calculator():
           <h2 id="findry-truck">Keep truck estimates with the rest of your field workflow.</h2>
           <p>Findry combines field calculators with project records, measurements, photos,
             reference points, notes, search, and jobsite documentation.</p>
+          <p>And keep <a href="/apps/findry/underground-utility-records/">underground utility records</a> for the same project.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
@@ -1096,12 +1098,58 @@ def build_findry_underground_utility_records():
     a = APP['findry']
     path = 'apps/findry/underground-utility-records/index.html'
     up = '../' * path.count('/')
-    description = ('Document buried pipes, underground utilities, measurements, photos, '
-                   'reference points, and field notes by project with Findry.')
+    title = 'Underground Utility Records App for Contractors | Findry'
+    description = ('Document buried pipes and utilities with depths, measurements, '
+                   'reference points, photos, and notes, organized by project. '
+                   'Free Findry app by Kaymer LLC.')
     gallery = shot_gallery('Underground utility record screenshot', [
         ('assets/img/findry/findry-underground-documentation.webp',
          'A Findry record for a buried storm-drain cleanout, with depth, length, reference points, and photos.'),
     ], up)
+    # Visible FAQ and FAQPage JSON-LD are built from the same strings.
+    faqs = [
+        ('What should an underground utility record include?',
+         'At minimum: the utility type, size and material, depth, location tied to fixed '
+         'reference points, photos, the date, and who did the work. Adding the locate ticket '
+         'number and any warnings makes the record much more useful to the next crew.'),
+        ('Can Findry locate or detect underground utilities?',
+         'No. Findry is a documentation app. It stores the information you enter, such as '
+         'depths, measurements, reference points, and photos. It does not detect, verify, or '
+         'professionally locate underground utilities, and it does not replace 811 or local '
+         'utility-marking requirements. Always check your local 811 rules before you dig.'),
+        ('Can I use Findry to keep my own as-built notes?',
+         'Yes. You can keep your own notes on what was actually installed and where. Findry '
+         'lets you save that information as records under each project, with depths, '
+         'measurements, reference points, materials, and photos. Check with your project '
+         'owner or local authority for any official as-built drawing requirements.'),
+        ('How do I find a record later?',
+         'Search by project, record title, utility type, keywords, or notes. You can also '
+         'mark records with Find Later and use Emergency Lookup for quick access to '
+         'important records.'),
+        ('Is Findry free, and what phones does it work on?',
+         'Findry is free to download for iPhone (iOS 16.4 or later) and Android (7.0 or '
+         'later). An optional Findry Pro subscription adds extra features, including cloud '
+         'backup.'),
+    ]
+    faq_items = '\n'.join(
+        f'''        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>{e(question)}</h3>
+          <p>{e(answer)}</p>
+        </div>'''
+        for question, answer in faqs)
+    faq_ld = json.dumps({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+            {
+                '@type': 'Question',
+                'name': question,
+                'acceptedAnswer': {'@type': 'Answer', 'text': answer},
+            }
+            for question, answer in faqs
+        ],
+    }, indent=2, ensure_ascii=False)
 
     body = f'''<main id="main">
 
@@ -1114,12 +1162,9 @@ def build_findry_underground_utility_records():
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field records</p>
-        <h1>Underground Utility & Jobsite Records</h1>
+        <h1>Underground Utility Records for Contractors and Field Crews</h1>
         <p class="tagline">Document the work now so the details are easier to find later.</p>
-        <p class="lead">Findry helps contractors and field crews document buried pipes,
-          underground utility installations, measurements, photos, reference points, warnings,
-          and field notes. Records stay organized by project so important jobsite information
-          is easier to find when you return to the work later.</p>
+        <p class="lead">Findry is an iPhone and Android app that helps contractors, excavators, plumbers, and utility crews document buried pipes and underground utility installations. Save depths, measurements, pipe sizes, materials, reference points, warnings, photos, and field notes in one record, organized by project, so the details are easy to find when you or your crew come back to the site.</p>
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
@@ -1159,6 +1204,111 @@ def build_findry_underground_utility_records():
     </div>
   </section>
 
+  <section class="section" aria-labelledby="what-to-record">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">What to record</p>
+        <h2 id="what-to-record">What to record for every underground utility</h2>
+        <p class="lead">A good utility record answers one question for the next person on site: what is down there, and exactly where? These are the details worth saving every time a line is installed, repaired, or exposed.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Utility type and what was installed</h3>
+          <p>Note the utility type (water, sewer, storm, gas, electric, telecom, irrigation, or other), the pipe or conduit size, the material, and any fittings, valves, or cleanouts. Give the record a clear title, like “6 in PVC sewer lateral – rear yard”, so it is easy to search later.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Depth and measurements</h3>
+          <p>Record the depth to the top of the pipe or conduit, plus lengths and run distances you measured. Say where the depth was taken, for example “at the cleanout” or “10 ft from the house wall”, since depth can change along a run.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Location and reference points</h3>
+          <p>Tie the location to things that will still be there later: building corners, curbs, hydrants, manholes, valve boxes, or property pins. Two measurements from two fixed points are easier to re-find than one. Add the project address so the record is connected to the right site. If your crew records coordinates with a separate GPS device, you can type them into the notes.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Photos</h3>
+          <p>Take photos while the trench is open: the pipe in place, the depth with a tape or rod visible, and a wider shot that shows nearby landmarks. Photos of the backfilled area from the same spot help match the record to the site later.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Locate ticket number, date, and crew</h3>
+          <p>Add the locate (811) ticket number, the work date, and who did the work in the record title or notes. That makes it easier to connect the record to the job paperwork and to know who to ask if questions come up.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Warnings and anything unusual</h3>
+          <p>Note anything the next crew should know: shallow sections, nearby lines that were exposed, abandoned pipe, unmarked crossings, or tie-ins. Findry records include a warnings field for this.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="how-to-document">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Step by step</p>
+        <h2 id="how-to-document">How to document underground utilities with Findry</h2>
+        <p class="lead">The best time to document a buried line is before it is covered. Here is a simple routine your crew can follow on every job.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 1: Create or open the project</h3>
+          <p>Add the project in Findry with its name, address, and project manager contact details. Every record you save goes under this project.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 2: Add a record while the line is exposed</h3>
+          <p>Create a new record with a clear title and category. Enter the depth, measurements, pipe size, material, and any valve or cleanout details.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 3: Measure from fixed reference points</h3>
+          <p>Save the distances from at least two permanent features on site so someone can find the spot again without guessing.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 4: Attach photos and notes</h3>
+          <p>Add photos of the open trench and the surrounding area. Use the notes for the locate ticket number, work date, crew, and anything unusual. Add a warning if the next crew needs to know something before digging.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>Step 5: Find it when you return</h3>
+          <p>Next week or years later, search by project, record title, utility type, keywords, or notes. Mark records with Find Later when you know you will need them again, and use Emergency Lookup for quick access to important records.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="storm-drain-example">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Example</p>
+        <h2 id="storm-drain-example">Example: recording a storm-drain cleanout</h2>
+      </div>
+      <div class="prose">
+        <p>(Illustrative example only — not a real customer or job.)</p>
+        <p>A crew installs a new storm-drain cleanout at the back of a commercial lot. Before backfilling, the foreman opens the project in Findry and adds a record:</p>
+        <ul>
+          <li><strong>Title:</strong> Storm-drain cleanout – NE corner of rear lot</li>
+          <li><strong>Category / utility type:</strong> Storm drain</li>
+          <li><strong>Details:</strong> 4 in PVC, cleanout cap at grade</li>
+          <li><strong>Depth:</strong> 3 ft 2 in to top of pipe at the wye</li>
+          <li><strong>Length:</strong> 18 ft run from the wye to the catch basin</li>
+          <li><strong>Reference points:</strong> 12 ft from the NE building corner; 7 ft 6 in from the curb face</li>
+          <li><strong>Photos:</strong> open trench with tape at the wye; wide shot toward the building corner; finished cleanout after backfill</li>
+          <li><strong>Notes:</strong> Locate ticket #(your ticket number). Installed (date) by (crew). Water line crosses about 2 ft north of the cleanout, roughly 18 in shallower.</li>
+          <li><strong>Warning:</strong> Water crossing nearby — hand dig within 2 ft.</li>
+        </ul>
+        <p>Eight months later the owner calls about a backup. The foreman searches “cleanout” in the project, opens the record, and uses the two reference measurements and photos to go straight to the spot. Before any digging, the crew still calls 811 and follows local marking rules.</p>
+        <p>(This matches the existing page screenshot, which shows a storm-drain cleanout record with depth, length, reference points, and photos. The numbers above are made-up sample values.)</p>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="find-later">
     <div class="shell">
       <div class="section-head">
@@ -1173,6 +1323,18 @@ def build_findry_underground_utility_records():
     </div>
   </section>
 
+  <section class="section section--tinted" aria-labelledby="utility-faq">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="utility-faq">Underground utility records FAQ</h2>
+      </div>
+      <div class="feature-list">
+{faq_items}
+      </div>
+    </div>
+  </section>
+
   <section class="section section--tinted" aria-labelledby="findry-records">
     <div class="shell">
       <div class="email-card">
@@ -1180,7 +1342,7 @@ def build_findry_underground_utility_records():
           <p class="eyebrow">Part of Findry</p>
           <h2 id="findry-records">Field records, reference points, photos, and calculators in one app.</h2>
           <p>Findry combines project-based jobsite documentation with search, Find Later,
-            Emergency Lookup, the Material Calculator, and the Truck Load Calculator.</p>
+            Emergency Lookup, the <a href="/apps/findry/material-calculator/">Material Calculator</a>, and the <a href="/apps/findry/truck-load-calculator/">Truck Load Calculator</a>.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
@@ -1189,13 +1351,17 @@ def build_findry_underground_utility_records():
     </div>
   </section>
 
+  <script type="application/ld+json">
+{faq_ld}
+  </script>
+
 </main>
 '''
 
     structured = {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Underground Utility & Jobsite Records | Findry",
+        "name": title,
         "url": SITE + "apps/findry/underground-utility-records/",
         "description": description,
         "about": {
@@ -1217,8 +1383,7 @@ def build_findry_underground_utility_records():
         },
     }
 
-    return _findry_tool_page(path, 'Underground Utility & Jobsite Records | Findry',
-                             description, body, structured)
+    return _findry_tool_page(path, title, description, body, structured)
 
 
 # ============================================================== about page ===
