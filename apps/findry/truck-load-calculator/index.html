@@ -282,12 +282,34 @@
         margin-bottom: var(--s-3);
       }
       #truck-calc .truck-calc-status:empty { display: none; }
+      #truck-calc .truck-anim {
+        position: relative;
+        max-width: 36rem;
+        aspect-ratio: 680 / 300;
+        margin-top: calc(var(--s-3) - var(--s-7));
+        margin-bottom: var(--s-4);
+      }
+      #truck-calc .truck-anim img,
+      #truck-calc .truck-anim-stage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+      }
+      #truck-calc .truck-anim-stage { visibility: hidden; }
+      #truck-calc .truck-anim.is-playing .truck-anim-stage { visibility: visible; }
+      #truck-calc .truck-anim.is-playing img { visibility: hidden; }
     </style>
     <div class="shell">
       <div class="section-head">
         <p class="eyebrow">On this page</p>
         <h2 id="truck-calc-heading">Estimate truck trips here</h2>
         <p class="lead">Use the same quantity ÷ capacity math as the Findry app. Quantity and capacity stay in one unit — this calculator does not convert volume to weight, or weight to volume.</p>
+      </div>
+      <div class="truck-anim" data-truck-anim data-player="../../../assets/js/lottie_light.min.js" data-src="/assets/animations/truck-load.json" aria-hidden="true">
+        <img src="/assets/img/findry/truck-load-animation-still.svg" alt="" width="680" height="300" decoding="async">
+        <div class="truck-anim-stage" data-truck-anim-stage></div>
       </div>
       <noscript>
         <p class="note">This on-page calculator needs JavaScript. The formula and examples below still work, and you can get the same tool in the Findry app.</p>
@@ -380,6 +402,7 @@
       </div>
     </div>
     <script src="/assets/js/truck-load-calculator.js" defer></script>
+    <script src="/assets/js/truck-animation.js" defer></script>
   </section>
 
 
