@@ -681,6 +681,9 @@ def build_app_page(a):
     safety_block = ''
     if a.get('safety_note'):
         safety_block = f'''\n      <p class="note" style="margin-top:var(--s-6)"><strong>Documentation, not utility detection.</strong> {e(a["safety_note"])}</p>'''
+        if a['slug'] == 'findry':
+            safety_block += ('\n      <p style="margin-top:var(--s-4)">New to keeping records? Read '
+                             '<a href="/apps/findry/how-to-document-buried-utilities/">how to document buried utilities</a>.</p>')
 
     calc_links_block = ''
     if a['slug'] == 'findry':
@@ -690,7 +693,7 @@ def build_app_page(a):
         <h2 id="free-calculators">Free Findry calculators</h2>
         <p class="lead">Use them free in your browser. No app download required.</p>
       </div>
-      <div class="card-grid">
+      <div class="card-grid card-grid--three">
         <article class="app-card">
           <h3>Material Calculator</h3>
           <p>Estimate volume for gravel, stone, soil, and more.</p>
@@ -703,6 +706,13 @@ def build_app_page(a):
           <p>Estimate cubic yards and how many trips a load may take.</p>
           <div class="card-actions">
             <a class="btn btn--secondary" href="/apps/findry/truck-load-calculator/">Open the Truck Load Calculator</a>
+          </div>
+        </article>
+        <article class="app-card">
+          <h3>Trench Backfill Calculator</h3>
+          <p>Estimate backfill, tons, and truck trips for a trench and pipe.</p>
+          <div class="card-actions">
+            <a class="btn btn--secondary" href="/apps/findry/trench-backfill-calculator/">Open the Trench Calculator</a>
           </div>
         </article>
       </div>
@@ -2536,6 +2546,7 @@ def build_findry_underground_utility_records():
           <h2 id="findry-records">Field records, reference points, photos, and calculators in one app.</h2>
           <p>Findry combines project-based jobsite documentation with search, Find Later,
             Emergency Lookup, the <a href="/apps/findry/material-calculator/">Material Calculator</a>, and the <a href="/apps/findry/truck-load-calculator/">Truck Load Calculator</a>.</p>
+          <p>Before you backfill, follow the step-by-step guide on <a href="/apps/findry/how-to-document-buried-utilities/">how to document buried utilities</a>.</p>
         </div>
         <div class="btn-row">
           <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
@@ -2574,6 +2585,620 @@ def build_findry_underground_utility_records():
             "author": {"@type": "Organization", "name": "Kaymer LLC"},
             "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
         },
+    }
+
+    return _findry_tool_page(path, title, description, body, structured)
+
+
+# ============================================ Findry trench backfill calculator
+TRENCH_CALC_PATH = 'apps/findry/trench-backfill-calculator/index.html'
+BURIED_GUIDE_PATH = 'apps/findry/how-to-document-buried-utilities/index.html'
+
+
+def trench_backfill_calculator_widget(up, store_html):
+    """In-page Trench Backfill Calculator markup, scoped CSS, and script tags.
+
+    Styling is copied from the Material Calculator widget (re-scoped to
+    #trench-calc) so both calculators look the same. JS lives in
+    assets/js/trench-backfill-calculator.js and reuses the Material Calculator
+    densities from assets/js/material-calculator.js, which loads first. The
+    form stays hidden until the script runs.
+    """
+    material_widget = material_calculator_widget(up, '')
+    css = material_widget[material_widget.index('    <style>\n'):
+                          material_widget.index('    </style>\n') + len('    </style>\n')]
+    css = css.replace('#material-calc ', '#trench-calc ')
+    material_options = '\n'.join(
+        f'              <option value="{key}"{" selected" if key == "gravel" else ""}>{label}</option>'
+        for key, label in (
+            ('gravel', 'Gravel'),
+            ('crushed-stone', 'Crushed Stone'),
+            ('sand', 'Sand'),
+            ('topsoil', 'Topsoil'),
+            ('fill-dirt', 'Fill Dirt'),
+            ('mulch', 'Mulch'),
+            ('concrete', 'Concrete'),
+            ('asphalt-millings', 'Asphalt Millings'),
+        )
+    )
+    yard_options = '\n'.join(
+        f'              <option value="{n}"{" selected" if n == 10 else ""}>{n} yd³</option>'
+        for n in (5, 6, 8, 10, 12, 14, 16, 18, 20)
+    )
+
+    def dim_field(key, label, unit, placeholder, hint=''):
+        hint_html = (f'\n              <p class="material-calc-hint">{hint}</p>' if hint else '')
+        return (
+            f'            <div class="material-calc-field">\n'
+            f'              <label class="material-calc-label" for="trench-calc-{key}">{label}</label>\n'
+            f'              <div class="material-calc-input-row">\n'
+            f'                <input id="trench-calc-{key}" name="{key}" type="text" inputmode="decimal" maxlength="16" autocomplete="off" spellcheck="false" placeholder="{placeholder}" aria-describedby="trench-calc-{key}-error">\n'
+            f'                <span class="material-calc-unit" data-{key}-unit>{unit}</span>\n'
+            f'              </div>{hint_html}\n'
+            f'              <p id="trench-calc-{key}-error" class="material-calc-error" role="alert"></p>\n'
+            f'            </div>\n'
+        )
+
+    dims = (dim_field('length', 'Trench length', 'ft', 'e.g. 100')
+            + dim_field('width', 'Trench width', 'ft', 'e.g. 2')
+            + dim_field('depth', 'Trench depth', 'ft', 'e.g. 4')
+            + dim_field('pipe', 'Pipe diameter (optional)', 'in', 'e.g. 6',
+                        'Leave blank for no pipe. The pipe volume is subtracted from the trench.'))
+
+    return f'''  <section id="trench-calc" class="section" aria-labelledby="trench-calc-heading">
+{css}    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">On this page</p>
+        <h2 id="trench-calc-heading">Estimate trench backfill here</h2>
+        <p class="lead">Enter the trench size, an optional pipe diameter, a material, and your truck capacity. The default is Gravel, Imperial units, and a 10 yd³ truck. Material weights are the same ones the Findry Material Calculator uses. Trips are based on volume only, and this calculator does not add a waste, swell, or compaction allowance.</p>
+      </div>
+      <noscript>
+        <p class="note">This on-page calculator needs JavaScript. The formula and example below still work by hand.</p>
+      </noscript>
+      <form class="material-calc-card" data-trench-form hidden novalidate>
+        <div class="material-calc-field">
+          <label class="material-calc-label" for="trench-calc-material">Backfill material</label>
+          <select id="trench-calc-material" name="material">
+{material_options}
+          </select>
+        </div>
+        <fieldset>
+          <legend>Truck capacity</legend>
+          <div class="material-calc-seg">
+            <label>
+              <input type="radio" name="trench-calc-capacity-unit" value="cubic-yards" checked>
+              Cubic Yards
+            </label>
+            <label>
+              <input type="radio" name="trench-calc-capacity-unit" value="cubic-metres">
+              Cubic Metres
+            </label>
+          </div>
+        </fieldset>
+        <div class="material-calc-field" data-capacity-presets>
+          <label class="material-calc-label" for="trench-calc-capacity-preset">Truck capacity (yd³)</label>
+          <select id="trench-calc-capacity-preset" name="capacity-preset" aria-describedby="trench-calc-capacity-error">
+{yard_options}
+              <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="material-calc-field" data-capacity-entry hidden>
+          <label class="material-calc-label" for="trench-calc-capacity" data-capacity-entry-label>Custom truck capacity (yd³)</label>
+          <div class="material-calc-input-row">
+            <input id="trench-calc-capacity" name="capacity" type="text" inputmode="decimal" maxlength="12" autocomplete="off" spellcheck="false" placeholder="e.g. 24" aria-describedby="trench-calc-capacity-error">
+            <span class="material-calc-unit" data-capacity-entry-unit>yd³</span>
+          </div>
+          <p class="material-calc-hint" data-capacity-hint hidden>Enter your truck's capacity in cubic metres.</p>
+        </div>
+        <p id="trench-calc-capacity-error" class="material-calc-error" role="alert"></p>
+        <fieldset>
+          <legend>Dimension units</legend>
+          <div class="material-calc-seg">
+            <label>
+              <input type="radio" name="trench-calc-units" value="imperial" checked>
+              Imperial (ft, in)
+            </label>
+            <label>
+              <input type="radio" name="trench-calc-units" value="metric">
+              Metric (m, mm)
+            </label>
+          </div>
+          <p class="material-calc-hint">Changing units clears entered measurements.</p>
+        </fieldset>
+        <fieldset>
+          <legend>Trench measurements</legend>
+          <div class="material-calc-dims">
+{dims}          </div>
+        </fieldset>
+        <div class="material-calc-actions">
+          <button type="submit" class="btn">Calculate</button>
+          <button type="button" class="btn btn--secondary" data-trench-reset>Reset</button>
+        </div>
+        <div class="material-calc-results" data-trench-results hidden aria-live="polite">
+          <p class="material-calc-context" data-result-context></p>
+          <p class="material-calc-kicker" data-result-hero-label>Backfill (cubic yards)</p>
+          <p class="material-calc-hero" data-result-hero></p>
+          <dl class="material-calc-rows">
+            <div><dt data-result-secondary-label>Backfill (cubic metres)</dt><dd data-result-secondary></dd></div>
+            <div><dt>Trench volume</dt><dd data-result-trench></dd></div>
+            <div data-result-pipe-row hidden><dt>Pipe volume subtracted</dt><dd data-result-pipe></dd></div>
+            <div><dt data-result-mass-label>Estimated US Short Tons</dt><dd data-result-mass></dd></div>
+            <div><dt>Load Equivalent by Volume</dt><dd data-result-loads></dd></div>
+            <div><dt>Estimated Trips by Volume</dt><dd data-result-trips></dd></div>
+          </dl>
+          <div class="material-calc-measure">
+            <p class="material-calc-kicker">Measurements</p>
+            <dl data-result-measurements></dl>
+          </div>
+          <p class="material-calc-safety" data-result-safety></p>
+          <div class="material-calc-actions" style="margin-top:var(--s-4)">
+            <button type="button" class="btn btn--secondary" data-trench-edit>Edit Measurements</button>
+            <button type="button" class="btn btn--secondary" data-trench-reset>Start New Calculation</button>
+          </div>
+        </div>
+        <p class="note material-calc-status" data-trench-status role="status" aria-live="polite"></p>
+      </form>
+      <div class="material-calc-cta">
+        <p>After the trench is backfilled, the pipe is out of sight. Save its depth, size, photos, and reference points in the Findry app so you can find the work later.</p>
+        <div class="btn-row btn-row--stores">
+          {store_html}
+        </div>
+      </div>
+    </div>
+    <script src="{up}assets/js/material-calculator.js" defer></script>
+    <script src="{up}assets/js/trench-backfill-calculator.js" defer></script>
+  </section>
+'''
+
+
+def _faq_blocks(faqs):
+    """Visible FAQ items and FAQPage JSON-LD, built from the same strings."""
+    items = '\n'.join(
+        f'''        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>{e(question)}</h3>
+          <p>{e(answer)}</p>
+        </div>'''
+        for question, answer in faqs)
+    ld = json.dumps({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+            {
+                '@type': 'Question',
+                'name': question,
+                'acceptedAnswer': {'@type': 'Answer', 'text': answer},
+            }
+            for question, answer in faqs
+        ],
+    }, indent=2, ensure_ascii=False)
+    return items, ld
+
+
+def build_findry_trench_backfill_calculator():
+    a = APP['findry']
+    path = TRENCH_CALC_PATH
+    up = '../' * path.count('/')
+    title = 'Trench Backfill Calculator: Gravel, Yards & Tons | Findry'
+    description = ('Free trench backfill calculator. Enter trench length, width, depth, and pipe '
+                   'size to estimate cubic yards, tons of gravel or fill, and truck trips.')
+    faqs = [
+        ('How do I calculate trench backfill?',
+         'Multiply the trench length × width × depth to get the trench volume. If a pipe goes in '
+         'the trench, subtract the pipe volume: 3.1416 × (pipe diameter ÷ 2)² × length. In feet, '
+         'divide the cubic feet by 27 to get cubic yards. For example, a 100 ft × 2 ft × 4 ft '
+         'trench is 800 cubic feet. A 6-inch pipe takes up about 19.63 cubic feet, so the '
+         'backfill is about 780.37 cubic feet, or 28.9 cubic yards.'),
+        ('How much gravel do I need for a trench?',
+         'Work out the backfill volume in cubic yards, then multiply by the weight of the gravel '
+         'if your supplier sells by the ton. This calculator uses about 1.4 US short tons per '
+         'cubic yard for gravel, the same estimate as the Findry Material Calculator. A 100 ft × '
+         '2 ft × 4 ft trench with a 6-inch pipe needs about 28.9 cubic yards, or roughly 40.46 '
+         'tons of gravel. Confirm the weight with your supplier.'),
+        ('How much gravel do I need for a 100 ft trench?',
+         'It depends on the width and depth. A 100 ft trench that is 2 ft wide and 1 ft deep holds '
+         'about 7.41 cubic yards, or roughly 10.37 tons of gravel. At 2 ft wide and 4 ft deep, it '
+         'holds about 29.63 cubic yards before any pipe is subtracted. Enter your own '
+         'measurements in the calculator above.'),
+        ('Should I subtract the pipe from the backfill?',
+         'Yes, if you want the volume of material that goes around and over the pipe. Small pipes '
+         'barely change the total, but large pipes and culverts can take up a lot of the trench. '
+         'Enter the outside diameter of the pipe for the best estimate.'),
+        ('Does the calculator include compaction or bedding?',
+         'No. It uses exactly the measurements you enter and does not add a waste, swell, or '
+         'compaction allowance. Backfill is usually placed and compacted in lifts, and the '
+         'bedding, haunch, and cover zones may call for different materials. Ask your engineer '
+         'or supplier how much extra to order and which material each zone needs.'),
+        ('How many truck loads will I need to backfill a trench?',
+         'Divide the backfill volume by your truck’s capacity, using the same unit, and round up '
+         'to whole trips. For example, 28.9 cubic yards ÷ a 10 yd³ truck = 2.89 loads, so 3 trips. '
+         'Trips are based on volume only, not legal payload or weight limits.'),
+        ('Do I need to call 811 before I dig a trench?',
+         'Yes. In the United States, call 811 or submit a request online a few working days before '
+         'you dig, so buried utilities can be marked. Local rules vary, so check the requirements '
+         'in your state. Findry does not detect or locate underground utilities.'),
+    ]
+    faq_items, faq_ld = _faq_blocks(faqs)
+    widget = trench_backfill_calculator_widget(up, store_buttons(a))
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Free Findry calculator</p>
+        <h1>Trench Backfill Calculator</h1>
+        <p class="tagline">Estimate backfill, tons, and truck trips for a trench.</p>
+        <p class="lead">Use this free trench backfill calculator to estimate how much gravel,
+          sand, fill dirt, or other material you need to backfill a utility trench. Enter the
+          trench length, width, and depth in feet or metres, and add the pipe diameter if a pipe
+          goes in the trench. The calculator subtracts the pipe volume and shows the backfill in
+          cubic yards and cubic metres, the estimated weight in US short tons or metric tonnes,
+          and how many truck trips it may take. It runs in your browser, so there is nothing to
+          download.</p>
+      </div>
+    </div>
+  </section>
+
+  {widget}
+
+  <section class="section section--tinted" aria-labelledby="trench-formula">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">The formula</p>
+        <h2 id="trench-formula">How to calculate trench backfill</h2>
+        <p class="lead">The calculator uses the same math you would do by hand. Here it is in plain words, so you can check any estimate.</p>
+      </div>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>1. Trench volume</h3>
+          <p>Trench volume = length × width × depth. In Imperial, use feet for all three to get cubic feet. In Metric, use metres to get cubic metres.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>2. Pipe volume</h3>
+          <p>Pipe volume = π × (diameter ÷ 2)² × length, with π ≈ 3.1416. Convert the diameter to the same unit as the trench first: inches ÷ 12 for feet, or millimetres ÷ 1,000 for metres. Use the outside diameter of the pipe.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>3. Backfill volume</h3>
+          <p>Backfill = trench volume − pipe volume. Divide cubic feet by 27 to get cubic yards, because one cubic yard is 3 ft × 3 ft × 3 ft. One cubic metre is about 1.308 cubic yards.</p>
+        </div>
+        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>4. Weight and trips</h3>
+          <p>Estimated weight = cubic yards × the material’s weight per cubic yard. Load equivalent = backfill ÷ truck capacity, and trips is that number rounded up, because a partly full truck still makes a trip.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="trench-example">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Example</p>
+        <h2 id="trench-example">Example: gravel backfill for a 100 ft water line trench</h2>
+      </div>
+      <div class="prose">
+        <p>(Illustrative example with made-up sample values.)</p>
+        <p>A crew is backfilling a trench 100 ft long, 2 ft wide, and 4 ft deep around a 6-inch pipe with gravel, using a 10 yd³ truck.</p>
+        <ul>
+          <li><strong>Trench volume:</strong> 100 × 2 × 4 = 800 ft³ (29.63 yd³)</li>
+          <li><strong>Pipe volume:</strong> 3.1416 × (0.5 ÷ 2)² × 100 = 19.63 ft³ (0.73 yd³)</li>
+          <li><strong>Backfill:</strong> 800 − 19.63 = 780.37 ft³ ÷ 27 = <strong>28.9 yd³</strong> (<strong>22.1 m³</strong>)</li>
+          <li><strong>Estimated weight:</strong> 28.9 × 1.4 = <strong>40.46 US short tons</strong> of gravel</li>
+          <li><strong>Loads:</strong> 28.9 ÷ 10 = <strong>2.89 loads</strong>, so <strong>3 trips</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="trench-materials">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Materials</p>
+        <h2 id="trench-materials">Material weights used</h2>
+        <p class="lead">These are the same built-in estimates as the Findry Material Calculator, in US short tons (2,000 lb) per cubic yard.</p>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>Gravel:</strong> 1.4 tons per yd³</li>
+          <li><strong>Crushed Stone:</strong> 1.5 tons per yd³</li>
+          <li><strong>Sand:</strong> 1.35 tons per yd³</li>
+          <li><strong>Topsoil:</strong> 1.1 tons per yd³</li>
+          <li><strong>Fill Dirt:</strong> 1.2 tons per yd³</li>
+          <li><strong>Mulch:</strong> 0.35 tons per yd³</li>
+          <li><strong>Concrete:</strong> 2 tons per yd³</li>
+          <li><strong>Asphalt Millings:</strong> 1.35 tons per yd³</li>
+        </ul>
+        <p>Real weights vary by product, moisture, and supplier, so check with your supplier before you order by the ton.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="trench-tips">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Before you dig and order</p>
+        <h2 id="trench-tips">Tips for trench backfill</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li><strong>Call 811 before you dig.</strong> Request a locate a few working days ahead so existing utilities are marked, and follow your state’s rules.</li>
+          <li><strong>Measure the average depth.</strong> Trench depth often changes along the run. Measure in a few places and use the average, or split the run into sections.</li>
+          <li><strong>Use the outside pipe diameter.</strong> The outside diameter gives a more accurate pipe volume than the nominal size.</li>
+          <li><strong>Plan for compaction.</strong> The calculator does not add extra for compaction or waste. Ask your engineer or supplier how much more to order.</li>
+          <li><strong>Check the spec for each zone.</strong> Bedding, haunch, and final backfill may need different materials. Run one calculation per zone if they differ.</li>
+          <li><strong>Document before you backfill.</strong> Once the trench is closed, the pipe is hard to find again. Take photos and record depth, size, and reference points first. See <a href="/apps/findry/how-to-document-buried-utilities/">how to document buried utilities</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="trench-faq">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="trench-faq">Trench backfill calculator FAQ</h2>
+      </div>
+      <div class="feature-list">
+{faq_items}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="findry-trench">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="findry-trench">Keep a record of what you buried.</h2>
+          <p>Findry is a jobsite record app. Save photos, depths, pipe sizes, materials, reference points, and notes by project before the trench is closed, so you can find the work later. Findry does not detect or locate underground utilities.</p>
+          <p>Need more estimates? Try the <a href="/apps/findry/material-calculator/">Material Calculator</a> and the <a href="/apps/findry/truck-load-calculator/">Truck Load Calculator</a>.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+{faq_ld}
+  </script>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": title,
+        "url": SITE + "apps/findry/trench-backfill-calculator/",
+        "description": description,
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "Findry",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": a.get('operating_system', a.get('platform', '')),
+            "url": SITE + app_route(a),
+            "downloadUrl": [url for url in (a.get('store_url'), a.get('play_url')) if url],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+    }
+
+    return _findry_tool_page(path, title, description, body, structured)
+
+
+# ================================== Findry guide: how to document buried utilities
+def build_findry_buried_utilities_guide():
+    a = APP['findry']
+    path = BURIED_GUIDE_PATH
+    up = '../' * path.count('/')
+    title = 'How to Document Buried Utilities: Step-by-Step Guide | Findry'
+    description = ('How to document buried pipes and utilities before backfill: photos, GPS '
+                   'location, depth, size, material, and notes, saved so you can find the work later.')
+    steps = [
+        ('Step 1: Call 811 before you dig',
+         'Before any excavation, call 811 or submit a request online a few working days ahead so '
+         'existing buried utilities can be marked. Write the locate ticket number down. You will '
+         'add it to your record later. Local rules vary, so follow the requirements in your state.'),
+        ('Step 2: Photograph the work before backfill',
+         'Once the pipe, conduit, or cable is in place and before any backfill goes in, take '
+         'photos. Get a wide shot that shows the trench with a building, curb, or other fixed '
+         'feature in view, then close-ups of fittings, valves, tees, bends, and connections. Lay '
+         'a tape measure in the trench for scale and shoot a photo that shows the depth.'),
+        ('Step 3: Record the location',
+         'Tie the location to things that will still be there later, like building corners, '
+         'curbs, hydrants, manholes, valve boxes, or property pins. Two measurements from two '
+         'fixed points are easier to re-find than one. If you capture GPS coordinates with your '
+         'phone or a GPS device, write them down too, but keep the tape measurements: phone GPS '
+         'can be off by several feet.'),
+        ('Step 4: Measure and write down the depth',
+         'Measure from finished grade to the top of the pipe, and note where along the run you '
+         'measured. Depth often changes, so take a reading at each end, at bends, and at any '
+         'fittings or valves.'),
+        ('Step 5: Note the material and size',
+         'Record what was installed: the utility type (water, sewer, storm, gas, electric, '
+         'telecom), the pipe or conduit material (for example PVC, HDPE, or ductile iron), the '
+         'size, and the length of the run. Add any warning tape, tracer wire, or markers you put '
+         'in the trench.'),
+        ('Step 6: Add notes',
+         'Write down the date, the crew or contractor, the locate ticket number, the project '
+         'address, and anything the next person should know, like a change from the plan, a '
+         'nearby line, or a shallow spot.'),
+        ('Step 7: Save the record where you can find it later',
+         'A record only helps if you can find it again. Keep photos and notes together, organized '
+         'by project, instead of spread across a notebook, a text thread, and a camera roll. Make '
+         'sure the record can be searched by address, project, or utility type, and back it up.'),
+    ]
+    step_items = '\n'.join(
+        f'''        <div class="feature-item">
+          <div class="rule"></div>
+          <h3>{e(t)}</h3>
+          <p>{e(d)}</p>
+        </div>''' for t, d in steps)
+    faqs = [
+        ('Why document buried utilities?',
+         'After backfill, a pipe or conduit is out of sight. A good record shows the next crew, '
+         'the owner, or you, what is down there and where, so the work can be found for repairs, '
+         'tie-ins, or new digging without guessing.'),
+        ('What should a buried utility record include?',
+         'At minimum: photos before backfill, the location tied to fixed reference points, the '
+         'depth, the utility type, the material and size, the date, who did the work, and the '
+         'locate ticket number. GPS coordinates and notes about warnings or changes make it even '
+         'more useful.'),
+        ('Can Findry find or detect underground pipes?',
+         'No. Findry does not detect or locate underground utilities. It is a documentation app: '
+         'it stores the photos, depths, measurements, reference points, and notes you save about '
+         'the work you install or expose, so you can find that work later. It does not replace '
+         '811 or professional locating.'),
+        ('Do I still need to call 811 if I have records?',
+         'Yes. Always call 811 before you dig. Your own records help you find your own work, but '
+         'other utilities may be in the ground, and the law in most places requires a locate '
+         'request before excavation.'),
+        ('Can I add GPS coordinates to a Findry record?',
+         'Yes. If you capture coordinates with your phone or a separate GPS device, you can type '
+         'them into the record notes. Keep tape measurements to fixed reference points as well, '
+         'because they are often more accurate than phone GPS.'),
+        ('Is Findry free?',
+         'Findry is free to download for iPhone (iOS 16.4 or later) and Android (7.0 or later). '
+         'An optional Findry Pro subscription adds extra features, including cloud backup.'),
+    ]
+    faq_items, faq_ld = _faq_blocks(faqs)
+
+    body = f'''<main id="main">
+
+  <div class="shell" style="padding-top:var(--s-2)">
+    <a class="backlink" href="/apps/findry/">Back to Findry</a>
+  </div>
+
+  <section class="app-hero shell">
+    <div class="app-hero-grid app-hero-grid--single">
+      <div class="rise">
+        {icon_markup(a, up=up, large=True)}
+        <p class="eyebrow">Findry field guide</p>
+        <h1>How to Document Buried Utilities</h1>
+        <p class="tagline">Record it before you backfill, so you can find it later.</p>
+        <p class="lead">Once a trench is closed, the pipe, conduit, or cable inside it is out of
+          sight. A few minutes of documentation before backfill can save hours of searching,
+          guesswork, and risky digging later. This guide covers what to capture: photos, location,
+          depth, material and size, and notes, and how to save it so the work can be found again.
+          It applies to water and sewer lines, storm drains, irrigation, gas, electrical conduit,
+          and telecom.</p>
+        <p class="note" style="margin-top:var(--s-5)"><strong>Call 811 before you dig.</strong> In the United States, call 811 or
+          submit a request online a few working days before any excavation so existing utilities can
+          be marked. Your own records do not replace a locate request.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="guide-steps">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Step by step</p>
+        <h2 id="guide-steps">How to document buried utilities in 7 steps</h2>
+        <p class="lead">Do this while the trench is still open. Once it is backfilled, you cannot go back for the photo you missed.</p>
+      </div>
+      <div class="feature-list">
+{step_items}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="guide-checklist">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Checklist</p>
+        <h2 id="guide-checklist">Buried utility record checklist</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li>Photos before backfill: wide shot with a fixed feature, close-ups of fittings, and a depth photo with a tape</li>
+          <li>Location: measurements from two fixed reference points, plus GPS coordinates if you have them</li>
+          <li>Depth to the top of the pipe, with where each reading was taken</li>
+          <li>Utility type, material, size, and length of run</li>
+          <li>Valves, cleanouts, tees, bends, tracer wire, and warning tape</li>
+          <li>Date, crew or contractor, project address, and 811 locate ticket number</li>
+          <li>Notes on changes from the plan, nearby lines, or shallow spots</li>
+          <li>Saved by project, searchable, and backed up</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="guide-findry">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">The easy way</p>
+        <h2 id="guide-findry">Document buried utilities with Findry</h2>
+        <p class="lead">Findry is a free jobsite record app for iPhone and Android. It keeps everything on this checklist in one record, inside the project it belongs to.</p>
+      </div>
+      <div class="prose">
+        <p>Create a project for the job, then add a record for each line or installation. Save photos, depths, measurements, pipe size, material, valve and cleanout details, reference points, warnings, and field notes. Type the locate ticket number and any GPS coordinates into the notes.</p>
+        <p>When you come back to the job next week or years later, search by project, record title, utility type, keywords, or notes. Mark records with Find Later, and use Emergency Lookup for quick access to important records.</p>
+        <p><strong>Findry documents the work you bury so you can find it later. It does not detect or locate underground utilities,</strong> and it does not replace 811 or local utility-marking requirements.</p>
+      </div>
+      <div class="btn-row btn-row--stores" style="margin-top:var(--s-5)">
+        {store_buttons(a)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="guide-faq">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">FAQ</p>
+        <h2 id="guide-faq">Documenting buried utilities FAQ</h2>
+      </div>
+      <div class="feature-list">
+{faq_items}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" aria-labelledby="guide-more">
+    <div class="shell">
+      <div class="email-card">
+        <div class="email-card-body">
+          <p class="eyebrow">Part of Findry</p>
+          <h2 id="guide-more">More for the same job.</h2>
+          <p>See what to include in <a href="/apps/findry/underground-utility-records/">underground utility records</a>, and estimate fill for the trench with the free <a href="/apps/findry/trench-backfill-calculator/">Trench Backfill Calculator</a>.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/apps/findry/">Explore Findry</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+{faq_ld}
+  </script>
+
+</main>
+'''
+
+    structured = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to document buried utilities",
+        "description": description,
+        "url": SITE + "apps/findry/how-to-document-buried-utilities/",
+        "step": [
+            {"@type": "HowToStep", "position": i + 1, "name": t, "text": d}
+            for i, (t, d) in enumerate(steps)
+        ],
+        "tool": [{"@type": "HowToTool", "name": "Findry app for iPhone or Android"},
+                 {"@type": "HowToTool", "name": "Tape measure"}],
+        "publisher": {"@type": "Organization", "name": "Kaymer LLC"},
     }
 
     return _findry_tool_page(path, title, description, body, structured)
@@ -2995,6 +3620,8 @@ def main():
             pages.append(build_findry_material_calculator())
             pages.append(build_findry_truck_load_calculator())
             pages.append(build_findry_underground_utility_records())
+            pages.append(build_findry_trench_backfill_calculator())
+            pages.append(build_findry_buried_utilities_guide())
     pages.append(build_about())
     pages.append(build_support())
     pages.append(build_legal_index())
