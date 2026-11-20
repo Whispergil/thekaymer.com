@@ -265,6 +265,7 @@ def footer(up):
           <li><a href="{up}legal.html">All legal documents</a></li>
           <li><a href="{up}privacy.html">Privacy Policy</a></li>
           <li><a href="{up}terms.html">Terms of Service</a></li>
+          <li><a href="#" data-cookie-settings>Cookie settings</a></li>
         </ul>
       </div>
     </div>
@@ -275,6 +276,7 @@ def footer(up):
   </div>
 </footer>
 <script src="{up}assets/js/site.js" defer></script>
+<script src="{up}assets/js/consent.js" defer></script>
 </body>
 </html>
 '''
