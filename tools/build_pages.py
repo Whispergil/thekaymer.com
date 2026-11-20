@@ -1209,13 +1209,239 @@ def build_findry_material_calculator():
 
 
 # ============================================== Findry truck load calculator ===
+def truck_load_calculator_widget(up, store_html):
+    """In-page Truck Load Calculator markup, scoped CSS, and script tag.
+
+    JS lives in assets/js/truck-load-calculator.js (same math as the Findry
+    1.0.2 app). The form stays hidden until that script runs, so the existing
+    copy and store links remain usable if JavaScript is off.
+    """
+    script_src = f'{up}assets/js/truck-load-calculator.js'
+    yard_options = '\n'.join(
+        f'              <option value="{n}"{" selected" if n == 10 else ""}>{n} yd³</option>'
+        for n in (5, 6, 8, 10, 12, 14, 16, 18, 20)
+    )
+    return (
+        '  <section id="truck-calc" class="section" aria-labelledby="truck-calc-heading">\n'
+        '    <style>\n'
+        '      #truck-calc .truck-calc-card {\n'
+        '        background: var(--ivory-lift);\n'
+        '        border: 1px solid var(--border);\n'
+        '        border-radius: var(--radius-lg);\n'
+        '        box-shadow: var(--shadow-md);\n'
+        '        padding: var(--s-5);\n'
+        '        max-width: 36rem;\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-card > * + * { margin-top: var(--s-4); }\n'
+        '      #truck-calc fieldset { border: 0; min-width: 0; }\n'
+        '      #truck-calc legend,\n'
+        '      #truck-calc .truck-calc-label {\n'
+        '        display: block;\n'
+        '        font-weight: 600;\n'
+        '        color: var(--charcoal);\n'
+        '        margin-bottom: var(--s-2);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-seg {\n'
+        '        display: flex;\n'
+        '        flex-wrap: wrap;\n'
+        '        gap: var(--s-1);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-seg label {\n'
+        '        flex: 1 1 8rem;\n'
+        '        display: flex;\n'
+        '        align-items: center;\n'
+        '        justify-content: center;\n'
+        '        min-height: 44px;\n'
+        '        padding: 0 var(--s-3);\n'
+        '        border: 1px solid var(--border-strong);\n'
+        '        border-radius: var(--radius-sm);\n'
+        '        background: var(--ivory);\n'
+        '        color: var(--charcoal);\n'
+        '        cursor: pointer;\n'
+        '        text-align: center;\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-seg label:has(input:checked) {\n'
+        '        background: var(--charcoal);\n'
+        '        color: var(--ivory);\n'
+        '        border-color: var(--charcoal);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-seg input {\n'
+        '        position: absolute;\n'
+        '        width: 1px;\n'
+        '        height: 1px;\n'
+        '        padding: 0;\n'
+        '        margin: -1px;\n'
+        '        overflow: hidden;\n'
+        '        clip: rect(0, 0, 0, 0);\n'
+        '        white-space: nowrap;\n'
+        '        border: 0;\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-field input[type="text"],\n'
+        '      #truck-calc .truck-calc-field select {\n'
+        '        width: 100%;\n'
+        '        min-height: 44px;\n'
+        '        border: 1px solid var(--border-strong);\n'
+        '        border-radius: var(--radius-sm);\n'
+        '        background: var(--ivory);\n'
+        '        color: var(--charcoal);\n'
+        '        padding: 0.55rem 0.8rem;\n'
+        '        font: inherit;\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-error {\n'
+        '        color: #8B2E1E;\n'
+        '        font-size: 0.92rem;\n'
+        '        min-height: 1.25em;\n'
+        '        margin-top: var(--s-1);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-actions {\n'
+        '        display: flex;\n'
+        '        flex-wrap: wrap;\n'
+        '        gap: var(--s-2);\n'
+        '        margin-top: var(--s-5);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-results {\n'
+        '        margin-top: var(--s-5);\n'
+        '        padding: var(--s-4);\n'
+        '        border: 1px solid var(--border);\n'
+        '        border-radius: var(--radius);\n'
+        '        background: var(--cream);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-results[hidden],\n'
+        '      #truck-calc [hidden] { display: none; }\n'
+        '      #truck-calc .truck-calc-context {\n'
+        '        color: var(--warm-gray);\n'
+        '        font-size: 0.95rem;\n'
+        '        margin-bottom: var(--s-3);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-kicker {\n'
+        '        font-size: 0.75rem;\n'
+        '        letter-spacing: 0.08em;\n'
+        '        text-transform: uppercase;\n'
+        '        color: var(--bronze);\n'
+        '        font-weight: 650;\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-trips {\n'
+        '        font-size: clamp(2rem, 4vw, 2.5rem);\n'
+        '        font-weight: 650;\n'
+        '        line-height: 1.15;\n'
+        '        color: var(--charcoal);\n'
+        '        margin: 0 0 var(--s-3);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-loads-label {\n'
+        '        font-weight: 600;\n'
+        '        margin-bottom: var(--s-1);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-safety {\n'
+        '        margin-top: var(--s-3);\n'
+        '        color: var(--warm-gray);\n'
+        '        font-size: 0.95rem;\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-cta { margin-top: var(--s-6); }\n'
+        '      #truck-calc .truck-calc-cta p {\n'
+        '        max-width: var(--measure-lead);\n'
+        '        margin-bottom: var(--s-3);\n'
+        '      }\n'
+        '      #truck-calc .truck-calc-status:empty { display: none; }\n'
+        '    </style>\n'
+        '    <div class="shell">\n'
+        '      <div class="section-head">\n'
+        '        <p class="eyebrow">On this page</p>\n'
+        '        <h2 id="truck-calc-heading">Estimate truck trips here</h2>\n'
+        '        <p class="lead">Use the same quantity ÷ capacity math as the Findry app. Quantity and capacity stay in one unit — this calculator does not convert volume to weight, or weight to volume.</p>\n'
+        '      </div>\n'
+        '      <noscript>\n'
+        '        <p class="note">This on-page calculator needs JavaScript. The formula and examples below still work, and you can get the same tool in the Findry app.</p>\n'
+        '      </noscript>\n'
+        '      <form class="truck-calc-card" data-truck-form hidden novalidate>\n'
+        '        <fieldset>\n'
+        '          <legend>Calculation type</legend>\n'
+        '          <div class="truck-calc-seg">\n'
+        '            <label>\n'
+        '              <input type="radio" name="truck-calc-category" value="volume" checked>\n'
+        '              Volume\n'
+        '            </label>\n'
+        '            <label>\n'
+        '              <input type="radio" name="truck-calc-category" value="weight">\n'
+        '              Weight\n'
+        '            </label>\n'
+        '          </div>\n'
+        '        </fieldset>\n'
+        '        <fieldset data-units-volume>\n'
+        '          <legend>Unit</legend>\n'
+        '          <div class="truck-calc-seg">\n'
+        '            <label>\n'
+        '              <input type="radio" name="truck-calc-unit" value="cubic-yards" checked>\n'
+        '              Cubic Yards (yd³)\n'
+        '            </label>\n'
+        '            <label>\n'
+        '              <input type="radio" name="truck-calc-unit" value="cubic-metres">\n'
+        '              Cubic Metres (m³)\n'
+        '            </label>\n'
+        '          </div>\n'
+        '        </fieldset>\n'
+        '        <fieldset data-units-weight hidden>\n'
+        '          <legend>Unit</legend>\n'
+        '          <div class="truck-calc-seg">\n'
+        '            <label>\n'
+        '              <input type="radio" name="truck-calc-unit" value="us-short-tons">\n'
+        '              US Short Tons\n'
+        '            </label>\n'
+        '            <label>\n'
+        '              <input type="radio" name="truck-calc-unit" value="metric-tonnes">\n'
+        '              Metric Tonnes\n'
+        '            </label>\n'
+        '          </div>\n'
+        '        </fieldset>\n'
+        '        <div class="truck-calc-field">\n'
+        '          <label class="truck-calc-label" for="truck-calc-quantity">Material quantity (<span data-quantity-unit>yd³</span>)</label>\n'
+        '          <input id="truck-calc-quantity" name="quantity" type="text" inputmode="decimal" maxlength="16" autocomplete="off" spellcheck="false" placeholder="e.g. 85" aria-describedby="truck-calc-quantity-error">\n'
+        '          <p id="truck-calc-quantity-error" class="truck-calc-error" role="alert"></p>\n'
+        '        </div>\n'
+        '        <div class="truck-calc-field" data-capacity-presets>\n'
+        '          <label class="truck-calc-label" for="truck-calc-capacity-preset">Truck capacity (<span data-capacity-unit>yd³</span>)</label>\n'
+        '          <select id="truck-calc-capacity-preset" name="capacity-preset" aria-describedby="truck-calc-capacity-error">\n'
+        + yard_options + '\n'
+        '              <option value="custom">Custom</option>\n'
+        '          </select>\n'
+        '        </div>\n'
+        '        <div class="truck-calc-field" data-capacity-custom hidden>\n'
+        '          <label class="truck-calc-label" for="truck-calc-capacity">Truck capacity (<span data-capacity-unit-custom>yd³</span>)</label>\n'
+        '          <input id="truck-calc-capacity" name="capacity" type="text" inputmode="decimal" maxlength="16" autocomplete="off" spellcheck="false" placeholder="e.g. 24.5" aria-describedby="truck-calc-capacity-error">\n'
+        '        </div>\n'
+        '        <p id="truck-calc-capacity-error" class="truck-calc-error" role="alert"></p>\n'
+        '        <div class="truck-calc-actions">\n'
+        '          <button type="submit" class="btn btn--primary">Calculate</button>\n'
+        '          <button type="button" class="btn btn--secondary" data-truck-reset>Start New Calculation</button>\n'
+        '        </div>\n'
+        '        <div class="truck-calc-results" data-truck-results hidden aria-live="polite">\n'
+        '          <p class="truck-calc-context" data-result-context></p>\n'
+        '          <p class="truck-calc-kicker">Estimated trips</p>\n'
+        '          <p class="truck-calc-trips"><span data-result-trips></span></p>\n'
+        '          <p class="truck-calc-loads-label" data-result-loads-label>Load Equivalent by Volume</p>\n'
+        '          <p data-result-loads></p>\n'
+        '          <p class="truck-calc-safety" data-result-safety></p>\n'
+        '        </div>\n'
+        '        <p class="note truck-calc-status" data-truck-status role="status" aria-live="polite"></p>\n'
+        '      </form>\n'
+        '      <div class="truck-calc-cta">\n'
+        '        <p>Get the same calculator in the Findry app, along with Calculator History and the rest of your field tools.</p>\n'
+        '        <div class="btn-row btn-row--stores">\n'
+        '          ' + store_html + '\n'
+        '        </div>\n'
+        '      </div>\n'
+        '    </div>\n'
+        f'    <script src="{script_src}" defer></script>\n'
+        '  </section>\n'
+    )
+
+
 def build_findry_truck_load_calculator():
     a = APP['findry']
     path = 'apps/findry/truck-load-calculator/index.html'
     up = '../' * path.count('/')
     title = 'Truck Load Calculator: Cubic Yards & Trips | Findry'
-    description = ('Estimate how many dump truck trips you need from material quantity and truck capacity. '
-                   'Presets 5–20 yd³ or custom. Free Findry app for iPhone and Android.')
+    description = ('Estimate dump truck trips from a volume or weight quantity and matching truck capacity. '
+                   'Volume in yd³ or m³; weight in US short tons or metric tonnes. Free Findry app for iPhone and Android.')
     gallery = shot_gallery('Truck Load Calculator screenshots', [
         ('assets/img/findry/findry-truck-load-input.webp',
          'Truck Load Calculator screen for entering a material quantity and truck capacity.'),
@@ -1235,11 +1461,14 @@ def build_findry_truck_load_calculator():
          'depth, use the Material Calculator first.'),
         ('What dump truck capacities does Findry include?',
          'For cubic yards, Findry includes presets of 5, 6, 8, 10, 12, 14, 16, 18, and 20 yd³, '
-         'plus a custom capacity field for other sizes. You can also work in cubic metres.'),
+         'plus a custom capacity field for other sizes. The default is 10 yd³. You can also work in '
+         'cubic metres, US short tons, or metric tonnes, and enter the capacity in that same unit.'),
         ('Does the Truck Load Calculator use volume or weight?',
-         'You can choose Volume or Weight in the app. When you work in volume, you pick cubic '
-         'yards or cubic metres, and trips are based on volume. Results are estimates and do not '
-         'set legal payload or safe hauling limits.'),
+         'You can choose Volume or Weight. For volume, pick cubic yards or cubic metres. For weight, '
+         'pick US short tons or metric tonnes. Quantity and capacity use the same unit, and the '
+         'calculator does not convert volume to weight or weight to volume. When you work in volume, '
+         'trips are based on volume. When you work in weight, trips are based on that weight quantity. '
+         'Results are estimates and do not set legal payload or safe hauling limits.'),
         ('Why does Findry round trips up?',
          'A partly full truck still makes a trip. The load equivalent can be a decimal (for '
          'example 16.67 loads), and Estimated Trips is that number rounded up to a whole truck '
@@ -1270,6 +1499,7 @@ def build_findry_truck_load_calculator():
         ],
     }, indent=2, ensure_ascii=False)
 
+    widget = truck_load_calculator_widget(up, store_buttons(a))
     body = f'''<main id="main">
 
   <div class="shell" style="padding-top:var(--s-2)">
@@ -1285,10 +1515,13 @@ def build_findry_truck_load_calculator():
         <p class="tagline">Estimate truck trips from quantity and truck capacity.</p>
         <p class="lead">Findry’s Truck Load Calculator helps contractors and field crews
           estimate how many truck trips a material quantity may take. Enter the quantity,
-          choose Volume or Weight, pick cubic yards or cubic metres when you work by volume,
-          set a truck capacity, and Findry shows the load equivalent and the estimated number
+          choose Volume or Weight, and pick a unit. For volume, use cubic yards or cubic metres.
+          For weight, use US short tons or metric tonnes. Quantity and capacity use the same
+          unit — the calculator does not convert volume to weight, or weight to volume. When you
+          work in cubic yards, the default truck capacity is 10 yd³, or you can choose another
+          preset or a custom size. Findry then shows the load equivalent and the estimated number
           of trips. The Truck Load Calculator is part of the Findry app for iPhone and Android,
-          and it is free for all users.</p>
+          and it is free for all users. You can also run the same estimate in the calculator on this page.</p>
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
@@ -1298,6 +1531,8 @@ def build_findry_truck_load_calculator():
       </div>
     </div>
   </section>
+
+  {widget}
 
   <section class="section section--tinted" aria-labelledby="truck-features">
     <div class="shell">
@@ -1371,7 +1606,7 @@ def build_findry_truck_load_calculator():
         </div>
       </div>
       <div class="prose" style="margin-top:var(--s-6)">
-        <p>Need a different size? Use <strong>Custom Capacity</strong> (for example 24 yd³). You can also work in cubic metres. Changing the calculation type or unit clears the quantity and capacity you already entered, so set those first.</p>
+        <p>The default cubic-yard capacity is <strong>10 yd³</strong>. Need a different size? Use <strong>Custom Capacity</strong> (for example 24 yd³). You can also work in cubic metres, US short tons, or metric tonnes, and enter the capacity in that same unit. Changing the calculation type or unit clears the quantity and capacity you already entered, so set those first.</p>
       </div>
     </div>
   </section>
@@ -1392,17 +1627,17 @@ def build_findry_truck_load_calculator():
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Step 2: Choose Volume or Weight, then the unit</h3>
-          <p>Pick Volume to work in cubic yards or cubic metres. A Weight option is also available in the app. Set the calculation type and unit before you finish the other fields, because changing them clears quantity and capacity.</p>
+          <p>Pick Volume to work in cubic yards or cubic metres, or Weight to work in US short tons or metric tonnes. Quantity and capacity must use the same unit; the calculator does not convert between volume and weight. Set the calculation type and unit before you finish the other fields, because changing them clears quantity and capacity.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Step 3: Set the truck capacity</h3>
-          <p>Pick a preset from 5 to 20 cubic yards, enter a custom capacity for your own truck, or use cubic metres if that matches how you measure the vehicle.</p>
+          <p>When you work in cubic yards, the default capacity is 10 yd³. Pick a preset from 5 to 20 cubic yards, enter a custom capacity for your own truck, or switch to cubic metres, US short tons, or metric tonnes if that matches how you measure the vehicle.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Step 4: Calculate, then save or adjust</h3>
-          <p>Tap Calculate to see the load equivalent by volume and the estimated number of trips. Use Edit Inputs to change a number, or save the result to Calculator History to reopen it later.</p>
+          <p>Tap Calculate to see the load equivalent and the estimated number of trips. In volume units the load equivalent is shown by volume; in weight units it is shown by weight quantity. In the Findry app, use Edit Inputs to change a number, or save the result to Calculator History to reopen it later.</p>
         </div>
       </div>
     </div>
@@ -1419,7 +1654,7 @@ def build_findry_truck_load_calculator():
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Load equivalent</h3>
-          <p>Divide the material quantity by the truck’s capacity, using the same unit for both. For volume work: quantity (yd³) ÷ truck capacity (yd³) = load equivalent.</p>
+          <p>Divide the material quantity by the truck’s capacity, using the same unit for both. For volume work: quantity (yd³) ÷ truck capacity (yd³) = load equivalent. For weight work: quantity (US short tons) ÷ truck capacity (US short tons) = load equivalent, or the same division in metric tonnes. The calculator does not convert volume to weight or weight to volume.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
@@ -1429,7 +1664,7 @@ def build_findry_truck_load_calculator():
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Volume-based trips</h3>
-          <p>When you work in volume units, trips are based on volume only, not on weight. Real trucks also have weight limits. Findry does not set legal payload or safe hauling capacity, so verify the vehicle and the load before you haul.</p>
+          <p>When you work in volume units, trips are based on volume only, not on weight. When you work in weight units, trips are based on the weight quantity and capacity you entered; the calculator does not convert that weight into volume. Real trucks also have legal payload and volume limits. Findry does not set legal payload or safe hauling capacity, so verify the vehicle and the load before you haul.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
@@ -1484,7 +1719,7 @@ def build_findry_truck_load_calculator():
       </div>
       <div class="prose">
         <ul>
-          <li><strong>Match the unit to the quote.</strong> If the supplier sells by the cubic yard, work in cubic yards. If your takeoff is in cubic metres, switch the unit before you enter numbers.</li>
+          <li><strong>Match the unit to the quote.</strong> If the supplier sells by the cubic yard, work in cubic yards. If the quote is in US short tons or metric tonnes, switch to Weight and that unit before you enter numbers. If your takeoff is in cubic metres, switch the unit before you enter numbers.</li>
           <li><strong>Use the truck you will actually load.</strong> Presets cover common sizes from 5 to 20 yd³. For a different body size, enter a custom capacity instead of forcing a preset.</li>
           <li><strong>Round trips up, not down.</strong> A leftover 0.2 load still needs another run to the site or the dump.</li>
           <li><strong>Plan staging and turnaround.</strong> Trip count is only the hauling math. Access, dump time, and whether trucks can pass each other on site also affect the day.</li>
@@ -1564,10 +1799,29 @@ def build_findry_truck_load_calculator():
                 "Preset truck capacities from 5 to 20 cubic yards",
                 "Custom truck capacity",
                 "Volume and weight calculation types",
+                "US short tons and metric tonnes",
                 "Calculator History",
             ],
             "author": {"@type": "Organization", "name": "Kaymer LLC"},
             "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+        },
+        "mainEntity": {
+            "@type": "WebApplication",
+            "name": "Findry Truck Load Calculator",
+            "url": SITE + "apps/findry/truck-load-calculator/",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript",
+            "isAccessibleForFree": True,
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+            "featureList": [
+                "Truck trip estimates from quantity and capacity",
+                "Volume units: cubic yards and cubic metres",
+                "Weight units: US short tons and metric tonnes",
+                "Preset truck capacities from 5 to 20 cubic yards",
+                "Custom truck capacity",
+            ],
+            "author": {"@type": "Organization", "name": "Kaymer LLC"},
         },
     }
 
