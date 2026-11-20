@@ -1579,10 +1579,10 @@ def build_findry_underground_utility_records():
     a = APP['findry']
     path = 'apps/findry/underground-utility-records/index.html'
     up = '../' * path.count('/')
-    title = 'Underground Utility Records App for Contractors | Findry'
-    description = ('Document buried pipes and utilities with depths, measurements, '
-                   'reference points, photos, and notes, organized by project. '
-                   'Free Findry app by Kaymer LLC.')
+    title = 'Utility Locating Software for Field Records | Findry'
+    description = ('Utility locating software for records, not detection. Save depths, '
+                   'photos, reference points, and notes by project. '
+                   'Free Findry app for iPhone and Android.')
     gallery = shot_gallery('Underground utility record screenshot', [
         ('assets/img/findry/findry-underground-documentation.webp',
          'A Findry record for a buried storm-drain cleanout, with depth, length, reference points, and photos.'),
@@ -1611,6 +1611,26 @@ def build_findry_underground_utility_records():
          'Findry is free to download for iPhone (iOS 16.4 or later) and Android (7.0 or '
          'later). An optional Findry Pro subscription adds extra features, including cloud '
          'backup.'),
+        ('Is Findry utility locating software?',
+         'Yes, if you mean software to document utility locates and buried installations. '
+         'Findry is an iPhone and Android app for jobsite and underground utility records. '
+         'You can save depths, measurements, photos, reference points, materials, warnings, '
+         'and notes, organized by project, and search them later. Findry is not a locating '
+         'device and not a utility locating service. It does not detect, verify, or '
+         'professionally locate underground utilities, and it does not replace 811 or local '
+         'utility-marking requirements.'),
+        ('What is the difference between utility locating software and a utility locator?',
+         'A utility locator is typically a physical device, or a professional locating '
+         'service, used to detect or mark buried lines. Utility locating software can mean '
+         'that kind of detection tool, or it can mean an app for keeping the records after '
+         'a locate or installation. Findry is the records app. It stores information you '
+         'enter. For detection and marking, use proper locating equipment and always call '
+         '811 before you dig.'),
+        ('Can I use Findry with an 811 locate?',
+         'Yes. After a locate, or after you install or expose a line, you can add the locate '
+         'ticket number, work date, and crew in the record title or notes, along with depths, '
+         'photos, reference points, and any warnings. Findry does not replace 811 or local '
+         'utility-marking requirements. Always call 811 before you dig.'),
     ]
     faq_items = '\n'.join(
         f'''        <div class="feature-item">
@@ -1643,9 +1663,9 @@ def build_findry_underground_utility_records():
       <div class="rise">
         {icon_markup(a, up=up, large=True)}
         <p class="eyebrow">Findry field records</p>
-        <h1>Underground Utility Records for Contractors and Field Crews</h1>
+        <h1>Utility Locating Software for Field Records</h1>
         <p class="tagline">Document the work now so the details are easier to find later.</p>
-        <p class="lead">Findry is an iPhone and Android app that helps contractors, excavators, plumbers, and utility crews document buried pipes and underground utility installations. Save depths, measurements, pipe sizes, materials, reference points, warnings, photos, and field notes in one record, organized by project, so the details are easy to find when you or your crew come back to the site.</p>
+        <p class="lead">Findry is an iPhone and Android app that helps contractors, excavators, plumbers, and utility crews document buried pipes and underground utility installations. If you are looking for utility locating software, use Findry to save depths, measurements, pipe sizes, materials, reference points, warnings, photos, and field notes in one record, organized by project, so the details are easy to find when you or your crew come back to the site.</p>
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
@@ -1801,6 +1821,23 @@ def build_findry_underground_utility_records():
       <p class="note"><strong>Documentation, not utility detection.</strong> Findry stores
         information entered by its users. It does not detect, verify, or professionally locate
         underground utilities, and it does not replace 811 or local utility-marking requirements.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="utility-locating-software">
+    <div class="shell">
+      <div class="section-head">
+        <p class="eyebrow">Utility locating software</p>
+        <h2 id="utility-locating-software">Is Findry utility locating software?</h2>
+        <p class="lead">Findry is software for documenting utility locates and buried installations, not a tool that detects what is in the ground.</p>
+      </div>
+      <div class="prose">
+        <p>People looking for utility locating software, a utility locator app, or underground utility locating software often want one of two things: a device or service that finds buried lines, or a place to keep what was found and installed. Findry is the second.</p>
+        <p>Findry is an iPhone and Android app for underground utilities, construction, and jobsite records. After a line is installed, repaired, or exposed — including after an 811 locate — you can document the work in a project record. Save the utility type, pipe or conduit size, material, depths, measurements, valve or cleanout details, photos, warnings, and field notes. Tie the location to visible jobsite features with reference points, and add the locate ticket number, work date, and crew in the record title or notes. If your crew records coordinates with a separate GPS device, you can type them into the notes.</p>
+        <p>That is also what people mean when they search for utility locator software, utilities locator software, utility locate software, or buried utility location software and want a record they can come back to. Findry keeps those as-built notes with the project they belong to, so the next person on site can see what is down there, and where, without digging through notebooks or a camera roll.</p>
+        <p>Findry is not a physical locating device and not a utility locating service. It stores information entered by its users. It does not detect, verify, or professionally locate underground utilities, and it does not replace 811 or local utility-marking requirements. Always call 811 before you dig, and use proper locating equipment and qualified locators where the job requires them.</p>
+        <p>When you return to the job, search by project, record title, utility type, keywords, or notes. Mark records with Find Later when you know you will need them again, and use Emergency Lookup for quick access to important records.</p>
+      </div>
     </div>
   </section>
 
