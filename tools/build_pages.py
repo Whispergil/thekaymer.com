@@ -836,6 +836,328 @@ def _findry_tool_page(path, title, description, body, structured):
                 og_alt='Findry — save it now, find it later.')
 
 
+
+# ============================================== Findry material calculator widget
+def material_calculator_widget(up, store_html):
+    """In-page Material Calculator markup, scoped CSS, and script tag.
+
+    JS lives in assets/js/material-calculator.js (same math as the Findry
+    1.0.2 app). The form stays hidden until that script runs, so the existing
+    copy and store links remain usable if JavaScript is off.
+    """
+    script_src = f'{up}assets/js/material-calculator.js'
+    material_options = '\n'.join(
+        f'              <option value="{key}"{" selected" if key == "gravel" else ""}>{label}</option>'
+        for key, label in (
+            ('gravel', 'Gravel'),
+            ('crushed-stone', 'Crushed Stone'),
+            ('sand', 'Sand'),
+            ('topsoil', 'Topsoil'),
+            ('fill-dirt', 'Fill Dirt'),
+            ('mulch', 'Mulch'),
+            ('concrete', 'Concrete'),
+            ('asphalt-millings', 'Asphalt Millings'),
+        )
+    )
+    yard_options = '\n'.join(
+        f'              <option value="{n}"{" selected" if n == 10 else ""}>{n} yd³</option>'
+        for n in (5, 6, 8, 10, 12, 14, 16, 18, 20)
+    )
+    return (
+        '  <section id="material-calc" class="section" aria-labelledby="material-calc-heading">\n'
+        '    <style>\n'
+        '      #material-calc .material-calc-card {\n'
+        '        background: var(--ivory-lift);\n'
+        '        border: 1px solid var(--border);\n'
+        '        border-radius: var(--radius-lg);\n'
+        '        box-shadow: var(--shadow-md);\n'
+        '        padding: var(--s-5);\n'
+        '        max-width: 36rem;\n'
+        '      }\n'
+        '      #material-calc .material-calc-card > * + * { margin-top: var(--s-4); }\n'
+        '      #material-calc fieldset { border: 0; min-width: 0; }\n'
+        '      #material-calc legend,\n'
+        '      #material-calc .material-calc-label {\n'
+        '        display: block;\n'
+        '        font-weight: 600;\n'
+        '        color: var(--charcoal);\n'
+        '        margin-bottom: var(--s-2);\n'
+        '      }\n'
+        '      #material-calc .material-calc-hint {\n'
+        '        color: var(--muted, #5c564c);\n'
+        '        font-size: 0.92rem;\n'
+        '        margin-top: var(--s-1);\n'
+        '      }\n'
+        '      #material-calc .material-calc-seg {\n'
+        '        display: flex;\n'
+        '        flex-wrap: wrap;\n'
+        '        gap: var(--s-1);\n'
+        '      }\n'
+        '      #material-calc .material-calc-seg label {\n'
+        '        flex: 1 1 8rem;\n'
+        '        display: flex;\n'
+        '        align-items: center;\n'
+        '        justify-content: center;\n'
+        '        min-height: 44px;\n'
+        '        padding: 0 var(--s-3);\n'
+        '        border: 1px solid var(--border-strong);\n'
+        '        border-radius: var(--radius-sm);\n'
+        '        background: var(--ivory);\n'
+        '        color: var(--charcoal);\n'
+        '        cursor: pointer;\n'
+        '        text-align: center;\n'
+        '      }\n'
+        '      #material-calc .material-calc-seg label:has(input:checked) {\n'
+        '        background: var(--charcoal);\n'
+        '        color: var(--ivory);\n'
+        '        border-color: var(--charcoal);\n'
+        '      }\n'
+        '      #material-calc .material-calc-seg input {\n'
+        '        position: absolute;\n'
+        '        width: 1px;\n'
+        '        height: 1px;\n'
+        '        padding: 0;\n'
+        '        margin: -1px;\n'
+        '        overflow: hidden;\n'
+        '        clip: rect(0, 0, 0, 0);\n'
+        '        white-space: nowrap;\n'
+        '        border: 0;\n'
+        '      }\n'
+        '      #material-calc .material-calc-field input[type="text"],\n'
+        '      #material-calc .material-calc-field select {\n'
+        '        width: 100%;\n'
+        '        min-height: 44px;\n'
+        '        border: 1px solid var(--border-strong);\n'
+        '        border-radius: var(--radius-sm);\n'
+        '        background: var(--ivory);\n'
+        '        color: var(--charcoal);\n'
+        '        padding: 0.55rem 0.8rem;\n'
+        '        font: inherit;\n'
+        '      }\n'
+        '      #material-calc .material-calc-input-row {\n'
+        '        display: flex;\n'
+        '        align-items: center;\n'
+        '        border: 1px solid var(--border-strong);\n'
+        '        border-radius: var(--radius-sm);\n'
+        '        background: var(--ivory);\n'
+        '        min-height: 44px;\n'
+        '      }\n'
+        '      #material-calc .material-calc-input-row input[type="text"] {\n'
+        '        border: 0;\n'
+        '        min-height: 42px;\n'
+        '        background: transparent;\n'
+        '        flex: 1;\n'
+        '        width: auto;\n'
+        '      }\n'
+        '      #material-calc .material-calc-unit {\n'
+        '        padding: 0 0.8rem;\n'
+        '        color: var(--muted, #5c564c);\n'
+        '        white-space: nowrap;\n'
+        '      }\n'
+        '      #material-calc .material-calc-dims {\n'
+        '        display: grid;\n'
+        '        gap: var(--s-3);\n'
+        '      }\n'
+        '      #material-calc .material-calc-error {\n'
+        '        color: #8B2E1E;\n'
+        '        font-size: 0.92rem;\n'
+        '        min-height: 1.25em;\n'
+        '        margin-top: var(--s-1);\n'
+        '      }\n'
+        '      #material-calc .material-calc-actions {\n'
+        '        display: flex;\n'
+        '        flex-wrap: wrap;\n'
+        '        gap: var(--s-2);\n'
+        '      }\n'
+        '      #material-calc .material-calc-results {\n'
+        '        border-top: 1px solid var(--border);\n'
+        '        padding-top: var(--s-4);\n'
+        '      }\n'
+        '      #material-calc .material-calc-results[hidden],\n'
+        '      #material-calc [hidden] { display: none; }\n'
+        '      #material-calc .material-calc-context {\n'
+        '        color: var(--muted, #5c564c);\n'
+        '        margin-bottom: var(--s-3);\n'
+        '      }\n'
+        '      #material-calc .material-calc-kicker {\n'
+        '        text-transform: uppercase;\n'
+        '        letter-spacing: 0.04em;\n'
+        '        font-size: 0.8rem;\n'
+        '        font-weight: 700;\n'
+        '        margin-bottom: var(--s-1);\n'
+        '      }\n'
+        '      #material-calc .material-calc-hero {\n'
+        '        font-size: 2rem;\n'
+        '        font-weight: 800;\n'
+        '        line-height: 1.15;\n'
+        '        margin: 0 0 var(--s-3);\n'
+        '      }\n'
+        '      #material-calc .material-calc-rows {\n'
+        '        display: grid;\n'
+        '        gap: var(--s-2);\n'
+        '        margin: 0;\n'
+        '      }\n'
+        '      #material-calc .material-calc-rows > div {\n'
+        '        display: flex;\n'
+        '        justify-content: space-between;\n'
+        '        gap: var(--s-3);\n'
+        '        border-top: 1px solid var(--border);\n'
+        '        padding-top: var(--s-2);\n'
+        '      }\n'
+        '      #material-calc .material-calc-rows dt { margin: 0; flex: 1; }\n'
+        '      #material-calc .material-calc-rows dd { margin: 0; font-weight: 700; text-align: right; }\n'
+        '      #material-calc .material-calc-measure {\n'
+        '        margin-top: var(--s-4);\n'
+        '      }\n'
+        '      #material-calc .material-calc-measure dl {\n'
+        '        display: grid;\n'
+        '        gap: var(--s-1);\n'
+        '        margin: 0;\n'
+        '      }\n'
+        '      #material-calc .material-calc-measure div {\n'
+        '        display: flex;\n'
+        '        justify-content: space-between;\n'
+        '        gap: var(--s-3);\n'
+        '      }\n'
+        '      #material-calc .material-calc-measure dt { margin: 0; }\n'
+        '      #material-calc .material-calc-measure dd { margin: 0; text-align: right; }\n'
+        '      #material-calc .material-calc-safety {\n'
+        '        margin-top: var(--s-3);\n'
+        '        color: var(--muted, #5c564c);\n'
+        '        font-size: 0.92rem;\n'
+        '      }\n'
+        '      #material-calc .material-calc-cta { margin-top: var(--s-6); }\n'
+        '      #material-calc .material-calc-cta p {\n'
+        '        margin-bottom: var(--s-3);\n'
+        '      }\n'
+        '      #material-calc .material-calc-status:empty { display: none; }\n'
+        '    </style>\n'
+        '    <div class="shell">\n'
+        '      <div class="section-head">\n'
+        '        <p class="eyebrow">On this page</p>\n'
+        '        <h2 id="material-calc-heading">Estimate material volume here</h2>\n'
+        '        <p class="lead">Use the same measurements, densities, and trip math as the Findry app. The default is Gravel, Imperial units, and a 10 yd³ truck. Trips are based on volume only, and this calculator does not add a waste or compaction allowance.</p>\n'
+        '      </div>\n'
+        '      <noscript>\n'
+        '        <p class="note">This on-page calculator needs JavaScript. The formula and examples below still work, and you can get the same tool in the Findry app.</p>\n'
+        '      </noscript>\n'
+        '      <form class="material-calc-card" data-material-form hidden novalidate>\n'
+        '        <div class="material-calc-field">\n'
+        '          <label class="material-calc-label" for="material-calc-material">Material</label>\n'
+        '          <select id="material-calc-material" name="material">\n'
+        f'{material_options}\n'
+        '          </select>\n'
+        '        </div>\n'
+        '        <fieldset>\n'
+        '          <legend>Truck capacity</legend>\n'
+        '          <div class="material-calc-seg">\n'
+        '            <label>\n'
+        '              <input type="radio" name="material-calc-capacity-unit" value="cubic-yards" checked>\n'
+        '              Cubic Yards\n'
+        '            </label>\n'
+        '            <label>\n'
+        '              <input type="radio" name="material-calc-capacity-unit" value="cubic-metres">\n'
+        '              Cubic Metres\n'
+        '            </label>\n'
+        '          </div>\n'
+        '        </fieldset>\n'
+        '        <div class="material-calc-field" data-capacity-presets>\n'
+        '          <label class="material-calc-label" for="material-calc-capacity-preset">Truck capacity (yd³)</label>\n'
+        '          <select id="material-calc-capacity-preset" name="capacity-preset" aria-describedby="material-calc-capacity-error">\n'
+        f'{yard_options}\n'
+        '              <option value="custom">Custom</option>\n'
+        '          </select>\n'
+        '        </div>\n'
+        '        <div class="material-calc-field" data-capacity-entry hidden>\n'
+        '          <label class="material-calc-label" for="material-calc-capacity" data-capacity-entry-label>Custom truck capacity (yd³)</label>\n'
+        '          <div class="material-calc-input-row">\n'
+        '            <input id="material-calc-capacity" name="capacity" type="text" inputmode="decimal" maxlength="12" autocomplete="off" spellcheck="false" placeholder="e.g. 24" aria-describedby="material-calc-capacity-error">\n'
+        '            <span class="material-calc-unit" data-capacity-entry-unit>yd³</span>\n'
+        '          </div>\n'
+        "          <p class=\"material-calc-hint\" data-capacity-hint hidden>Enter your truck's capacity in cubic metres.</p>\n"
+        '        </div>\n'
+        '        <p id="material-calc-capacity-error" class="material-calc-error" role="alert"></p>\n'
+        '        <fieldset>\n'
+        '          <legend>Dimension units</legend>\n'
+        '          <div class="material-calc-seg">\n'
+        '            <label>\n'
+        '              <input type="radio" name="material-calc-units" value="imperial" checked>\n'
+        '              Imperial\n'
+        '            </label>\n'
+        '            <label>\n'
+        '              <input type="radio" name="material-calc-units" value="metric">\n'
+        '              Metric\n'
+        '            </label>\n'
+        '          </div>\n'
+        '          <p class="material-calc-hint">Changing units clears entered measurements.</p>\n'
+        '        </fieldset>\n'
+        '        <fieldset>\n'
+        '          <legend>Measurements</legend>\n'
+        '          <div class="material-calc-dims">\n'
+        '            <div class="material-calc-field">\n'
+        '              <label class="material-calc-label" for="material-calc-length">Length</label>\n'
+        '              <div class="material-calc-input-row">\n'
+        '                <input id="material-calc-length" name="length" type="text" inputmode="decimal" maxlength="16" autocomplete="off" spellcheck="false" placeholder="e.g. 40" aria-describedby="material-calc-length-error">\n'
+        '                <span class="material-calc-unit" data-length-unit>ft</span>\n'
+        '              </div>\n'
+        '              <p id="material-calc-length-error" class="material-calc-error" role="alert"></p>\n'
+        '            </div>\n'
+        '            <div class="material-calc-field">\n'
+        '              <label class="material-calc-label" for="material-calc-width">Width</label>\n'
+        '              <div class="material-calc-input-row">\n'
+        '                <input id="material-calc-width" name="width" type="text" inputmode="decimal" maxlength="16" autocomplete="off" spellcheck="false" placeholder="e.g. 20" aria-describedby="material-calc-width-error">\n'
+        '                <span class="material-calc-unit" data-width-unit>ft</span>\n'
+        '              </div>\n'
+        '              <p id="material-calc-width-error" class="material-calc-error" role="alert"></p>\n'
+        '            </div>\n'
+        '            <div class="material-calc-field">\n'
+        '              <label class="material-calc-label" for="material-calc-depth">Depth</label>\n'
+        '              <div class="material-calc-input-row">\n'
+        '                <input id="material-calc-depth" name="depth" type="text" inputmode="decimal" maxlength="16" autocomplete="off" spellcheck="false" placeholder="e.g. 6" aria-describedby="material-calc-depth-error">\n'
+        '                <span class="material-calc-unit" data-depth-unit>in</span>\n'
+        '              </div>\n'
+        '              <p id="material-calc-depth-error" class="material-calc-error" role="alert"></p>\n'
+        '            </div>\n'
+        '          </div>\n'
+        '        </fieldset>\n'
+        '        <div class="material-calc-actions">\n'
+        '          <button type="submit" class="btn">Calculate</button>\n'
+        '          <button type="button" class="btn btn--secondary" data-material-reset>Reset</button>\n'
+        '        </div>\n'
+        '        <div class="material-calc-results" data-material-results hidden aria-live="polite">\n'
+        '          <p class="material-calc-context" data-result-context></p>\n'
+        '          <p class="material-calc-kicker" data-result-hero-label>Cubic yards</p>\n'
+        '          <p class="material-calc-hero" data-result-hero></p>\n'
+        '          <dl class="material-calc-rows">\n'
+        '            <div><dt data-result-secondary-label>Cubic Metres</dt><dd data-result-secondary></dd></div>\n'
+        '            <div><dt data-result-mass-label>Estimated US Short Tons</dt><dd data-result-mass></dd></div>\n'
+        '            <div><dt>Load Equivalent by Volume</dt><dd data-result-loads></dd></div>\n'
+        '            <div><dt>Estimated Trips by Volume</dt><dd data-result-trips></dd></div>\n'
+        '          </dl>\n'
+        '          <div class="material-calc-measure">\n'
+        '            <p class="material-calc-kicker">Measurements</p>\n'
+        '            <dl data-result-measurements></dl>\n'
+        '          </div>\n'
+        '          <p class="material-calc-safety" data-result-safety></p>\n'
+        '          <div class="material-calc-actions" style="margin-top:var(--s-4)">\n'
+        '            <button type="button" class="btn btn--secondary" data-material-edit>Edit Measurements</button>\n'
+        '            <button type="button" class="btn btn--secondary" data-material-reset>Start New Calculation</button>\n'
+        '          </div>\n'
+        '        </div>\n'
+        '        <p class="note material-calc-status" data-material-status role="status" aria-live="polite"></p>\n'
+        '      </form>\n'
+        '      <div class="material-calc-cta">\n'
+        '        <p>Get the same calculator in the Findry app, along with Calculator History and the rest of your field tools.</p>\n'
+        '        <div class="btn-row btn-row--stores">\n'
+        '          ' + store_html + '\n'
+        '        </div>\n'
+        '      </div>\n'
+        '    </div>\n'
+        f'    <script src="{script_src}" defer></script>\n'
+        '  </section>\n'
+    )
+
+
 # =============================================== Findry material calculator ===
 def build_findry_material_calculator():
     a = APP['findry']
@@ -900,6 +1222,8 @@ def build_findry_material_calculator():
         ],
     }, indent=2, ensure_ascii=False)
 
+    widget = material_calculator_widget(up, store_buttons(a))
+
     body = f'''<main id="main">
 
   <div class="shell" style="padding-top:var(--s-2)">
@@ -916,8 +1240,14 @@ def build_findry_material_calculator():
         <p class="lead">Findry’s Material Calculator helps contractors and field crews estimate
           material volume, weight, and volume-based truck trips from jobsite measurements. Enter
           the length, width, and depth, pick a material and a truck capacity, and Findry shows
-          cubic yards, cubic metres, estimated tons, and how many truck trips the job may take.
-          The Material Calculator is part of the Findry app for iPhone and Android.</p>
+          cubic yards, cubic metres, estimated weight, and how many truck trips the job may take.
+          The default material is Gravel, measurements start in Imperial (feet and inches), and
+          the default truck capacity is 10 yd³. In Metric, length and width are in metres and
+          depth is in centimetres. Imperial results show estimated US short tons; Metric results
+          show estimated metric tonnes. Trips are based on volume only, and the calculator does
+          not add a waste or compaction allowance. The Material Calculator is part of the Findry
+          app for iPhone and Android, and it is free for all users. You can also run the same
+          estimate in the calculator on this page.</p>
         <div class="btn-row btn-row--stores">
           {store_buttons(a)}
         </div>
@@ -927,6 +1257,8 @@ def build_findry_material_calculator():
       </div>
     </div>
   </section>
+
+  {widget}
 
   <section class="section section--tinted" aria-labelledby="material-features">
     <div class="shell">
@@ -1012,7 +1344,7 @@ def build_findry_material_calculator():
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Step 1: Choose the material</h3>
-          <p>Pick Gravel, Crushed Stone, Sand, Topsoil, Fill Dirt, Mulch, Concrete, or Asphalt Millings. The material you choose sets the estimated weight.</p>
+          <p>Pick Gravel, Crushed Stone, Sand, Topsoil, Fill Dirt, Mulch, Concrete, or Asphalt Millings. The default is Gravel. The material you choose sets the estimated weight.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
@@ -1027,12 +1359,12 @@ def build_findry_material_calculator():
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Step 4: Enter length, width, and depth</h3>
-          <p>In Imperial, enter length and width in feet and depth in inches. Measure the area you need to fill or cover, and use the depth of the finished layer.</p>
+          <p>In Imperial, enter length and width in feet and depth in inches. In Metric, enter length and width in metres and depth in centimetres. Measure the area you need to fill or cover, and use the depth of the finished layer.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Step 5: Calculate, then save or adjust</h3>
-          <p>Tap Calculate to see cubic yards, cubic metres, estimated US short tons, the load equivalent, and the estimated number of trips. Use Edit Measurements to change a number, or save the result to Calculator History to reopen it later.</p>
+          <p>Tap Calculate to see cubic yards, cubic metres, estimated weight, the load equivalent, and the estimated number of trips. Imperial measurements show US short tons; Metric measurements show metric tonnes. Use Edit Measurements to change a number, Reset or Start New Calculation to clear the measurements (material and truck capacity stay the same), or save the result to Calculator History in the app to reopen it later. You can also run the same estimate in the calculator on this page.</p>
         </div>
       </div>
     </div>
@@ -1054,12 +1386,12 @@ def build_findry_material_calculator():
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Cubic metres</h3>
-          <p>One cubic yard is about 0.765 cubic metres, so Findry also shows the volume in m³.</p>
+          <p>Findry converts cubic feet to cubic metres using 35.314666721 cubic feet per cubic metre, so one cubic yard is about 0.7646 cubic metres. The result is shown in m³.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
           <h3>Estimated weight in tons</h3>
-          <p>Findry applies a built-in weight for the material you selected and shows the result in US short tons (2,000 lb). Gravel, sand, topsoil, mulch, and the other materials all weigh different amounts, and real weights vary by product and moisture. Check with your supplier before you order by the ton.</p>
+          <p>Findry applies a built-in weight for the material you selected. With Imperial measurements, it shows estimated US short tons (2,000 lb). With Metric measurements, it shows estimated metric tonnes. Gravel, sand, topsoil, mulch, and the other materials all weigh different amounts, and real weights vary by product and moisture. Check with your supplier before you order by the ton.</p>
         </div>
         <div class="feature-item">
           <div class="rule"></div>
@@ -1082,8 +1414,8 @@ def build_findry_material_calculator():
         <ul>
           <li><strong>Cubic feet:</strong> 150 × 55 × (3 ÷ 12) = 2,062.5 ft³</li>
           <li><strong>Cubic yards:</strong> 2,062.5 ÷ 27 = <strong>76.39 yd³</strong></li>
-          <li><strong>Cubic metres:</strong> about <strong>58.4 m³</strong></li>
-          <li><strong>Estimated weight:</strong> the app estimates about <strong>114.6 tons</strong> for crushed stone</li>
+          <li><strong>Cubic metres:</strong> <strong>58.4 m³</strong></li>
+          <li><strong>Estimated weight:</strong> the app estimates <strong>114.58 US short tons</strong> for crushed stone</li>
           <li><strong>Loads:</strong> 76.39 ÷ 20 = <strong>3.82 loads</strong>, so <strong>4 trips</strong></li>
         </ul>
       </div>
@@ -1102,9 +1434,9 @@ def build_findry_material_calculator():
         <ul>
           <li><strong>Cubic feet:</strong> 80 × 40 × (4 ÷ 12) = 1,066.67 ft³</li>
           <li><strong>Cubic yards:</strong> 1,066.67 ÷ 27 = <strong>39.51 yd³</strong></li>
-          <li><strong>Cubic metres:</strong> about <strong>30.2 m³</strong></li>
+          <li><strong>Cubic metres:</strong> <strong>30.2 m³</strong></li>
           <li><strong>Loads:</strong> 39.51 ÷ 10 = <strong>3.95 loads</strong>, so <strong>4 trips</strong></li>
-          <li><strong>Weight:</strong> select Gravel in Findry to see the estimated tons, and confirm the weight with your supplier.</li>
+          <li><strong>Weight:</strong> <strong>55.31 US short tons</strong> for gravel. Confirm the weight with your supplier.</li>
           <li><strong>Custom truck:</strong> with a 24 yd³ truck entered as a custom capacity, the same pad is 39.51 ÷ 24 = <strong>1.65 loads</strong>, so <strong>2 trips</strong>.</li>
         </ul>
       </div>
