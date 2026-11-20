@@ -682,6 +682,35 @@ def build_app_page(a):
     if a.get('safety_note'):
         safety_block = f'''\n      <p class="note" style="margin-top:var(--s-6)"><strong>Documentation, not utility detection.</strong> {e(a["safety_note"])}</p>'''
 
+    calc_links_block = ''
+    if a['slug'] == 'findry':
+        calc_links_block = '''  <section class="section section--flush-top" aria-labelledby="free-calculators">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="free-calculators">Free Findry calculators</h2>
+        <p class="lead">Use them free in your browser. No app download required.</p>
+      </div>
+      <div class="card-grid">
+        <article class="app-card">
+          <h3>Material Calculator</h3>
+          <p>Estimate volume for gravel, stone, soil, and more.</p>
+          <div class="card-actions">
+            <a class="btn btn--secondary" href="/apps/findry/material-calculator/">Open the Material Calculator</a>
+          </div>
+        </article>
+        <article class="app-card">
+          <h3>Truck Load Calculator</h3>
+          <p>Estimate cubic yards and how many trips a load may take.</p>
+          <div class="card-actions">
+            <a class="btn btn--secondary" href="/apps/findry/truck-load-calculator/">Open the Truck Load Calculator</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+'''
+
     guides = a.get('guides', [])
     if guides:
         guide_items = '\n'.join(
@@ -778,7 +807,7 @@ def build_app_page(a):
     </div>
   </section>
 
-  <section class="section section--tinted" aria-labelledby="features">
+{calc_links_block}  <section class="section section--tinted" aria-labelledby="features">
     <div class="shell">
       <div class="section-head">
         <h2 id="features">What it does</h2>
