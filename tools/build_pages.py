@@ -774,6 +774,38 @@ def build_app_page(a):
 
     grid_mod = '' if a.get('shots') else ' app-hero-grid--single'
 
+    # Findry only: decorative "record saved" animation beside the app icon
+    # (self-hosted Lottie player; see assets/js/lottie-anim.js).
+    hero_col_class = 'rise'
+    hero_anim = ''
+    hero_anim_script = ''
+    if a['slug'] == 'findry':
+        hero_col_class = 'rise records-anim-host'
+        hero_anim = f'''
+        <style>
+          .app-hero .records-anim-host {{ position: relative; }}
+          .app-hero .records-anim {{
+            position: absolute;
+            top: -0.5rem;
+            right: 0;
+            width: min(13.5rem, calc(100% - 84px - 2rem));
+            max-width: 100%;
+            aspect-ratio: 320 / 200;
+            pointer-events: none;
+          }}
+          .app-hero .records-anim img,
+          .app-hero .records-anim-stage {{ position: absolute; inset: 0; width: 100%; height: 100%; }}
+          .app-hero .records-anim-stage {{ visibility: hidden; }}
+          .app-hero .records-anim.is-playing .records-anim-stage {{ visibility: visible; }}
+          .app-hero .records-anim.is-playing img {{ visibility: hidden; }}
+        </style>
+        <div class="records-anim" data-lottie-anim data-player="{up}assets/js/lottie_light.min.js" data-src="{up}assets/animations/findry-records.json" aria-hidden="true">
+          <img src="{up}assets/img/findry/findry-records-animation-still.svg" alt="" width="320" height="200" decoding="async">
+          <div class="records-anim-stage" data-lottie-stage></div>
+        </div>'''
+        hero_anim_script = f'''
+  <script src="{up}assets/js/lottie-anim.js" defer></script>'''
+
     structured = None
     if a['status'] == 'available':
         structured = {
@@ -796,16 +828,16 @@ def build_app_page(a):
 
   <section class="app-hero shell">
     <div class="app-hero-grid{grid_mod}">
-      <div class="rise">
+      <div class="{hero_col_class}">
         {icon_markup(a, up=up, large=True)}
-        <div class="badge-row" style="margin-bottom:var(--s-3)">{badge(a)}</div>
+        <div class="badge-row" style="margin-bottom:var(--s-3)">{badge(a)}</div>{hero_anim}
         <h1>{e(a['name'])}</h1>
         <p class="tagline">{e(a['tagline'])}</p>
         <p class="lead">{e(a['long'])}</p>
         {actions}
       </div>{aside}
     </div>
-  </section>
+  </section>{hero_anim_script}
 
 {calc_links_block}  <section class="section section--tinted" aria-labelledby="features">
     <div class="shell">
@@ -1578,8 +1610,8 @@ def truck_load_calculator_widget(up, store_html):
     copy and store links remain usable if JavaScript is off.
     """
     script_src = f'{up}assets/js/truck-load-calculator.js'
-    # Decorative loading animation (self-hosted Lottie player; see assets/js/truck-animation.js).
-    anim_script_src = f'{up}assets/js/truck-animation.js'
+    # Decorative loading animation (self-hosted Lottie player; see assets/js/lottie-anim.js).
+    anim_script_src = f'{up}assets/js/lottie-anim.js'
     anim_player_src = f'{up}assets/js/lottie_light.min.js'
     anim_json_src = f'{up}assets/animations/truck-load.json'
     anim_still_src = f'{up}assets/img/findry/truck-load-animation-still.svg'
@@ -1733,9 +1765,9 @@ def truck_load_calculator_widget(up, store_html):
         '        <h2 id="truck-calc-heading">Estimate truck trips here</h2>\n'
         '        <p class="lead">Use the same quantity ÷ capacity math as the Findry app. Quantity and capacity stay in one unit — this calculator does not convert volume to weight, or weight to volume.</p>\n'
         '      </div>\n'
-        f'      <div class="truck-anim" data-truck-anim data-player="{anim_player_src}" data-src="{anim_json_src}" aria-hidden="true">\n'
+        f'      <div class="truck-anim" data-lottie-anim data-player="{anim_player_src}" data-src="{anim_json_src}" aria-hidden="true">\n'
         f'        <img src="{anim_still_src}" alt="" width="680" height="300" decoding="async">\n'
-        '        <div class="truck-anim-stage" data-truck-anim-stage></div>\n'
+        '        <div class="truck-anim-stage" data-lottie-stage></div>\n'
         '      </div>\n'
         '      <noscript>\n'
         '        <p class="note">This on-page calculator needs JavaScript. The formula and examples below still work, and you can get the same tool in the Findry app.</p>\n'

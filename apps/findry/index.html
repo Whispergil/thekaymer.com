@@ -80,9 +80,30 @@
 
   <section class="app-hero shell">
     <div class="app-hero-grid">
-      <div class="rise">
+      <div class="rise records-anim-host">
         <picture class="app-icon app-icon--lg"><source srcset="/assets/img/findry-icon.webp" type="image/webp"><img src="/assets/img/findry-icon.png" width="84" height="84" alt="Findry app icon"></picture>
         <div class="badge-row" style="margin-bottom:var(--s-3)"><span class="badge badge--available">Available</span></div>
+        <style>
+          .app-hero .records-anim-host { position: relative; }
+          .app-hero .records-anim {
+            position: absolute;
+            top: -0.5rem;
+            right: 0;
+            width: min(13.5rem, calc(100% - 84px - 2rem));
+            max-width: 100%;
+            aspect-ratio: 320 / 200;
+            pointer-events: none;
+          }
+          .app-hero .records-anim img,
+          .app-hero .records-anim-stage { position: absolute; inset: 0; width: 100%; height: 100%; }
+          .app-hero .records-anim-stage { visibility: hidden; }
+          .app-hero .records-anim.is-playing .records-anim-stage { visibility: visible; }
+          .app-hero .records-anim.is-playing img { visibility: hidden; }
+        </style>
+        <div class="records-anim" data-lottie-anim data-player="../../assets/js/lottie_light.min.js" data-src="/assets/animations/findry-records.json" aria-hidden="true">
+          <img src="/assets/img/findry/findry-records-animation-still.svg" alt="" width="320" height="200" decoding="async">
+          <div class="records-anim-stage" data-lottie-stage></div>
+        </div>
         <h1>Findry</h1>
         <p class="tagline">Save it now. Find it later.</p>
         <p class="lead">Findry is a jobsite record and field documentation app for contractors, utility crews, excavators, plumbers, electricians, municipalities, and inspectors. Document buried pipes and utility installations with photos, depths, measurements, materials, valves, reference points, and field notes. Every record belongs to a project, so important details are easier to find when you return to a job days, months, or years later.</p>
@@ -118,6 +139,7 @@
       </div>
     </div>
   </section>
+  <script src="/assets/js/lottie-anim.js" defer></script>
 
   <section class="section section--flush-top" aria-labelledby="free-calculators">
     <div class="shell">
